@@ -3,9 +3,9 @@
 <p align="center">
 <img src="https://media.discordapp.net/attachments/852785773827981342/906526636923551754/IMG_20211031_080300.jpg?width=256&height=256">
 <p align="center">
-<img alt="GitHub Repo size" src="https://img.shields.io/github/repo-size/Mephysics/RyU?style=flat-square">
-<img alt="GitHub Package version" src="https://img.shields.io/github/v/release/Mephysics/RyU?style=flat-square">
-<img alt="GitHub ESLint" src="https://img.shields.io/github/workflow/status/Mephysics/RyU/ESLint?style=flat-square">
+<img alt="GitHub Repo size" src="https://img.shields.io/github/repo-size/Muunatic/RyU?style=flat-square">
+<img alt="GitHub Package version" src="https://img.shields.io/github/v/release/Muunatic/RyU?style=flat-square">
+<img alt="GitHub ESLint" src="https://img.shields.io/github/workflow/status/Muunatic/RyU/ESLint?style=flat-square">
 
 ***
 <h1 align="center">RyU</h1>
@@ -41,7 +41,13 @@ npm run deploy
 npm start
 ```
 
-Klik redirect untuk info lebih lanjut <a href="https://github.com/Mephysics/MephystOS/security/policy">**Redirect**</a>
+## Security
+
+|Version|Vulnerability|
+|-|-|
+|5.0.x|:heavy_check_mark:|
+
+Klik redirect untuk info lebih lanjut <a href="https://github.com/Muunatic/RyU/security/policy">**Redirect**</a>
 
 ## Disclaimer
 
