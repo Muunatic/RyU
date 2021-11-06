@@ -1,0 +1,8 @@
+# modules
+node_modules
+
+# env
+.env
+
+# clientcfg
+cfg.js

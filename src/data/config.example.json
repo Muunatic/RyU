@@ -1,0 +1,6 @@
+{
+    "clientId": "clientId",
+    "prefix": ["prefix"],
+    "guildId": "guildId",
+    "token": "token"
+}
