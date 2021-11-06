@@ -1,0 +1,9 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:17.0.1
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm test
