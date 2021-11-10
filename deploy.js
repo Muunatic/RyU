@@ -111,6 +111,10 @@ const commands = [
   .setDescription('Client stats'),
 
   new SlashCommandBuilder()
+  .setName('uptime')
+  .setDescription('Client uptime'),
+
+  new SlashCommandBuilder()
   .setName('cuaca')
   .setDescription('Info cuaca')
   .addStringOption(option =>

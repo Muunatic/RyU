@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { Client, Collection, Intents, MessageEmbed,  MessageCollector, Permissions, IntegrationApplication } = require('discord.js');
+const { Client, Collection, Intents, MessageEmbed,  MessageCollector, Permissions } = require('discord.js');
 const os = require('os');
 const cpuStat = require('cpu-stat');
 require('dotenv').config();
@@ -100,6 +100,10 @@ client.on('ready', () => {
     }, 5000);
     client.user.setPresence({ status: 'online' })
     
+});
+
+player.on("error", (error) => {
+    console.log(error.message);
 });
 
 player.on("trackStart", (queue, track) => queue.metadata.channel.send(`Memutar lagu **${track.title}**`))
@@ -343,7 +347,7 @@ client.on('interactionCreate', async interaction => {
             leaveOnEmpty: false,
             leaveOnEmptyCooldown: 60000,
             ytdlOptions: {
-                quality: "highest",
+                quality: "highestaudio",
                 filter: "audioonly",
                 highWaterMark: 1 << 25,
                 dlChunkSize: 0,
