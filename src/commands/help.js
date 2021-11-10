@@ -11,7 +11,7 @@ module.exports = {
             author: { name: 'Help commands' },
             footer: { text: `${prefix}help` },
             fields: [
-                { name: 'General command', value: 'ping, uptime, time, userinfo, serverinfo, osu, avatar, stats, weather, aboutbot, corona, totalcorona, tictactoe, hangman, snake' },
+                { name: 'General command', value: 'ping, uptime, time, userinfo, serverinfo, osu, avatar, stats, weather, aboutbot, corona, totalcorona, tictactoe, snake' },
                 { name: 'DM command', value: 'report' },
                 { name: 'Music command', value: 'play, skip, stop, pause, resume, volume, queue, nowplaying, repeat, bitrate, lock, unlock' },
                 { name: 'Moderator command', value: 'nickname' },
