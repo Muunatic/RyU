@@ -13,17 +13,11 @@ updates:
     allow:
       - dependency-name: "discord.js"
       - dependency-name: "ffmpeg"
-      - dependency-name: "ffmpeg-static"
-      - dependency-name: "fluent-ffmpeg"
       - dependency-name: "ytdl-core"
     ignore:
     - dependency-name: "discord.js"
-      update-types: ["version-update:semver-major", "version-update:semver-minor"]
+      update-types: ["version-update:semver-major"]
     - dependency-name: "ffmpeg"
-      update-types: ["version-update:semver-major"]
-    - dependency-name: "ffmpeg-static"
-      update-types: ["version-update:semver-major"]
-    - dependency-name: "fluent-ffmpeg"
       update-types: ["version-update:semver-major"]
     - dependency-name: "ytdl-core"
       update-types: ["version-update:semver-major"]
