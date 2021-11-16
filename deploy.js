@@ -115,7 +115,7 @@ const commands = [
   .setDescription('Client uptime'),
 
   new SlashCommandBuilder()
-  .setName('cuaca')
+  .setName('weather')
   .setDescription('Info cuaca')
   .addStringOption(option =>
     option.setName('kota')
