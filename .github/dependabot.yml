@@ -4,19 +4,25 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    target-branch: "v5"
+    target-branch: "patch"
     labels:
       - "dependencies"
     commit-message:
       prefix: "pull-request"
       include: "scope"
     allow:
+      - dependency-name: "@discordjs/builders"
+      - dependency-name: "discord-api-types"
       - dependency-name: "discord.js"
       - dependency-name: "ffmpeg"
       - dependency-name: "ytdl-core"
     ignore:
-    - dependency-name: "discord.js"
+    - dependency-name: "@discordjs/builders"
       update-types: ["version-update:semver-major"]
+    - dependency-name: "discord-api-types"
+      update-types: ["version-update:semver-major"]
+    - dependency-name: "discord.js"
+      update-types: ["version-update:semver-major", "version-update:semver-minor"]
     - dependency-name: "ffmpeg"
       update-types: ["version-update:semver-major"]
     - dependency-name: "ytdl-core"

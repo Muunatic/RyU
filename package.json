@@ -1,6 +1,6 @@
 {
   "name": "ryu",
-  "version": "5.0.1-1",
+  "version": "5.0.1-2",
   "description": "RyU Framework",
   "main": "index.js",
   "scripts": {
@@ -11,13 +11,11 @@
   "author": "Muunatic",
   "license": "UNLICENSED",
   "dependencies": {
-    "@discordjs/builders": "^0.6.0",
-    "@discordjs/node-pre-gyp": "^0.4.1",
-    "@discordjs/opus": "^0.6.0",
+    "@discordjs/builders": "^0.8.2",
     "@discordjs/rest": "^0.1.0-canary.0",
-    "@discordjs/voice": "^0.7.3",
     "cpu-stat": "^2.0.1",
     "discord-api-types": "^0.23.1",
+    "discord-giveaways": "^5.0.1",
     "discord-player": "^5.1.0",
     "discord.js": "^13.3.1",
     "dotenv": "^8.6.0",
@@ -35,6 +33,11 @@
   },
   "devDependencies": {
     "eslint": "^7.25.0"
+  },
+  "optionalDependencies": {
+    "@discordjs/node-pre-gyp": "^0.4.2",
+    "@discordjs/opus": "^0.6.0",
+    "@discordjs/voice": "^0.7.5"
   },
   "engines": {
     "node": ">=16.13.0",

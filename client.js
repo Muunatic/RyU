@@ -263,7 +263,7 @@ client.on('interactionCreate', async interaction => {
         interaction.reply({embeds: [osuembed]});
     }
 
-    if (commandName === 'cuaca') {
+    if (commandName === 'weather') {
         let kota = interaction.options.get("kota").value;
         let degreeType = 'C';
 
