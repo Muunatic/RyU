@@ -68,7 +68,7 @@ const manager = new GiveawaysManager(client, {
 
 client.giveawaysManager = manager;
 
-const { Player, Queue, QueryType ,QueueRepeatMode } = require('discord-player');
+const { Player, QueueRepeatMode } = require('discord-player');
 const player = new Player(client);
 client.player = player;
 
@@ -263,7 +263,7 @@ client.on('interactionCreate', async interaction => {
         interaction.reply({embeds: [osuembed]});
     }
 
-    if (commandName === 'cuaca') {
+    if (commandName === 'weather') {
         let kota = interaction.options.get("kota").value;
         let degreeType = 'C';
 
@@ -445,10 +445,15 @@ client.on('interactionCreate', async interaction => {
         .setColor('#89e0dc')
         .setTitle(queue.current.title)
         .setThumbnail(queue.current.thumbnail)
-        .setFooter(`Direquest oleh ${interaction.user.username}`, `${interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})}`)
+        .setFooter(`${queue.current.url}`, `${interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 1024})}`)
         .addField(`Channel`, `${queue.current.author}`, true)
         .addField(`Requested by`, `${queue.current.requestedBy.username}`, true)
         .addField(`Duration`, `${queue.current.duration}`, true)
+        .addField(`Source`, `${queue.current.source}`, true)
+        .addField(`Views`, `${queue.current.views}`, true)
+        .addField(`ID`, `${queue.current.id}`, true)
+
+        .addField(`Progress Bar`, `${queue.createProgressBar()}`, true)
         .setTimestamp()
 
         await interaction.reply({embeds: [nowplayingembed]})
@@ -560,15 +565,17 @@ client.on('messageCreate', async message => {
     }
 
     if (command === 'register') {
-        message.delete({timeout: 5000});
+        setTimeout(() => message.delete(), 5000)
 
-        if (!message.member.roles.cache.get(process.env.UNREGISTER_ID)) return message.channel.send('**Kamu sudah teregistrasi**').then(message => {
-            message.delete({timeout: 5000})
-        })
+        if (!message.member.roles.cache.get(process.env.UNREGISTER_ID)) return message.channel.send('**Kamu sudah teregistrasi**')
+        .then(msg => {
+            setTimeout(() => msg.delete(), 5000)
+        });
         
-        if (message.member.roles.cache.get(process.env.REGISTER_ID)) return message.channel.send('**Kamu sudah teregistrasi**').then(message => {
-            message.delete({timeout: 5000})
-        })
+        if (message.member.roles.cache.get(process.env.REGISTER_ID)) return message.channel.send('**Kamu sudah teregistrasi**')
+        .then(msg => {
+            setTimeout(() => msg.delete(), 5000)
+        });
 
         const channel = client.channels.cache.get(process.env.GENERALCHAT);
         const user = message.author.id
@@ -578,9 +585,10 @@ client.on('messageCreate', async message => {
         let channellog = client.channels.cache.get(process.env.CHANNELLOGID)
 
         message.channel.send(`**Selesai, anda sudah teregistrasi...\nSelamat datang <@${user}> kamu sudah bisa chat di ${channel} setelah membaca pesan ini**`)
-        .then(message => {
-            message.delete({timeout: 5000})
-        })
+        .then(msg => {
+            setTimeout(() => msg.delete(), 5000)
+        });
+        
         message.member.roles.remove(process.env.UNREGISTER_ID);
 
         let channellogembed = new MessageEmbed()
@@ -591,7 +599,7 @@ client.on('messageCreate', async message => {
         .setFooter(message.author.username , message.client.user.avatarURL({format : 'png', dynamic : true, size : 1024}))
         .setTimestamp()
 
-        channellog.send(channellogembed)
+        channellog.send({embeds: [channellogembed]})
     }
 
     if (command === 'aboutbot') { 
@@ -600,7 +608,7 @@ client.on('messageCreate', async message => {
         .setColor('#89e0dc')
         .setTitle('About BOT')
         .setThumbnail(`${message.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
-        .setDescription(`Nama : **${message.client.user.username}**\n\nVersi : **${botversion}**\n\nKeyword : **${prefix}**\n\nDev : **${botauthor}**\n\nSource Code : **https://mephysics.github.io/MephystOS**`)
+        .setDescription(`Nama : **${message.client.user.username}**\n\nVersi : **${botversion}**\n\nKeyword : **${prefix}**\n\nDev : **${botauthor}**\n\nSource Code : **https://github.com/Muunatic/RyU**`)
         .setFooter(`Direquest oleh ${message.author.username}`, `${message.author.avatarURL({format : 'png', dynamic : true, size : 1024})}`)
         .setTimestamp()
 
@@ -637,7 +645,7 @@ client.on('messageCreate', async message => {
         if (!args.join(' ')) return message.channel.send(`**${prefix}giveaway <mentionschannel> <time> <winner> <args>**`);
         const channelsend = message.mentions.channels.first()
         client.giveawaysManager.start(channelsend, {
-            time: ms(args[1]),
+            duration: ms(args[1]),
             winnerCount: parseInt(args[2]),
             prize: args.slice(3).join(' '),
             messages: {
@@ -650,13 +658,7 @@ client.on('messageCreate', async message => {
                 noWinner: 'Tidak Valid',
                 winners: 'winner(s) ',
                 endedAt: 'Ended at',
-                units: {
-                    seconds: 'detik',
-                    minutes: 'menit',
-                    hours: 'jam',
-                    days: 'hari',
-                    pluralS: false
-                }
+                drawing: `{timestamp}`
             },
         }).then((gData) => {
             console.log(gData);
@@ -664,23 +666,23 @@ client.on('messageCreate', async message => {
     }
 
     if (command === 'reroll') {
-        if (!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini')
+        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         if (!args.join(' ')) return message.channel.send(`${prefix}reroll <msgid>`);
         const messageID = args[0];
         client.giveawaysManager.reroll(messageID).then(() => {
             message.channel.send('Rerolled');
-        }).catch((err) => {
+        }).catch(() => {
             message.channel.send('ID tidak ditemukan');
         });
     }
 
     if (command === 'end') {
-        if (!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini')
+        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         if (!args.join(' ')) return message.channel.send(`${prefix}end <msgid>`);
         const messageID = args[0];
         client.giveawaysManager.end(messageID).then(() => {
             message.channel.send('**Success !!**');
-        }).catch((err) => {
+        }).catch(() => {
             message.channel.send('ID tidak ditemukan');
         });
     }
@@ -703,7 +705,7 @@ client.on('messageCreate', async message => {
     }
 
     if (command === 'mute') {
-        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini')
+        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         if (!message.mentions.users.first()) return message.channel.send('**Mention user untuk melakukan mute**');
         const muterole = message.guild.roles.cache.get(process.env.MUTE_ROLE);
         const mentionsusername = message.mentions.users.first()
@@ -724,7 +726,7 @@ client.on('messageCreate', async message => {
     }
 
     if (command === 'unmute') {
-        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini')
+        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         if (!message.mentions.users.first()) return message.channel.send('**Mention user untuk melakukan unmute**');
         const muterole = message.guild.roles.cache.get(process.env.MUTE_ROLE);
         const mentionsusername = message.mentions.users.first()
@@ -745,7 +747,7 @@ client.on('messageCreate', async message => {
     }
 
     if (command === 'warn') {
-        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini')
+        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         const mentionsuser = message.mentions.users.first();
         if (!message.mentions.users.first()) return message.channel.send(`**Mention user sebelum memberikan alasan\n\n\`\`\`/warn <mention> <reason>\`\`\`**`)
         const warnembed = new MessageEmbed()
@@ -771,7 +773,7 @@ client.on('messageCreate', async message => {
     }
 
     if (command === 'kick') {
-        if (!message.member.permissions.has(Permissions.FLAGS.KICK_MEMBERS)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini')
+        if (!message.member.permissions.has(Permissions.FLAGS.KICK_MEMBERS)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         const user = message.mentions.users.first();
         if (user) {
           const member = message.guild.members.resolve(user);
@@ -790,7 +792,7 @@ client.on('messageCreate', async message => {
     }
 
     if (command === 'ban') {
-        if (!message.member.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini')
+        if (!message.member.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         const user = message.mentions.users.first();
         if (user) {
           const member = message.guild.members.resolve(user);
@@ -811,7 +813,7 @@ client.on('messageCreate', async message => {
     }
 
     if (command === 'say') {
-        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini')
+        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         const channel = client.channels.cache.get(args[0])
         if (!client.channels.cache.get(args[0])) return message.channel.send('Error');
         if (!args[1]) return message.channel.send('**Berikan args**');
