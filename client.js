@@ -445,10 +445,15 @@ client.on('interactionCreate', async interaction => {
         .setColor('#89e0dc')
         .setTitle(queue.current.title)
         .setThumbnail(queue.current.thumbnail)
-        .setFooter(`Direquest oleh ${interaction.user.username}`, `${interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})}`)
+        .setFooter(`${queue.current.url}`, `${interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 1024})}`)
         .addField(`Channel`, `${queue.current.author}`, true)
         .addField(`Requested by`, `${queue.current.requestedBy.username}`, true)
         .addField(`Duration`, `${queue.current.duration}`, true)
+        .addField(`Source`, `${queue.current.source}`, true)
+        .addField(`Views`, `${queue.current.views}`, true)
+        .addField(`ID`, `${queue.current.id}`, true)
+
+        .addField(`Progress Bar`, `${queue.createProgressBar()}`, true)
         .setTimestamp()
 
         await interaction.reply({embeds: [nowplayingembed]})

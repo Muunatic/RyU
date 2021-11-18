@@ -1,6 +1,6 @@
 {
   "name": "ryu",
-  "version": "5.0.1-2",
+  "version": "5.0.2",
   "description": "RyU Framework",
   "main": "index.js",
   "scripts": {
