@@ -1,7 +1,7 @@
 ***
 
 <p align="center">
-<img src="https://cdn.discordapp.com/attachments/852785773827981342/908472738111426640/IMG_20211031_080300.jpg" width="256" height="256">
+<img src="https://cdn.discordapp.com/attachments/852785773827981342/912856282246045778/test.jpg" width="256" height="256">
 <p align="center">
 <img alt="GitHub Repo size" src="https://img.shields.io/github/repo-size/Muunatic/RyU?style=flat-square">
 <img alt="GitHub Package version" src="https://img.shields.io/github/v/release/Muunatic/RyU?style=flat-square">
