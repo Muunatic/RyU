@@ -1,6 +1,6 @@
 {
   "name": "ryu",
-  "version": "5.0.2",
+  "version": "5.0.2-1",
   "description": "RyU Framework",
   "main": "index.js",
   "scripts": {
@@ -36,7 +36,6 @@
   },
   "optionalDependencies": {
     "@discordjs/node-pre-gyp": "^0.4.2",
-    "@discordjs/opus": "^0.6.0",
     "@discordjs/voice": "^0.7.5"
   },
   "engines": {
