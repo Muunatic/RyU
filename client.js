@@ -357,6 +357,8 @@ client.on('interactionCreate', async interaction => {
             }
         });
 
+        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
+
         try {
             if (!queue.connection) await queue.connect(interaction.member.voice.channel);
         } catch {
@@ -364,7 +366,7 @@ client.on('interactionCreate', async interaction => {
             return await interaction.reply({ content: "undefined", ephemeral: true });
         }
 
-        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`Kamu tidak divoice channel yang sama !`);
+        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
 
         await interaction.deferReply();
         const track = await player.search(query, {
@@ -379,16 +381,18 @@ client.on('interactionCreate', async interaction => {
 
     if (commandName === 'stop') {
         const queue = player.getQueue(interaction.guild.id);
-        if (!queue || !queue.playing) return interaction.reply('Tidak ada music yang berjalan');
-        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`Kamu tidak divoice channel yang sama !`);
+        if (!queue || !queue.playing) return interaction.reply('**Tidak ada music yang berjalan**');
+        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
+        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
         queue.destroy();
         await interaction.reply('**Lagu telah distop**');
     }
 
     if (commandName === 'skip') {
         const queue = player.getQueue(interaction.guild.id);
-        if (!queue || !queue.playing) return interaction.reply('Tidak ada music yang berjalan');
-        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`Kamu tidak divoice channel yang sama !`);
+        if (!queue || !queue.playing) return interaction.reply('**Tidak ada music yang berjalan**');
+        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
+        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
         queue.skip()
         await interaction.reply('**Lagu telah diskip**')
     }
@@ -405,7 +409,8 @@ client.on('interactionCreate', async interaction => {
     if (commandName === 'volume') {
         const queue = player.getQueue(interaction.guild.id);
         if (!queue || !queue.playing) return interaction.reply('Tidak ada music yang berjalan');
-        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`Kamu tidak divoice channel yang sama !`);
+        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
+        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
         const numbervalue = interaction.options.get("number").value;
         if (Math.round(parseInt(numbervalue)) < 1 || Math.round(parseInt(numbervalue)) > 100) return interaction.reply(`berikan nomor 1 - 100 !`);
         queue.setVolume(numbervalue);
@@ -415,7 +420,8 @@ client.on('interactionCreate', async interaction => {
     if (commandName === 'pause') {
         const queue = player.getQueue(interaction.guild.id);
         if (!queue || !queue.playing) return interaction.reply('Tidak ada music yang berjalan');
-        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`Kamu tidak divoice channel yang sama !`);
+        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
+        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
         if (queue.setPaused(true)) return interaction.reply('**Lagu sedang dipause**')
         queue.setPaused(true)
         interaction.reply(`**Lagu telah dipause**`)
@@ -424,7 +430,8 @@ client.on('interactionCreate', async interaction => {
     if (commandName === 'resume') {
         const queue = player.getQueue(interaction.guild.id);
         if (!queue || !queue.playing) return interaction.reply('Tidak ada music yang berjalan');
-        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`Kamu tidak divoice channel yang sama !`);
+        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
+        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
         if (queue.setPaused(false)) return interaction.reply('**Lagu sedang berlangsung**')
         queue.setPaused(false)
         interaction.reply(`**Lagu dilanjutkan**`)
@@ -433,7 +440,8 @@ client.on('interactionCreate', async interaction => {
     if (commandName === 'repeat') {
         const queue = player.getQueue(interaction.guild.id);
         if (!queue || !queue.playing) return interaction.reply('Tidak ada music yang berjalan');
-        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`Kamu tidak divoice channel yang sama !`);
+        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
+        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
         const repeatmode = queue.setRepeatMode(queue.repeatMode === 0 ? QueueRepeatMode.TRACK : QueueRepeatMode.OFF);
         return interaction.reply(repeatmode ? `Loop **${queue.repeatMode === 0 ? 'dimatikan' : 'dinyalakan'}**` : `Repeat mode **${queue.repeatMode === 0 ? 'dimatikan' : 'dinyalakan'}**`);
     }
@@ -460,6 +468,7 @@ client.on('interactionCreate', async interaction => {
     }
 
     if (commandName === 'lock') {
+        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
         let everyone = interaction.member.guild.roles.cache.get(process.env.EVERYONE_ID)
         interaction.member.voice.channel.permissionOverwrites.edit(everyone, {
             CONNECT: false
@@ -468,6 +477,7 @@ client.on('interactionCreate', async interaction => {
     }
 
     if (commandName === 'unlock') {
+        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
         let everyone = interaction.member.guild.roles.cache.get(process.env.EVERYONE_ID)
         interaction.member.voice.channel.permissionOverwrites.edit(everyone, {
             CONNECT: true
@@ -476,6 +486,8 @@ client.on('interactionCreate', async interaction => {
     }
 
     if (commandName === 'bitrate') {
+        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
+        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
         const numbervalue = interaction.options.get("number").value;
         if (!numbervalue || isNaN(numbervalue) || numbervalue === 'string') return interaction.reply(`**[2] - ERR_TIDAK_ADA_ARGS**`);
         if (Math.round(parseInt(numbervalue)) < 8000 || Math.round(parseInt(numbervalue)) > 96000) return interaction.reply(`**berikan nomor 8000 - 96000!**`);
