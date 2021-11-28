@@ -1,7 +1,7 @@
 ***
 
 <p align="center">
-<img src="https://cdn.discordapp.com/attachments/852785773827981342/908472738111426640/IMG_20211031_080300.jpg" width="256" height="256">
+<img src="https://cdn.discordapp.com/attachments/852785773827981342/912856282246045778/test.jpg" width="256" height="256">
 <p align="center">
 <img alt="GitHub Repo size" src="https://img.shields.io/github/repo-size/Muunatic/RyU?style=flat-square">
 <img alt="GitHub Package version" src="https://img.shields.io/github/v/release/Muunatic/RyU?style=flat-square">
@@ -23,6 +23,10 @@
 1. Install node.js lalu install semua package
 ```
 npm install
+
+# or
+
+npm install --no-optional
 ```
 2. Ubah file **.env.example** menjadi **.env** lalu isi token bot, dan prefix.
 ```
@@ -32,11 +36,11 @@ npm install
 ```
 config.json.example > config.json
 ```
-4. Setelah itu ketik **npm deploy** untuk deploy slash command
+4. Setelah itu jalankan **npm deploy** untuk deploy slash command
 ```
 npm run deploy
 ```
-5. Setelah itu ketik **npm start** untuk menjalankan client.
+5. Setelah itu jalankan **npm start** untuk menjalankan client.
 ```
 npm start
 ```
