@@ -155,13 +155,13 @@ const rest = new REST({ version: '9' }).setToken(token);
 
 (async () => {
 	try {
-		console.info('Refreshing...');
+		console.log('Hello');
 		await rest.put(
 			Routes.applicationCommands(clientId),
 			{ body: commands },
 		);
 
-		console.info('Deployed');
+		console.log('World');
 	} catch (error) {
 		console.error(error);
 	}

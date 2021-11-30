@@ -131,15 +131,15 @@ client.on('interactionCreate', async interaction => {
     if (!interaction.isCommand()) return;
     const { commandName } = interaction;
 
-    let indonesiaTime = moment().tz('Asia/Jakarta').format();
-    setInterval(() => { 
-        indonesiaTime -= 2000;
-    });
-
-    const jammenitdetikindonesia = indonesiaTime.slice(11, -6)
-    const tanggalindonesia = indonesiaTime.slice(0, -15)
-
     if (commandName === 'time') {
+        let indonesiaTime = moment().tz('Asia/Jakarta').format();
+        setInterval(() => { 
+            indonesiaTime -= 2000;
+        });
+    
+        const jammenitdetikindonesia = indonesiaTime.slice(11, -6)
+        const tanggalindonesia = indonesiaTime.slice(0, -15)
+
         interaction.reply(`**${jammenitdetikindonesia} ${tanggalindonesia}**`);
     }
 
@@ -344,7 +344,7 @@ client.on('interactionCreate', async interaction => {
         const queue = await player.createQueue(interaction.guild, {
             autoSelfDeaf: false,
             leaveOnEnd: false,
-            leaveOnEmpty: false,
+            leaveOnEmpty: true,
             leaveOnEmptyCooldown: 60000,
             ytdlOptions: {
                 quality: "highestaudio",
@@ -512,48 +512,6 @@ client.on('messageCreate', async message => {
 
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
-
-    if (message.channel.type === 'DM') {
-        let dmchannel = client.channels.cache.get(process.env.CHANNELLOGPRIVATE)
-        let dmembed = new MessageEmbed()
-
-        .setTitle('DM Channel')
-        .setColor('#89e0dc')
-        .setAuthor(message.author.username, message.author.avatarURL({format : 'png', dynamic : true, size : 1024}))
-        .setDescription(message.content)
-        .setTimestamp()
-
-        dmchannel.send({embeds: [dmembed]});
-    }
-
-    if (command === 'report') {
-        if (message.guild) return message.react('❎') && message.channel.send('**Declined**')
-        if (!args[0]) return message.channel.send(`**[2] - ERR_TIDAK_ADA_ARGS**`)
-        if (reportcooldown.has(message.author.id)) {
-            return message.channel.send('**Kamu telah mengirimkan laporan hari ini, silahkan kirim laporan lain besok.**') && message.react('❎')
-        } else {
-            reportcooldown.add(message.author.id);
-            setTimeout(() => {
-                reportcooldown.delete(message.author.id);
-            }, 86400000);
-        }
-
-        const reportargs = args.join(" ");
-        const channeltarget = client.channels.cache.get(process.env.CHANNELLOGPRIVATE);
-        channeltarget.send(reportargs)
-        message.react('✅');
-
-        let channellog = client.channels.cache.get(process.env.CHANNELLOGID);
-        let emoji = client.emojis.cache.get('835987657892298802');
-        let channellogembed = new MessageEmbed()
-
-        .setColor('#ff0000')
-        .setAuthor(`Bug Report`, message.author.avatarURL({format : 'png', dynamic : true, size : 1024}))
-        .setDescription(`**${emoji} - Laporan Bug**\n\nNama : **${message.author.username}**\nReport ID : **${message.id}**\nBug : **${reportargs}**`)
-        .setTimestamp()
-
-        channellog.send({embeds: [channellogembed]})
-    }
 
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     if (!message.guild) return;
@@ -831,6 +789,55 @@ client.on('messageCreate', async message => {
         if (!args[1]) return message.channel.send('**Berikan args**');
         channel.send(args.slice(1).join(" "));
         message.react('✅');
+    }
+
+});
+
+client.on('messageCreate', async message => {
+
+    const args = message.content.slice(prefix.length).trim().split(/ +/);
+    const command = args.shift().toLowerCase();
+
+    if (message.channel.type === 'DM') {
+        let dmchannel = client.channels.cache.get(process.env.CHANNELLOGPRIVATE)
+        let dmembed = new MessageEmbed()
+
+        .setTitle('DM Channel')
+        .setColor('#89e0dc')
+        .setAuthor(message.author.username, message.author.avatarURL({format : 'png', dynamic : true, size : 1024}))
+        .setDescription(message.content)
+        .setTimestamp()
+
+        dmchannel.send({embeds: [dmembed]});
+    }
+
+    if (command === 'report') {
+        if (message.guild) return message.react('❎') && message.channel.send('**Declined**')
+        if (!args[0]) return message.channel.send(`**[2] - ERR_TIDAK_ADA_ARGS**`)
+        if (reportcooldown.has(message.author.id)) {
+            return message.channel.send('**Kamu telah mengirimkan laporan hari ini, silahkan kirim laporan lain besok.**') && message.react('❎')
+        } else {
+            reportcooldown.add(message.author.id);
+            setTimeout(() => {
+                reportcooldown.delete(message.author.id);
+            }, 86400000);
+        }
+
+        const reportargs = args.join(" ");
+        const channeltarget = client.channels.cache.get(process.env.CHANNELLOGPRIVATE);
+        channeltarget.send(reportargs)
+        message.react('✅');
+
+        let channellog = client.channels.cache.get(process.env.CHANNELLOGID);
+        let emoji = client.emojis.cache.get('835987657892298802');
+        let channellogembed = new MessageEmbed()
+
+        .setColor('#ff0000')
+        .setAuthor(`Bug Report`, message.author.avatarURL({format : 'png', dynamic : true, size : 1024}))
+        .setDescription(`**${emoji} - Laporan Bug**\n\nNama : **${message.author.username}**\nReport ID : **${message.id}**\nBug : **${reportargs}**`)
+        .setTimestamp()
+
+        channellog.send({embeds: [channellogembed]})
     }
 
 });
