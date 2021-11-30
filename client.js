@@ -793,48 +793,48 @@ client.on('messageCreate', async message => {
 
 });
 
-client.on('messageCreate', async message => {
+client.on('messageCreate', async msg => {
 
-    const args = message.content.slice(prefix.length).trim().split(/ +/);
+    const args = msg.content.slice(prefix.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
 
-    if (message.channel.type === 'DM') {
+    if (msg.channel.type === 'DM') {
         let dmchannel = client.channels.cache.get(process.env.CHANNELLOGPRIVATE)
         let dmembed = new MessageEmbed()
 
         .setTitle('DM Channel')
         .setColor('#89e0dc')
-        .setAuthor(message.author.username, message.author.avatarURL({format : 'png', dynamic : true, size : 1024}))
-        .setDescription(message.content)
+        .setAuthor(msg.author.username, msg.author.avatarURL({format : 'png', dynamic : true, size : 1024}))
+        .setDescription(msg.content)
         .setTimestamp()
 
         dmchannel.send({embeds: [dmembed]});
     }
 
     if (command === 'report') {
-        if (message.guild) return message.react('❎') && message.channel.send('**Declined**')
-        if (!args[0]) return message.channel.send(`**[2] - ERR_TIDAK_ADA_ARGS**`)
-        if (reportcooldown.has(message.author.id)) {
-            return message.channel.send('**Kamu telah mengirimkan laporan hari ini, silahkan kirim laporan lain besok.**') && message.react('❎')
+        if (msg.guild) return msg.react('❎') && msg.channel.send('**Declined**')
+        if (!args[0]) return msg.channel.send(`**[2] - ERR_TIDAK_ADA_ARGS**`)
+        if (reportcooldown.has(msg.author.id)) {
+            return msg.channel.send('**Kamu telah mengirimkan laporan hari ini, silahkan kirim laporan lain besok.**') && msg.react('❎')
         } else {
-            reportcooldown.add(message.author.id);
+            reportcooldown.add(msg.author.id);
             setTimeout(() => {
-                reportcooldown.delete(message.author.id);
+                reportcooldown.delete(msg.author.id);
             }, 86400000);
         }
 
         const reportargs = args.join(" ");
         const channeltarget = client.channels.cache.get(process.env.CHANNELLOGPRIVATE);
         channeltarget.send(reportargs)
-        message.react('✅');
+        msg.react('✅');
 
         let channellog = client.channels.cache.get(process.env.CHANNELLOGID);
         let emoji = client.emojis.cache.get('835987657892298802');
         let channellogembed = new MessageEmbed()
 
         .setColor('#ff0000')
-        .setAuthor(`Bug Report`, message.author.avatarURL({format : 'png', dynamic : true, size : 1024}))
-        .setDescription(`**${emoji} - Laporan Bug**\n\nNama : **${message.author.username}**\nReport ID : **${message.id}**\nBug : **${reportargs}**`)
+        .setAuthor(`Bug Report`, msg.author.avatarURL({format : 'png', dynamic : true, size : 1024}))
+        .setDescription(`**${emoji} - Laporan Bug**\n\nNama : **${msg.author.username}**\nReport ID : **${msg.id}**\nBug : **${reportargs}**`)
         .setTimestamp()
 
         channellog.send({embeds: [channellogembed]})
