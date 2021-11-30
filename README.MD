@@ -24,6 +24,10 @@
 1. Install node.js lalu install semua package
 ```
 npm install
+
+# or
+
+npm install --no-optional
 ```
 2. Ubah file **.env.example** menjadi **.env** lalu isi token bot, dan prefix.
 ```
@@ -33,11 +37,11 @@ npm install
 ```
 config.json.example > config.json
 ```
-4. Setelah itu ketik **npm deploy** untuk deploy slash command
+4. Setelah itu jalankan **npm deploy** untuk deploy slash command
 ```
 npm run deploy
 ```
-5. Setelah itu ketik **npm start** untuk menjalankan client.
+5. Setelah itu jalankan **npm start** untuk menjalankan client.
 ```
 npm start
 ```
