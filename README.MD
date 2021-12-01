@@ -8,8 +8,9 @@
 <img alt="GitHub ESLint" src="https://img.shields.io/github/workflow/status/Muunatic/RyU/ESLint?style=flat-square">
 
 ***
+
 <h1 align="center">RyU</h1>
-<p align="center"><b>framework discord yang dilengkapi dengan commands handler, music player, dan corona tracker.</b></p>
+<p align="center"><b>Discord Framework dengan Commands Handler, Music Player, dan Corona Tracker.</b></p>
 
 # Requirements
 
@@ -51,9 +52,14 @@ npm start
 |-|-|
 |5.0.x|:heavy_check_mark:|
 
-Klik redirect untuk info lebih lanjut <a href="https://github.com/Muunatic/RyU/security/policy">**Redirect**</a>
+Klik redirect untuk info lebih lanjut
+<br>
+<a href="https://github.com/Muunatic/RyU/security/policy">**Redirect**</a>
 
 ## Disclaimer
 
 This file is part of the RyU project.
-The RyU project can not be copied and/or distributed without the express permission of Muunatic.
+<br>
+The RyU project can not be distributed without the express permission of Muunatic.
+<br>
+<a href="https://github.com/Muunatic/RyU/blob/v5/LICENSE">**Redirect**</a>
