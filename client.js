@@ -1,3 +1,4 @@
+const fetch = require("node-fetch");
 const fs = require('fs');
 const { Client, Collection, Intents, MessageEmbed,  MessageCollector, Permissions } = require('discord.js');
 const os = require('os');
@@ -85,9 +86,9 @@ client.on('ready', () => {
     console.log('Hello, World!');
 
     const presencelist = [
-        `Version ${botversion} | ${prefix}help `, 
+        `Version ${botversion} | ${prefix}help`, 
         `${process.env.DISCORDLINK} | ${prefix}help`,
-        `Running on ${client.guilds.cache.size} server | ${prefix}help`,
+        `${client.guilds.cache.size} server | ${prefix}help`,
     ];
     
     let i = 0;
@@ -493,6 +494,126 @@ client.on('interactionCreate', async interaction => {
         if (Math.round(parseInt(numbervalue)) < 8000 || Math.round(parseInt(numbervalue)) > 96000) return interaction.reply(`**berikan nomor 8000 - 96000!**`);
         interaction.member.voice.channel.setBitrate(numbervalue)
         await interaction.reply(`Bitrate telah diubah ke **${numbervalue}** !`);
+    }
+
+    if (commandName === 'youtubetogether') {
+        const channel = interaction.member.voice.channel;
+        fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
+            method: "POST",
+            body: JSON.stringify({
+                max_age: 86400,
+                max_uses: 0,
+                target_application_id: '755600276941176913',
+                target_type: 2,
+                temporary: false,
+                validate: null
+            }),
+            headers: {
+                "Authorization": `Bot ${process.env.CLIENT_TOKEN}`,
+                "Content-Type": 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(invite => {
+            if(!invite.code) return interaction.reply('**Error**')
+            interaction.reply(`> https://discord.com/invite/${invite.code}`)
+        })
+    }
+
+    if (commandName === 'fishington') {
+        const channel = interaction.member.voice.channel;
+        fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
+            method: "POST",
+            body: JSON.stringify({
+                max_age: 86400,
+                max_uses: 0,
+                target_application_id: '814288819477020702',
+                target_type: 2,
+                temporary: false,
+                validate: null
+            }),
+            headers: {
+                "Authorization": `Bot ${process.env.CLIENT_TOKEN}`,
+                "Content-Type": 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(invite => {
+            if(!invite.code) return interaction.reply('**Error**')
+            interaction.reply(`> https://discord.com/invite/${invite.code}`)
+        })
+    }
+
+    if (commandName === 'chess') {
+        const channel = interaction.member.voice.channel;
+        fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
+            method: "POST",
+            body: JSON.stringify({
+                max_age: 86400,
+                max_uses: 0,
+                target_application_id: '832012774040141894',
+                target_type: 2,
+                temporary: false,
+                validate: null
+            }),
+            headers: {
+                "Authorization": `Bot ${process.env.CLIENT_TOKEN}`,
+                "Content-Type": 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(invite => {
+            if(!invite.code) return interaction.reply('**Error**')
+            interaction.reply(`> https://discord.com/invite/${invite.code}`)
+        })
+    }
+
+    if (commandName === 'betrayal') {
+        const channel = interaction.member.voice.channel;
+        fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
+            method: "POST",
+            body: JSON.stringify({
+                max_age: 86400,
+                max_uses: 0,
+                target_application_id: '773336526917861400',
+                target_type: 2,
+                temporary: false,
+                validate: null
+            }),
+            headers: {
+                "Authorization": `Bot ${process.env.CLIENT_TOKEN}`,
+                "Content-Type": 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(invite => {
+            if(!invite.code) return interaction.reply('**Error**')
+            interaction.reply(`> https://discord.com/invite/${invite.code}`)
+        })
+    }
+
+    if (commandName === 'pokernight') {
+        const channel = interaction.member.voice.channel;
+        fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
+            method: "POST",
+            body: JSON.stringify({
+                max_age: 86400,
+                max_uses: 0,
+                target_application_id: '755827207812677713',
+                target_type: 2,
+                temporary: false,
+                validate: null
+            }),
+            headers: {
+                "Authorization": `Bot ${process.env.CLIENT_TOKEN}`,
+                "Content-Type": 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(invite => {
+            if(!invite.code) return interaction.reply('**Error**')
+            interaction.reply(`> https://discord.com/invite/${invite.code}`)
+        })
     }
 
     const command = client.commands.get(interaction.commandName);
