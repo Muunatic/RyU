@@ -497,6 +497,7 @@ client.on('interactionCreate', async interaction => {
     }
 
     if (commandName === 'youtubetogether') {
+        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
         const channel = interaction.member.voice.channel;
         fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
             method: "POST",
@@ -521,6 +522,7 @@ client.on('interactionCreate', async interaction => {
     }
 
     if (commandName === 'fishington') {
+        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
         const channel = interaction.member.voice.channel;
         fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
             method: "POST",
@@ -545,6 +547,7 @@ client.on('interactionCreate', async interaction => {
     }
 
     if (commandName === 'chess') {
+        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
         const channel = interaction.member.voice.channel;
         fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
             method: "POST",
@@ -569,6 +572,7 @@ client.on('interactionCreate', async interaction => {
     }
 
     if (commandName === 'betrayal') {
+        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
         const channel = interaction.member.voice.channel;
         fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
             method: "POST",
@@ -593,6 +597,7 @@ client.on('interactionCreate', async interaction => {
     }
 
     if (commandName === 'pokernight') {
+        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
         const channel = interaction.member.voice.channel;
         fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
             method: "POST",
@@ -643,7 +648,7 @@ client.on('messageCreate', async message => {
             author: { name: 'Help commands' },
             footer: { text: `${prefix}help` },
             fields: [
-                { name: 'General command', value: 'ping, uptime, time, userinfo, serverinfo, osu, avatar, stats, weather, aboutbot, corona, totalcorona, tictactoe, snake' },
+                { name: 'General command', value: 'ping, uptime, time, userinfo, serverinfo, osu, avatar, stats, weather, aboutbot, corona, totalcorona, tictactoe, snake, youtubetogether, fishington, betrayal, pokernight, chess' },
                 { name: 'DM command', value: 'report' },
                 { name: 'Music command', value: 'play, skip, stop, pause, resume, volume, queue, nowplaying, repeat, bitrate, lock, unlock' },
                 { name: 'Moderator command', value: 'nickname' },
@@ -699,7 +704,7 @@ client.on('messageCreate', async message => {
         .setColor('#89e0dc')
         .setTitle('About BOT')
         .setThumbnail(`${message.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
-        .setDescription(`Nama : **${message.client.user.username}**\n\nVersi : **${botversion}**\n\nKeyword : **${prefix}**\n\nDev : **${botauthor}**\n\nSource Code : **https://github.com/Muunatic/RyU**`)
+        .setDescription(`Nama : **${message.client.user.username}**\n\nVersi : **${botversion}**\n\nPrefix : **${prefix}**\n\nDev : **${botauthor}**\n\nSource Code : **https://github.com/Muunatic/RyU**`)
         .setFooter(`Direquest oleh ${message.author.username}`, `${message.author.avatarURL({format : 'png', dynamic : true, size : 1024})}`)
         .setTimestamp()
 
@@ -727,7 +732,8 @@ client.on('messageCreate', async message => {
 
     if (command === 'user') {
         if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini')
-        client.users.cache.get(args[0]).send(args.slice(1).join(" "));
+        const dmuser = client.users.cache.get(args[0])
+        dmuser.send(args.slice(1).join(" "));
     }
 
     if (command === 'giveaway') {
