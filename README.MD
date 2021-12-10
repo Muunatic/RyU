@@ -16,8 +16,8 @@
 
 |Tools|Version|
 |-|-|
-|**Node.JS**|**>=16.13.0**|
-|**NPM**|**>=7.24.2**|
+|**Node.JS**|**>=16.13.1**|
+|**NPM**|**>=8.2.0**|
 
 ## How to use
 
@@ -29,19 +29,19 @@ npm install
 
 npm install --no-optional
 ```
-2. Ubah file **.env.example** menjadi **.env** lalu isi token bot, dan prefix.
+2. Ubah file **.env.example** menjadi **.env** lalu isi value yang tersedia
 ```
 .env.example > .env
 ```
-3. Ubah file **config.json.example** menjadi **config.json** lalu isi token bot, prefix, dll.
+3. Ubah file **config.json.example** menjadi **config.json** lalu isi value yang tersedia
 ```
 config.json.example > config.json
 ```
-4. Setelah itu jalankan **npm deploy** untuk deploy slash command
+4. Setelah itu jalankan **npm run deploy** untuk deploy slash command
 ```
 npm run deploy
 ```
-5. Setelah itu jalankan **npm start** untuk menjalankan client.
+5. Setelah itu jalankan **npm start** untuk menjalankan client
 ```
 npm start
 ```
@@ -50,9 +50,10 @@ npm start
 
 |Version|Vulnerability|
 |-|-|
-|5.0.x|:heavy_check_mark:|
+|5.1.x|:heavy_check_mark:|
+|5.0.x|:x:|
 
-Klik redirect untuk info lebih lanjut
+Klik redirect untuk info lebih lanjut.
 <br>
 <a href="https://github.com/Muunatic/RyU/security/policy">**Redirect**</a>
 
