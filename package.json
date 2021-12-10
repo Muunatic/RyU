@@ -1,6 +1,6 @@
 {
   "name": "ryu",
-  "version": "5.0.3",
+  "version": "5.1.0",
   "description": "RyU Framework",
   "main": "index.js",
   "scripts": {
@@ -30,12 +30,12 @@
     "weather-js": "^2.0.0",
     "ytdl-core": "^4.9.1"
   },
-  "engines": {
-    "node": ">=16.13.0",
-    "npm": ">=7.24.2"
-  },
   "devDependencies": {
-    "eslint": "^8.3.0"
+    "eslint": "^8.4.1"
+  },
+  "engines": {
+    "node": ">=16.13.1",
+    "npm": ">=8.2.0"
   },
   "optionalDependencies": {
     "@discordjs/node-pre-gyp": "^0.4.2",
