@@ -107,6 +107,22 @@ const commands = [
   ),
 
   new SlashCommandBuilder()
+  .setName('activities')
+  .setDescription('Start activities')
+  .addStringOption(option => 
+    option.setName('value')
+    .setDescription('Activities value')
+    .setRequired(true)
+    .addChoice('Youtube Together', '755600276941176913')
+    .addChoice('Fishington', '814288819477020702')
+    .addChoice('Chess In The Park', '832012774040141894')
+    .addChoice('Betrayal', '773336526917861400')
+    .addChoice('Poker In The Night', '755827207812677713')
+    .addChoice('Word Snacks', '879863976006127627')
+    .addChoice('Letter Tile', '879863686565621790')
+  ),
+
+  new SlashCommandBuilder()
   .setName('stats')
   .setDescription('Client stats'),
 

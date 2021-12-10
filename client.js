@@ -132,6 +132,11 @@ client.on('interactionCreate', async interaction => {
     if (!interaction.isCommand()) return;
     const { commandName } = interaction;
 
+
+    if (commandName === 'ping') {
+        await interaction.reply(`Pong !! \`${client.ws.ping}ms.\` Latensi \`${Date.now() - interaction.createdTimestamp}ms.\``)
+    }
+
     if (commandName === 'time') {
         let indonesiaTime = moment().tz('Asia/Jakarta').format();
         setInterval(() => { 
@@ -142,10 +147,6 @@ client.on('interactionCreate', async interaction => {
         const tanggalindonesia = indonesiaTime.slice(0, -15)
 
         interaction.reply(`**${jammenitdetikindonesia} ${tanggalindonesia}**`);
-    }
-
-    if (commandName === 'ping') {
-        await interaction.reply(`Pong !! \`${client.ws.ping}ms.\` Latensi \`${Date.now() - interaction.createdTimestamp}ms.\``)
     }
 
     if (commandName === 'stats') {
@@ -400,7 +401,7 @@ client.on('interactionCreate', async interaction => {
 
     if (commandName === 'queue') {
         const queue = player.getQueue(interaction.guild.id);
-        if (!queue || !queue.playing) return interaction.reply('Tidak ada music yang berjalan');
+        if (!queue || !queue.playing) return interaction.reply('**Tidak ada music yang berjalan**');
         if (!queue.tracks[0]) return interaction.reply(`**Music Queue**\nSedang berlangsung : **${queue.current.title}** | **${queue.current.author}**`);
         await interaction.reply(`**Music Queue**\nSedang berlangsung : **${queue.current.title}** | **${queue.current.author}**\n\n` + (queue.tracks.map((track, i) => {
             return `**#${i + 1}** - **${track.title}** | **${track.author}** (direquest oleh : **${track.requestedBy.username}**)`
@@ -409,7 +410,7 @@ client.on('interactionCreate', async interaction => {
 
     if (commandName === 'volume') {
         const queue = player.getQueue(interaction.guild.id);
-        if (!queue || !queue.playing) return interaction.reply('Tidak ada music yang berjalan');
+        if (!queue || !queue.playing) return interaction.reply('**Tidak ada music yang berjalan**');
         if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
         if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
         const numbervalue = interaction.options.get("number").value;
@@ -420,7 +421,7 @@ client.on('interactionCreate', async interaction => {
 
     if (commandName === 'pause') {
         const queue = player.getQueue(interaction.guild.id);
-        if (!queue || !queue.playing) return interaction.reply('Tidak ada music yang berjalan');
+        if (!queue || !queue.playing) return interaction.reply('**Tidak ada music yang berjalan**');
         if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
         if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
         if (queue.setPaused(true)) return interaction.reply('**Lagu sedang dipause**')
@@ -430,7 +431,7 @@ client.on('interactionCreate', async interaction => {
 
     if (commandName === 'resume') {
         const queue = player.getQueue(interaction.guild.id);
-        if (!queue || !queue.playing) return interaction.reply('Tidak ada music yang berjalan');
+        if (!queue || !queue.playing) return interaction.reply('**Tidak ada music yang berjalan**');
         if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
         if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
         if (queue.setPaused(false)) return interaction.reply('**Lagu sedang berlangsung**')
@@ -440,7 +441,7 @@ client.on('interactionCreate', async interaction => {
 
     if (commandName === 'repeat') {
         const queue = player.getQueue(interaction.guild.id);
-        if (!queue || !queue.playing) return interaction.reply('Tidak ada music yang berjalan');
+        if (!queue || !queue.playing) return interaction.reply('**Tidak ada music yang berjalan**');
         if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
         if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
         const repeatmode = queue.setRepeatMode(queue.repeatMode === 0 ? QueueRepeatMode.TRACK : QueueRepeatMode.OFF);
@@ -449,7 +450,7 @@ client.on('interactionCreate', async interaction => {
 
     if (commandName === 'nowplaying') {
         const queue = player.getQueue(interaction.guild.id);
-        if (!queue || !queue.playing) return interaction.reply('Tidak ada music yang berjalan');
+        if (!queue || !queue.playing) return interaction.reply('**Tidak ada music yang berjalan**');
         const nowplayingembed = new MessageEmbed()
         .setColor('#89e0dc')
         .setTitle(queue.current.title)
@@ -496,7 +497,8 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply(`Bitrate telah diubah ke **${numbervalue}** !`);
     }
 
-    if (commandName === 'youtubetogether') {
+    if (commandName === 'activities') {
+        const appid = interaction.options.get("value").value;
         if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
         const channel = interaction.member.voice.channel;
         fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
@@ -504,107 +506,7 @@ client.on('interactionCreate', async interaction => {
             body: JSON.stringify({
                 max_age: 86400,
                 max_uses: 0,
-                target_application_id: '755600276941176913',
-                target_type: 2,
-                temporary: false,
-                validate: null
-            }),
-            headers: {
-                "Authorization": `Bot ${process.env.CLIENT_TOKEN}`,
-                "Content-Type": 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(invite => {
-            if(!invite.code) return interaction.reply('**Error**')
-            interaction.reply(`> https://discord.com/invite/${invite.code}`)
-        })
-    }
-
-    if (commandName === 'fishington') {
-        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
-        const channel = interaction.member.voice.channel;
-        fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
-            method: "POST",
-            body: JSON.stringify({
-                max_age: 86400,
-                max_uses: 0,
-                target_application_id: '814288819477020702',
-                target_type: 2,
-                temporary: false,
-                validate: null
-            }),
-            headers: {
-                "Authorization": `Bot ${process.env.CLIENT_TOKEN}`,
-                "Content-Type": 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(invite => {
-            if(!invite.code) return interaction.reply('**Error**')
-            interaction.reply(`> https://discord.com/invite/${invite.code}`)
-        })
-    }
-
-    if (commandName === 'chess') {
-        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
-        const channel = interaction.member.voice.channel;
-        fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
-            method: "POST",
-            body: JSON.stringify({
-                max_age: 86400,
-                max_uses: 0,
-                target_application_id: '832012774040141894',
-                target_type: 2,
-                temporary: false,
-                validate: null
-            }),
-            headers: {
-                "Authorization": `Bot ${process.env.CLIENT_TOKEN}`,
-                "Content-Type": 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(invite => {
-            if(!invite.code) return interaction.reply('**Error**')
-            interaction.reply(`> https://discord.com/invite/${invite.code}`)
-        })
-    }
-
-    if (commandName === 'betrayal') {
-        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
-        const channel = interaction.member.voice.channel;
-        fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
-            method: "POST",
-            body: JSON.stringify({
-                max_age: 86400,
-                max_uses: 0,
-                target_application_id: '773336526917861400',
-                target_type: 2,
-                temporary: false,
-                validate: null
-            }),
-            headers: {
-                "Authorization": `Bot ${process.env.CLIENT_TOKEN}`,
-                "Content-Type": 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(invite => {
-            if(!invite.code) return interaction.reply('**Error**')
-            interaction.reply(`> https://discord.com/invite/${invite.code}`)
-        })
-    }
-
-    if (commandName === 'pokernight') {
-        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
-        const channel = interaction.member.voice.channel;
-        fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
-            method: "POST",
-            body: JSON.stringify({
-                max_age: 86400,
-                max_uses: 0,
-                target_application_id: '755827207812677713',
+                target_application_id: appid,
                 target_type: 2,
                 temporary: false,
                 validate: null
@@ -629,7 +531,7 @@ client.on('interactionCreate', async interaction => {
 		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
-		await interaction.reply({ content: '**[0] - Error**', ephemeral: true });
+		await interaction.reply({ content: process.env.DEFAULT_ERROR, ephemeral: true });
 	}
 
 });
@@ -642,13 +544,27 @@ client.on('messageCreate', async message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     if (!message.guild) return;
 
+    if (command === 'aboutbot') { 
+        const aboutbotembed = new MessageEmbed()
+        
+        .setColor('#89e0dc')
+        .setTitle('About BOT')
+        .setThumbnail(`${message.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
+        .setDescription(`Nama : **${message.client.user.username}**\n\nVersi : **${botversion}**\n\nPrefix : **${prefix}**\n\nDev : **${botauthor}**\n\nSource Code : **https://github.com/Muunatic/RyU**`)
+        .setFooter(`Direquest oleh ${message.author.username}`, `${message.author.avatarURL({format : 'png', dynamic : true, size : 1024})}`)
+        .setTimestamp()
+
+        message.channel.send({embeds: [aboutbotembed]});
+    }
+
+
     if (command === 'help') {
         const embed = {
             color: '#89e0dc',
             author: { name: 'Help commands' },
             footer: { text: `${prefix}help` },
             fields: [
-                { name: 'General command', value: 'ping, uptime, time, userinfo, serverinfo, osu, avatar, stats, weather, aboutbot, corona, totalcorona, tictactoe, snake, youtubetogether, fishington, betrayal, pokernight, chess' },
+                { name: 'General command', value: 'ping, uptime, time, userinfo, serverinfo, osu, avatar, stats, weather, aboutbot, corona, totalcorona, tictactoe, snake, activities' },
                 { name: 'DM command', value: 'report' },
                 { name: 'Music command', value: 'play, skip, stop, pause, resume, volume, queue, nowplaying, repeat, bitrate, lock, unlock' },
                 { name: 'Moderator command', value: 'nickname' },
@@ -696,19 +612,6 @@ client.on('messageCreate', async message => {
         .setTimestamp()
 
         channellog.send({embeds: [channellogembed]})
-    }
-
-    if (command === 'aboutbot') { 
-        const aboutbotembed = new MessageEmbed()
-        
-        .setColor('#89e0dc')
-        .setTitle('About BOT')
-        .setThumbnail(`${message.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
-        .setDescription(`Nama : **${message.client.user.username}**\n\nVersi : **${botversion}**\n\nPrefix : **${prefix}**\n\nDev : **${botauthor}**\n\nSource Code : **https://github.com/Muunatic/RyU**`)
-        .setFooter(`Direquest oleh ${message.author.username}`, `${message.author.avatarURL({format : 'png', dynamic : true, size : 1024})}`)
-        .setTimestamp()
-
-        message.channel.send({embeds: [aboutbotembed]});
     }
 
     if (command === 'tictactoe') {
