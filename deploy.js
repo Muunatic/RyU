@@ -144,26 +144,6 @@ const commands = [
   .setDescription('Server link'),
 
   new SlashCommandBuilder()
-  .setName('youtubetogether')
-  .setDescription('YT Together'),
-
-  new SlashCommandBuilder()
-  .setName('fishington')
-  .setDescription('Fishington.Io'),
-
-  new SlashCommandBuilder()
-  .setName('chess')
-  .setDescription('Chess in the park'),
-
-  new SlashCommandBuilder()
-  .setName('betrayal')
-  .setDescription('Betrayal.Io'),
-
-  new SlashCommandBuilder()
-  .setName('pokernight')
-  .setDescription('Pokernight'),
-
-  new SlashCommandBuilder()
   .setName('corona')
   .setDescription('Corona tracker')
   .addStringOption(option =>
