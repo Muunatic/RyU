@@ -698,8 +698,10 @@ client.on('messageCreate', async message => {
             if (msgct === 'yes') {
                 membername.setNickname(args.slice(1).join(" "));
                 message.channel.send(`Nickname <@${membername.id}> telah diubah menjadi **${args.slice(1).join(" ")}**`);
+                collector.stop();
             } else if (msgct === 'no') {
                 message.channel.send('**Canceled**');
+                collector.stop();
             }
         })
     }
@@ -847,10 +849,22 @@ client.on('messageCreate', async msg => {
         if (reportcooldown.has(msg.author.id)) {
             return msg.channel.send('**Kamu telah mengirimkan laporan hari ini, silahkan kirim laporan lain besok.**') && msg.react('❎')
         } else {
-            reportcooldown.add(msg.author.id);
-            setTimeout(() => {
-                reportcooldown.delete(msg.author.id);
-            }, 86400000);
+            msg.channel.send('**Please confirm your choice**\n\`\`\`[Yes] or [No]\`\`\`')
+            const collector = new MessageCollector(msg.channel, m => m.author.id === msg.author.id, { time: 10000 });
+            collector.on('collect', msg => {
+                const msgct = msg.content.toLowerCase();
+                if (msgct === 'yes') {
+                    reportcooldown.add(msg.author.id);
+                    setTimeout(() => {
+                        reportcooldown.delete(msg.author.id);
+                    }, 86400000);
+                    msg.channel.send(`**Reported**\n\n\`\`\`Report ID : ${msg.id}\`\`\``);
+                    collector.stop()
+                } else if (msgct === 'no') {
+                    msg.channel.send('**Canceled**');
+                    collector.stop()
+                }
+            })
         }
 
         const reportargs = args.join(" ");
