@@ -1,4 +1,4 @@
-const fetch = require("node-fetch");
+const fetch = require('node-fetch');
 const fs = require('fs');
 const { Client, Collection, Intents, MessageEmbed,  MessageCollector, Permissions } = require('discord.js');
 const os = require('os');
@@ -53,7 +53,7 @@ const { NovelCovid } = require('novelcovid');
 const track = new NovelCovid();
 const reportcooldown = new Set();
 
-const ms = require('ms')
+const ms = require('ms');
 const { GiveawaysManager } = require('discord-giveaways');
 const manager = new GiveawaysManager(client, {
     storage: './database.json',
@@ -100,20 +100,9 @@ client.on('ready', () => {
         if (i === presencelist.length) i = i - presencelist.length;
     }, 5000);
     client.user.setPresence({ status: 'online' })
-    
+
 });
 
-player.on("error", (error) => {
-    console.log(error.message);
-});
-
-player.on("trackStart", (queue, track) => queue.metadata.channel.send(`Memutar lagu **${track.title}**`))
-player.on("queueEnd", (queue) => queue.metadata.channel.send('**Tidak ada music yang tersisa**'))
-player.on("botDisconnect", (queue) => queue.metadata.channel.send('**Disconnect**'))
-
-client.on('shardError', error => {
-    console.error('Error:', error);
-});
 
 process.on('unhandledRejection', error => {
     console.error('Unhandled Promise Rejection:', error);
@@ -126,6 +115,22 @@ process.on('uncaughtException', error => {
 process.on('uncaughtExceptionMonitor', error => {
     console.error('uncaughtExceptionMonitor:', error)
 })
+
+player.on('channelEmpty', async (queue) => {
+    queue.metadata.channel.send('**Tidak ada member di voice**');
+});
+player.on('trackStart', (queue, track) => queue.metadata.channel.send(`Memutar lagu **${track.title}**`));
+player.on('queueEnd', (queue) => queue.metadata.channel.send('**Tidak ada music yang tersisa**'));
+player.on('connectionError', (error) => {
+    console.log(`Connection Error: ${error.message}`);
+});
+player.on('error', (error) => {
+    console.log(error.message);
+});
+
+client.on('shardError', error => {
+    console.error('Error:', error);
+});
 
 client.on('interactionCreate', async interaction => {
     
@@ -239,7 +244,7 @@ client.on('interactionCreate', async interaction => {
         const args2 = interaction.options.get("mode").value;
         const user = args1
         const mode = args2
-        if (!user) return interaction.reply(`**Username tidak ditemukan**`)
+        if (!user) return interaction.reply('**Username tidak ditemukan**')
         if (!mode) return interaction.reply('**Mode tidak ditemukan**')
         const data = await osuApi.getUser({
             u: user, m: mode
@@ -255,12 +260,12 @@ client.on('interactionCreate', async interaction => {
         .setFooter(`https://osu.ppy.sh/users/${data.id}`, `https://s.ppy.sh/a/${data.id}`)
         .setTimestamp()
 
-        osuembed.addField(`Nama`, data.name, true)
-        .addField(`Rank`, data.pp.rank, true)
-        .addField(`Level`, data.level, true)
-        .addField(`Accuracy`, data.accuracy, true)
-        .addField(`Joined`, data.raw_joinDate, true)
-        .addField(`Performance Point`, data.pp.raw, true)
+        osuembed.addField('Nama', data.name, true)
+        .addField('Rank', data.pp.rank, true)
+        .addField('Level', data.level, true)
+        .addField('Accuracy', data.accuracy, true)
+        .addField('Joined', data.raw_joinDate, true)
+        .addField('Performance Point', data.pp.raw, true)
 
         interaction.reply({embeds: [osuembed]});
     }
@@ -359,7 +364,7 @@ client.on('interactionCreate', async interaction => {
             }
         });
 
-        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
+        if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
 
         try {
             if (!queue.connection) await queue.connect(interaction.member.voice.channel);
@@ -368,7 +373,7 @@ client.on('interactionCreate', async interaction => {
             return await interaction.reply({ content: "undefined", ephemeral: true });
         }
 
-        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
+        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply('**Kamu tidak divoice channel yang sama!**');
 
         await interaction.deferReply();
         const track = await player.search(query, {
@@ -384,8 +389,8 @@ client.on('interactionCreate', async interaction => {
     if (commandName === 'stop') {
         const queue = player.getQueue(interaction.guild.id);
         if (!queue || !queue.playing) return interaction.reply('**Tidak ada music yang berjalan**');
-        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
-        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
+        if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
+        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply('**Kamu tidak divoice channel yang sama!**');
         queue.destroy();
         await interaction.reply('**Lagu telah distop**');
     }
@@ -393,8 +398,8 @@ client.on('interactionCreate', async interaction => {
     if (commandName === 'skip') {
         const queue = player.getQueue(interaction.guild.id);
         if (!queue || !queue.playing) return interaction.reply('**Tidak ada music yang berjalan**');
-        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
-        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
+        if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
+        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply('**Kamu tidak divoice channel yang sama!**');
         queue.skip()
         await interaction.reply('**Lagu telah diskip**')
     }
@@ -411,10 +416,10 @@ client.on('interactionCreate', async interaction => {
     if (commandName === 'volume') {
         const queue = player.getQueue(interaction.guild.id);
         if (!queue || !queue.playing) return interaction.reply('**Tidak ada music yang berjalan**');
-        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
-        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
+        if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
+        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply('**Kamu tidak divoice channel yang sama!**');
         const numbervalue = interaction.options.get("number").value;
-        if (Math.round(parseInt(numbervalue)) < 1 || Math.round(parseInt(numbervalue)) > 100) return interaction.reply(`berikan nomor 1 - 100 !`);
+        if (Math.round(parseInt(numbervalue)) < 1 || Math.round(parseInt(numbervalue)) > 100) return interaction.reply('berikan nomor 1 - 100 !');
         queue.setVolume(numbervalue);
         interaction.reply(`Volume telah diubah ke ${numbervalue}%`)
     }
@@ -422,28 +427,28 @@ client.on('interactionCreate', async interaction => {
     if (commandName === 'pause') {
         const queue = player.getQueue(interaction.guild.id);
         if (!queue || !queue.playing) return interaction.reply('**Tidak ada music yang berjalan**');
-        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
-        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
-        if (queue.setPaused(true)) return interaction.reply('**Lagu sedang dipause**')
+        if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
+        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply('**Kamu tidak divoice channel yang sama!**');
+        if (queue.setPaused(true)) return interaction.reply('**Lagu sedang dipause**');
         queue.setPaused(true)
-        interaction.reply(`**Lagu telah dipause**`)
+        interaction.reply('**Lagu telah dipause**')
     }
 
     if (commandName === 'resume') {
         const queue = player.getQueue(interaction.guild.id);
         if (!queue || !queue.playing) return interaction.reply('**Tidak ada music yang berjalan**');
-        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
-        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
-        if (queue.setPaused(false)) return interaction.reply('**Lagu sedang berlangsung**')
+        if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
+        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply('**Kamu tidak divoice channel yang sama!**');
+        if (queue.setPaused(false)) return interaction.reply('**Lagu sedang berlangsung**');
         queue.setPaused(false)
-        interaction.reply(`**Lagu dilanjutkan**`)
+        interaction.reply('**Lagu dilanjutkan**')
     }
 
     if (commandName === 'repeat') {
         const queue = player.getQueue(interaction.guild.id);
         if (!queue || !queue.playing) return interaction.reply('**Tidak ada music yang berjalan**');
-        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
-        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
+        if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
+        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply('**Kamu tidak divoice channel yang sama!**');
         const repeatmode = queue.setRepeatMode(queue.repeatMode === 0 ? QueueRepeatMode.TRACK : QueueRepeatMode.OFF);
         return interaction.reply(repeatmode ? `Loop **${queue.repeatMode === 0 ? 'dimatikan' : 'dinyalakan'}**` : `Repeat mode **${queue.repeatMode === 0 ? 'dimatikan' : 'dinyalakan'}**`);
     }
@@ -456,21 +461,21 @@ client.on('interactionCreate', async interaction => {
         .setTitle(queue.current.title)
         .setThumbnail(queue.current.thumbnail)
         .setFooter(`${queue.current.url}`, `${interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 1024})}`)
-        .addField(`Channel`, `${queue.current.author}`, true)
-        .addField(`Requested by`, `${queue.current.requestedBy.username}`, true)
-        .addField(`Duration`, `${queue.current.duration}`, true)
-        .addField(`Source`, `${queue.current.source}`, true)
-        .addField(`Views`, `${queue.current.views}`, true)
-        .addField(`ID`, `${queue.current.id}`, true)
+        .addField('Channel', `${queue.current.author}`, true)
+        .addField('Requested by', `${queue.current.requestedBy.username}`, true)
+        .addField('Duration', `${queue.current.duration}`, true)
+        .addField('Source', `${queue.current.source}`, true)
+        .addField('Views', `${queue.current.views}`, true)
+        .addField('ID', `${queue.current.id}`, true)
 
-        .addField(`Progress Bar`, `${queue.createProgressBar()}`, true)
+        .addField('Progress Bar', `${queue.createProgressBar()}`, true)
         .setTimestamp()
 
         await interaction.reply({embeds: [nowplayingembed]})
     }
 
     if (commandName === 'lock') {
-        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
+        if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
         let everyone = interaction.member.guild.roles.cache.get(process.env.EVERYONE_ID)
         interaction.member.voice.channel.permissionOverwrites.edit(everyone, {
             CONNECT: false
@@ -479,7 +484,7 @@ client.on('interactionCreate', async interaction => {
     }
 
     if (commandName === 'unlock') {
-        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
+        if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
         let everyone = interaction.member.guild.roles.cache.get(process.env.EVERYONE_ID)
         interaction.member.voice.channel.permissionOverwrites.edit(everyone, {
             CONNECT: true
@@ -488,18 +493,18 @@ client.on('interactionCreate', async interaction => {
     }
 
     if (commandName === 'bitrate') {
-        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
-        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply(`**Kamu tidak divoice channel yang sama!**`);
+        if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
+        if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply('**Kamu tidak divoice channel yang sama!**');
         const numbervalue = interaction.options.get("number").value;
-        if (!numbervalue || isNaN(numbervalue) || numbervalue === 'string') return interaction.reply(`**[2] - ERR_TIDAK_ADA_ARGS**`);
-        if (Math.round(parseInt(numbervalue)) < 8000 || Math.round(parseInt(numbervalue)) > 96000) return interaction.reply(`**berikan nomor 8000 - 96000!**`);
+        if (!numbervalue || isNaN(numbervalue) || numbervalue === 'string') return interaction.reply('**[2] - ERR_TIDAK_ADA_ARGS**');
+        if (Math.round(parseInt(numbervalue)) < 8000 || Math.round(parseInt(numbervalue)) > 96000) return interaction.reply('**berikan nomor 8000 - 96000!**');
         interaction.member.voice.channel.setBitrate(numbervalue)
         await interaction.reply(`Bitrate telah diubah ke **${numbervalue}** !`);
     }
 
     if (commandName === 'activities') {
         const appid = interaction.options.get("value").value;
-        if (!interaction.member.voice.channel) return interaction.reply(`**Kamu tidak divoice channel!**`);
+        if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
         const channel = interaction.member.voice.channel;
         fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
             method: "POST",
@@ -544,20 +549,6 @@ client.on('messageCreate', async message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     if (!message.guild) return;
 
-    if (command === 'aboutbot') { 
-        const aboutbotembed = new MessageEmbed()
-        
-        .setColor('#89e0dc')
-        .setTitle('About BOT')
-        .setThumbnail(`${message.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
-        .setDescription(`Nama : **${message.client.user.username}**\n\nVersi : **${botversion}**\n\nPrefix : **${prefix}**\n\nDev : **${botauthor}**\n\nSource Code : **https://github.com/Muunatic/RyU**`)
-        .setFooter(`Direquest oleh ${message.author.username}`, `${message.author.avatarURL({format : 'png', dynamic : true, size : 1024})}`)
-        .setTimestamp()
-
-        message.channel.send({embeds: [aboutbotembed]});
-    }
-
-
     if (command === 'help') {
         const embed = {
             color: '#89e0dc',
@@ -574,6 +565,19 @@ client.on('messageCreate', async message => {
             description: `Prefix = **${prefix}**`,
         }
         message.channel.send({embeds: [embed]});
+    }
+
+    if (command === 'aboutbot') { 
+        const aboutbotembed = new MessageEmbed()
+        
+        .setColor('#89e0dc')
+        .setTitle('About BOT')
+        .setThumbnail(`${message.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
+        .setDescription(`Nama : **${message.client.user.username}**\n\nVersi : **${botversion}**\n\nPrefix : **${prefix}**\n\nDev : **${botauthor}**\n\nSource Code : **https://github.com/Muunatic/RyU**`)
+        .setFooter(`Direquest oleh ${message.author.username}`, `${message.author.avatarURL({format : 'png', dynamic : true, size : 1024})}`)
+        .setTimestamp()
+
+        message.channel.send({embeds: [aboutbotembed]});
     }
 
     if (command === 'register') {
@@ -606,7 +610,7 @@ client.on('messageCreate', async message => {
         let channellogembed = new MessageEmbed()
 
         .setColor('#00ff00')
-        .setAuthor(`Member Joined`, message.author.avatarURL({format : 'png', dynamic : true, size : 1024}))
+        .setAuthor('Member Joined', message.author.avatarURL({format : 'png', dynamic : true, size : 1024}))
         .setDescription(`**${emoji} - ${message.author.username} telah join ke server**`)
         .setFooter(message.author.username , message.client.user.avatarURL({format : 'png', dynamic : true, size : 1024}))
         .setTimestamp()
@@ -644,16 +648,17 @@ client.on('messageCreate', async message => {
         if (!args[0]) return message.channel.send(`${prefix}giveaway **<mentionschannel>** <time> <winner> <args>`);
         if (!args.join(' ')) return message.channel.send(`**${prefix}giveaway <mentionschannel> <time> <winner> <args>**`);
         const channelsend = message.mentions.channels.first()
+        const prize = args.slice(3).join(' ')
         client.giveawaysManager.start(channelsend, {
             duration: ms(args[1]),
             winnerCount: parseInt(args[2]),
-            prize: args.slice(3).join(' '),
+            prize: prize,
             messages: {
                 giveaway: `\`\`\`${args.slice(3).join(' ')} !!\`\`\``,
                 giveawayEnded: '\`\`\`Ended !!\`\`\`',
                 inviteToParticipate: 'React emoji 🎉 untuk berpartisipasi!',
                 timeRemaining: 'Waktu tersisa: **{duration}**',
-                winMessage: 'Selamat, {winners}! Kamu memenangkan **{prize}** !!',
+                winMessage: `Selamat, {winners}! Kamu memenangkan **${prize}**!!`,
                 embedFooter: args.slice(3).join(' '),
                 noWinner: 'Tidak Valid',
                 winners: 'winner(s) ',
@@ -698,8 +703,10 @@ client.on('messageCreate', async message => {
             if (msgct === 'yes') {
                 membername.setNickname(args.slice(1).join(" "));
                 message.channel.send(`Nickname <@${membername.id}> telah diubah menjadi **${args.slice(1).join(" ")}**`);
+                collector.stop();
             } else if (msgct === 'no') {
                 message.channel.send('**Canceled**');
+                collector.stop();
             }
         })
     }
@@ -718,7 +725,7 @@ client.on('messageCreate', async message => {
         let channellogembed = new MessageEmbed()
 
         .setColor('#ff0000')
-        .setAuthor(`Member Muted`, message.client.user.avatarURL({format : 'png', dynamic : true, size : 1024}))
+        .setAuthor('Member Muted', message.client.user.avatarURL({format : 'png', dynamic : true, size : 1024}))
         .setDescription(`**⚠️ - ${mentionsusername.username} dimuted oleh ${message.author.username}**`)
         .setTimestamp()
 
@@ -739,7 +746,7 @@ client.on('messageCreate', async message => {
         let channellogembed = new MessageEmbed()
 
         .setColor('#00ff00')
-        .setAuthor(`Member Unmuted`, message.client.user.avatarURL({format : 'png', dynamic : true, size : 1024}))
+        .setAuthor('Member Unmuted', message.client.user.avatarURL({format : 'png', dynamic : true, size : 1024}))
         .setDescription(`**⚠️ - ${mentionsusername.username} diunmuted oleh ${message.author.username}**`)
         .setTimestamp()
 
@@ -749,7 +756,7 @@ client.on('messageCreate', async message => {
     if (command === 'warn') {
         if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         const mentionsuser = message.mentions.users.first();
-        if (!message.mentions.users.first()) return message.channel.send(`**Mention user sebelum memberikan alasan\n\n\`\`\`/warn <mention> <reason>\`\`\`**`)
+        if (!message.mentions.users.first()) return message.channel.send('**Mention user sebelum memberikan alasan\n\n\`\`\`/warn <mention> <reason>\`\`\`**')
         const warnembed = new MessageEmbed()
 
         .setColor('#f82c2c')
@@ -843,14 +850,26 @@ client.on('messageCreate', async msg => {
 
     if (command === 'report') {
         if (msg.guild) return msg.react('❎') && msg.channel.send('**Declined**')
-        if (!args[0]) return msg.channel.send(`**[2] - ERR_TIDAK_ADA_ARGS**`)
+        if (!args[0]) return msg.channel.send('**[2] - ERR_TIDAK_ADA_ARGS**')
         if (reportcooldown.has(msg.author.id)) {
             return msg.channel.send('**Kamu telah mengirimkan laporan hari ini, silahkan kirim laporan lain besok.**') && msg.react('❎')
         } else {
-            reportcooldown.add(msg.author.id);
-            setTimeout(() => {
-                reportcooldown.delete(msg.author.id);
-            }, 86400000);
+            msg.channel.send('**Please confirm your choice**\n\`\`\`[Yes] or [No]\`\`\`')
+            const collector = new MessageCollector(msg.channel, m => m.author.id === msg.author.id, { time: 10000 });
+            collector.on('collect', msg => {
+                const msgct = msg.content.toLowerCase();
+                if (msgct === 'yes') {
+                    reportcooldown.add(msg.author.id);
+                    setTimeout(() => {
+                        reportcooldown.delete(msg.author.id);
+                    }, 86400000);
+                    msg.channel.send(`**Reported**\n\n\`\`\`Report ID : ${msg.id}\`\`\``);
+                    collector.stop()
+                } else if (msgct === 'no') {
+                    msg.channel.send('**Canceled**');
+                    collector.stop()
+                }
+            })
         }
 
         const reportargs = args.join(" ");
@@ -863,7 +882,7 @@ client.on('messageCreate', async msg => {
         let channellogembed = new MessageEmbed()
 
         .setColor('#ff0000')
-        .setAuthor(`Bug Report`, msg.author.avatarURL({format : 'png', dynamic : true, size : 1024}))
+        .setAuthor('Bug Report', msg.author.avatarURL({format : 'png', dynamic : true, size : 1024}))
         .setDescription(`**${emoji} - Laporan Bug**\n\nNama : **${msg.author.username}**\nReport ID : **${msg.id}**\nBug : **${reportargs}**`)
         .setTimestamp()
 

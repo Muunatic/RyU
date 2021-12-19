@@ -1,6 +1,6 @@
 {
   "name": "ryu",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "description": "RyU Framework",
   "main": "index.js",
   "scripts": {
@@ -28,10 +28,10 @@
     "reconlx": "^1.2.41",
     "snakecord": "^1.0.9",
     "weather-js": "^2.0.0",
-    "ytdl-core": "^4.9.1"
+    "ytdl-core": "^4.9.2"
   },
   "devDependencies": {
-    "eslint": "^8.4.1"
+    "eslint": "^8.5.0"
   },
   "engines": {
     "node": ">=16.13.1",
