@@ -863,6 +863,21 @@ client.on('messageCreate', async msg => {
                     setTimeout(() => {
                         reportcooldown.delete(msg.author.id);
                     }, 86400000);
+                    const reportargs = args.join(" ");
+                    const channeltarget = client.channels.cache.get(process.env.CHANNELLOGPRIVATE);
+                    channeltarget.send(reportargs)
+                    msg.react('✅');
+            
+                    let channellog = client.channels.cache.get(process.env.CHANNELLOGID);
+                    let emoji = client.emojis.cache.get('835987657892298802');
+                    let channellogembed = new MessageEmbed()
+            
+                    .setColor('#ff0000')
+                    .setAuthor('Bug Report', msg.author.avatarURL({format : 'png', dynamic : true, size : 1024}))
+                    .setDescription(`**${emoji} - Laporan Bug**\n\nNama : **${msg.author.username}**\nReport ID : **${msg.id}**\nBug : **${reportargs}**`)
+                    .setTimestamp()
+            
+                    channellog.send({embeds: [channellogembed]})
                     msg.channel.send(`**Reported**\n\n\`\`\`Report ID : ${msg.id}\`\`\``);
                     collector.stop()
                 } else if (msgct === 'no') {
@@ -871,22 +886,6 @@ client.on('messageCreate', async msg => {
                 }
             })
         }
-
-        const reportargs = args.join(" ");
-        const channeltarget = client.channels.cache.get(process.env.CHANNELLOGPRIVATE);
-        channeltarget.send(reportargs)
-        msg.react('✅');
-
-        let channellog = client.channels.cache.get(process.env.CHANNELLOGID);
-        let emoji = client.emojis.cache.get('835987657892298802');
-        let channellogembed = new MessageEmbed()
-
-        .setColor('#ff0000')
-        .setAuthor('Bug Report', msg.author.avatarURL({format : 'png', dynamic : true, size : 1024}))
-        .setDescription(`**${emoji} - Laporan Bug**\n\nNama : **${msg.author.username}**\nReport ID : **${msg.id}**\nBug : **${reportargs}**`)
-        .setTimestamp()
-
-        channellog.send({embeds: [channellogembed]})
     }
 
 });
