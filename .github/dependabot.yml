@@ -8,22 +8,8 @@ updates:
     labels:
       - "dependencies"
     commit-message:
-      prefix: "pull-request"
+      prefix: "chore"
       include: "scope"
-    allow:
-      - dependency-name: "@discordjs/builders"
-      - dependency-name: "discord.js"
-      - dependency-name: "discord-player"
-      - dependency-name: "discord-api-types"
-      - dependency-name: "ytdl-core"
     ignore:
-    - dependency-name: "@discordjs/builders"
-      update-types: ["version-update:semver-major"]
-    - dependency-name: "discord.js"
-      update-types: ["version-update:semver-major", "version-update:semver-minor"]
-    - dependency-name: "discord-player"
-      update-types: ["version-update:semver-major"]
-    - dependency-name: "discord-api-types"
-      update-types: ["version-update:semver-major"]
-    - dependency-name: "ytdl-core"
-      update-types: ["version-update:semver-major"]
+    - dependency-name: "novelcovid"
+    - dependency-name: "reconlx"
