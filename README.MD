@@ -5,10 +5,10 @@
 <p align="center">
 
 <img src="https://img.shields.io/github/repo-size/Muunatic/RyU?style=flat-square">
-<img alt="GitHub package version" src="https://img.shields.io/github/package-json/v/Muunatic/RyU?style=flat-square">
-<img alt="GitHub Vulnerabilities" src="https://img.shields.io/snyk/vulnerabilities/github/Muunatic/RyU?style=flat-square">
-<img alt="GitHub ESLint" src="https://img.shields.io/github/workflow/status/Muunatic/RyU/ESLint?style=flat-square">
-<img alt="Download" src="https://img.shields.io/github/downloads/Muunatic/RyU/total?style=flat-square">
+<img src="https://img.shields.io/github/package-json/v/Muunatic/RyU?style=flat-square">
+<img src="https://img.shields.io/snyk/vulnerabilities/github/Muunatic/RyU?style=flat-square">
+<img src="https://img.shields.io/github/workflow/status/Muunatic/RyU/ESLint?style=flat-square">
+<img src="https://img.shields.io/github/downloads/Muunatic/RyU/total?style=flat-square">
 
 
 ***
@@ -45,7 +45,7 @@ config.json.example > config.json
 ```
 npm run deploy
 ```
-5. Setelah itu jalankan **npm start** untuk menjalankan client
+5. Terakhir jalankan **npm start** untuk menjalankan client
 ```
 npm start
 ```
