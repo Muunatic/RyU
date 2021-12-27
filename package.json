@@ -11,7 +11,7 @@
   "author": "Muunatic",
   "license": "UNLICENSED",
   "dependencies": {
-    "@discordjs/builders": "^0.9.0",
+    "@discordjs/builders": "^0.10.0",
     "@discordjs/rest": "^0.1.0-canary.0",
     "cpu-stat": "^2.0.1",
     "discord-api-types": "^0.25.2",
