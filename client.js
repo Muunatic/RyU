@@ -46,7 +46,7 @@ const clientversion = packagejson.version;
 const clientauthor = packagejson.author;
 const clienthomepage = packagejson.homepage;
 
-const malScraper = require('mal-scraper')
+const malScraper = require('mal-scraper');
 
 const osu = require('node-osu');
 const osuApi = new osu.Api(process.env.OSU_API);
@@ -418,9 +418,9 @@ client.on('interactionCreate', async interaction => {
         .addField('Type', animescraper.type, true)
         .addField('Episode', animescraper.episodes, true)
         .addField('Duration', animescraper.duration, true)
+        .addField('Genres', animescraper.genres.join(', '), true)
         .addField('Status', animescraper.status, true)
-        .addField('Genre', animescraper.genres, true)
-        .addField('Rating', animescraper.rating, true)
+        .addField('Score', animescraper.score, true)
         .setFooter({text: animescraper.url, iconURL: 'https://pbs.twimg.com/profile_images/1190380284295950339/Py6XnxvH_400x400.jpg'})
         .setTimestamp()
 
