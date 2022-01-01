@@ -1,14 +1,14 @@
 const fetch = require('node-fetch');
 const fs = require('fs');
-const { Client, Collection, Intents, MessageEmbed,  MessageCollector, Permissions } = require('discord.js');
+const { Client, Collection, Intents, MessageEmbed,  MessageCollector, Permissions, MessageButton, MessageActionRow } = require('discord.js');
 const os = require('os');
 const cpuStat = require('cpu-stat');
 require('dotenv').config();
 const prefix = process.env.PREFIX;
 
-const client = new Client({ 
+const client = new Client({
     
-    intents: 
+    intents:
     [
         Intents.FLAGS.DIRECT_MESSAGES,
         Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
@@ -39,12 +39,14 @@ const client = new Client({
 });
 
 const moment = require('moment-timezone');
-const SnakeGame = require('snakecord');
 const weather = require('weather-js');
 
 const packagejson = require('./package.json');
-const botversion = packagejson.version;
-const botauthor = packagejson.author;
+const clientversion = packagejson.version;
+const clientauthor = packagejson.author;
+const clienthomepage = packagejson.homepage;
+
+const malScraper = require('mal-scraper')
 
 const osu = require('node-osu');
 const osuApi = new osu.Api(process.env.OSU_API);
@@ -77,16 +79,15 @@ client.commands = new Collection();
 const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-	const command = require(`./src/commands/${file}`);
-	client.commands.set(command.data.name, command);
+    const command = require(`./src/commands/${file}`);
+    client.commands.set(command.data.name, command);
 }
 
 client.on('ready', () => {
-
-    console.log('Hello, World!');
+    console.log(client.user.username + '#' + client.user.discriminator + ': Hello, World!');
 
     const presencelist = [
-        `Version ${botversion} | ${prefix}help`, 
+        `Version ${clientversion} | ${prefix}help`, 
         `${process.env.DISCORDLINK} | ${prefix}help`,
         `${client.guilds.cache.size} server | ${prefix}help`,
     ];
@@ -94,15 +95,15 @@ client.on('ready', () => {
     let i = 0;
     setInterval(() => {
         const index = Math.floor(i);
-        client.user.setActivity(presencelist[index], { type: 'COMPETING', url: 'https://www.twitch.tv/discord', });
+        client.user.setActivity({name: presencelist[index], type: 'COMPETING', url: 'https://www.twitch.tv/discord', });
         i = i + 1;
         console.log(presencelist[index]);
         if (i === presencelist.length) i = i - presencelist.length;
     }, 5000);
-    client.user.setPresence({ status: 'online' })
+
+    client.user.setPresence({ status: 'online' });
 
 });
-
 
 process.on('unhandledRejection', error => {
     console.error('Unhandled Promise Rejection:', error);
@@ -110,11 +111,11 @@ process.on('unhandledRejection', error => {
 
 process.on('uncaughtException', error => {
     console.error('uncaughtException:', error)
-})
+});
 
 process.on('uncaughtExceptionMonitor', error => {
     console.error('uncaughtExceptionMonitor:', error)
-})
+});
 
 player.on('channelEmpty', async (queue) => {
     queue.metadata.channel.send('**Tidak ada member di voice**');
@@ -128,18 +129,13 @@ player.on('error', (error) => {
     console.log(error.message);
 });
 
-client.on('shardError', error => {
-    console.error('Error:', error);
-});
-
 client.on('interactionCreate', async interaction => {
     
     if (!interaction.isCommand()) return;
     const { commandName } = interaction;
 
-
     if (commandName === 'ping') {
-        await interaction.reply(`Pong !! \`${client.ws.ping}ms.\` Latensi \`${Date.now() - interaction.createdTimestamp}ms.\``)
+        await interaction.reply(`Pong !! \`${client.ws.ping}ms.\` Latensi \`${Date.now() - interaction.createdTimestamp}ms.\``);
     }
 
     if (commandName === 'time') {
@@ -148,8 +144,8 @@ client.on('interactionCreate', async interaction => {
             indonesiaTime -= 2000;
         });
     
-        const jammenitdetikindonesia = indonesiaTime.slice(11, -6)
-        const tanggalindonesia = indonesiaTime.slice(0, -15)
+        const jammenitdetikindonesia = indonesiaTime.slice(11, -6);
+        const tanggalindonesia = indonesiaTime.slice(0, -15);
 
         interaction.reply(`**${jammenitdetikindonesia} ${tanggalindonesia}**`);
     }
@@ -163,9 +159,9 @@ client.on('interactionCreate', async interaction => {
             let statsembed = new MessageEmbed()
 
             .setColor('#89e0dc')
-            .setTitle('BOT Stats')
-            .setThumbnail(`${interaction.client.user.displayAvatarURL({format : 'png', dynamic : true, size : 4096})}`)
-            .setFooter(`Direquest oleh ${interaction.user.username}`, `${interaction.member.displayAvatarURL({format : 'png', dynamic : true, size : 1024})}`)
+            .setTitle('Client Stats')
+            .setThumbnail(`${interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
+            .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
             .setTimestamp()
 
             .addField(`CPU`, `${os.cpus().map((i) => `${i.model}`)[0]}`, true)
@@ -191,9 +187,9 @@ client.on('interactionCreate', async interaction => {
 
         .setColor('#89e0dc')
         .setTitle('Uptime')
-        .setThumbnail(`${interaction.client.user.displayAvatarURL({format : 'png', dynamic : true, size : 4096})}`)
+        .setThumbnail(`${interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
         .setDescription(`bot ini telah aktif selama **${days} hari, ${hours} jam, ${minutes} menit, dan ${seconds} detik**.`)
-        .setFooter(`Direquest oleh ${interaction.user.username}`, `${interaction.member.displayAvatarURL({format : 'png', dynamic : true, size : 1024})}`)
+        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
 
         await interaction.reply({embeds: [uptimeembed]});
@@ -203,10 +199,10 @@ client.on('interactionCreate', async interaction => {
         const serverembed = new MessageEmbed()
 
         .setColor('#89e0dc')
-        .setTitle('Info server')
+        .setTitle('Info Server')
         .setThumbnail(`${interaction.guild.iconURL({format : 'png', dynamic : true, size : 4096})}`)
         .setDescription(`Nama server : **${interaction.guild.name}**\n\nID server : **${interaction.guild.id}**\n\nJumlah member : **${interaction.guild.memberCount}**\n\nServer dibuat pada tanggal : **${interaction.guild.createdAt}**`)
-        .setFooter(`Info server ${interaction.guild.name}`, `${interaction.guild.iconURL({format : 'png', dynamic : true, size : 4096})}`)
+        .setFooter({text: `Info server ${interaction.guild.name}`, iconURL: interaction.guild.iconURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
         
         await interaction.reply({embeds: [serverembed]});
@@ -218,25 +214,164 @@ client.on('interactionCreate', async interaction => {
         .setColor('#89e0dc')
         .setTitle(`${interaction.user.username} Info`)
         .setThumbnail(`${interaction.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
-        .setDescription(`Username : **${interaction.user.username}**\n\nNickname : **${interaction.member.nickname}**\n\nID : **${interaction.user.id}**\n\nTanggal dibuatnya akun : **${interaction.user.createdAt}**\n\nTanggal join server : **${interaction.member.joinedAt}**\n\nRole : **<@&${interaction.member.roles.highest.id}>**\n\nStatus : **${interaction.member.presence.status}**`)
-        .setFooter(`Direquest oleh ${interaction.user.username}`, `${interaction.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
+        .setDescription(`Username : **${interaction.user.username}**\n\nNickname : **${interaction.member.nickname}**\n\nID : **${interaction.user.id}**\n\nTanggal dibuatnya akun : **${interaction.user.createdAt}**\n\nTanggal join server : **${interaction.member.joinedAt}**\n\nRole : **<@&${interaction.member.roles.highest.id}>**`)
+        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
         
         await interaction.reply({embeds: [userinfoembed]});
     }
 
     if (commandName === 'avatar') {
-        const uservalue = interaction.options.getUser("user") || interaction.member;
+        const uservalue = interaction.options.getUser("user") || interaction.user;
         const usernamevalue = interaction.options.getUser("user") || interaction.member.user; 
         const avatarembed = new MessageEmbed()
     
         .setColor('#89e0dc')
         .setTitle('Avatar')
         .setDescription(`Avatarnya ${usernamevalue.username}`)
-        .setImage(`${uservalue.displayAvatarURL({format : 'png', dynamic : true, size : 4096})}`)
-        .setFooter(`Direquest oleh ${interaction.member.displayName}`, `${interaction.member.displayAvatarURL({format : 'png', dynamic : true, size : 1024})}`)
-    
+        .setImage(`${uservalue.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
+        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+
         interaction.reply({embeds: [avatarembed]});
+    }
+
+    if (commandName === 'aboutbot') { 
+        const aboutbotembed = new MessageEmbed()
+        
+        .setColor('#89e0dc')
+        .setTitle('Client Info')
+        .setThumbnail(`${interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
+        .setDescription(`Nama : **${interaction.client.user.username}**\n\nVersi : **${clientversion}**\n\nPrefix : **${prefix}**\n\nDev : **${clientauthor}**\n\nSource Code : **${clienthomepage}**`)
+        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+        .setTimestamp()
+
+        interaction.reply({embeds: [aboutbotembed]});
+    }
+
+    if (commandName === 'help') {
+        const embed = {
+            color: '#89e0dc',
+            author: { name: 'Help commands' },
+            footer: { text: `${prefix}help` },
+            fields: [
+                { name: 'General command', value: 'ping, uptime, time, userinfo, serverinfo, osu, avatar, stats, weather, aboutbot, corona, totalcorona, activities' },
+                { name: 'DM command', value: 'report' },
+                { name: 'Music command', value: 'play, skip, stop, pause, resume, volume, queue, nowplaying, repeat, bitrate, lock, unlock' },
+                { name: 'Moderator command', value: 'nickname' },
+                { name: 'Admin command', value: 'warn, kick, ban, mute, unmute' },
+            ],
+            timestamp: new Date(),
+            description: `Prefix = **${prefix}**`,
+        }
+
+        const button = new MessageActionRow()
+        .addComponents(
+            new MessageButton()
+            .setCustomId('ping')
+            .setLabel('Ping')
+            .setStyle('PRIMARY')
+        )
+        .addComponents(
+            new MessageButton()
+            .setCustomId('userinfo')
+            .setLabel('User Info')
+            .setStyle('SECONDARY')
+        )
+        .addComponents(
+            new MessageButton()
+            .setCustomId('serverinfo')
+            .setLabel('Server Info')
+            .setStyle('SECONDARY')
+        )
+        .addComponents(
+            new MessageButton()
+            .setCustomId('avatar')
+            .setLabel('Avatar')
+            .setStyle('SECONDARY')
+        )
+        .addComponents(
+            new MessageButton()
+            .setLabel('GitHub')
+            .setStyle('LINK')
+            .setURL('https://github.com/Muunatic/RyU')
+        )
+
+        const btnfilter = i => i.user.id === interaction.user.id;
+
+        const collector = interaction.channel.createMessageComponentCollector({ filter: btnfilter, time: 60000 });
+        
+        collector.on('collect', async i => {
+
+            if (i.customId === 'ping') {
+                button.components[0].setDisabled(true);
+                button.components[1].setDisabled(true);
+                button.components[2].setDisabled(true);
+                button.components[3].setDisabled(true);
+                interaction.editReply({components: [button]});
+                await i.reply({content: `Pong !! \`${client.ws.ping}ms.\` Latensi \`${Date.now() - interaction.createdTimestamp}ms.\``});
+                collector.stop();
+            }
+
+            if (i.customId === 'userinfo') {
+                button.components[0].setDisabled(true);
+                button.components[1].setDisabled(true);
+                button.components[2].setDisabled(true);
+                button.components[3].setDisabled(true);
+                interaction.editReply({components: [button]});
+                const userinfoembed = new MessageEmbed()
+
+                .setColor('#89e0dc')
+                .setTitle(`${interaction.user.username} Info`)
+                .setThumbnail(`${interaction.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
+                .setDescription(`Username : **${interaction.user.username}**\n\nNickname : **${interaction.member.nickname}**\n\nID : **${interaction.user.id}**\n\nTanggal dibuatnya akun : **${interaction.user.createdAt}**\n\nTanggal join server : **${interaction.member.joinedAt}**\n\nRole : **<@&${interaction.member.roles.highest.id}>**`)
+                .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL:interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+                .setTimestamp()
+                
+                await i.reply({embeds: [userinfoembed]});
+                collector.stop();
+            }
+
+            if (i.customId === 'serverinfo') {
+                button.components[0].setDisabled(true);
+                button.components[1].setDisabled(true);
+                button.components[2].setDisabled(true);
+                button.components[3].setDisabled(true);
+                interaction.editReply({components: [button]});
+                const serverembed = new MessageEmbed()
+
+                .setColor('#89e0dc')
+                .setTitle('Info Server')
+                .setThumbnail(`${interaction.guild.iconURL({format : 'png', dynamic : true, size : 4096})}`)
+                .setDescription(`Nama server : **${interaction.guild.name}**\n\nID server : **${interaction.guild.id}**\n\nJumlah member : **${interaction.guild.memberCount}**\n\nServer dibuat pada tanggal : **${interaction.guild.createdAt}**`)
+                .setFooter({text: `Info server ${interaction.guild.name}`, iconURL: interaction.guild.iconURL({format : 'png', dynamic : true, size : 1024})})
+                .setTimestamp()
+                
+                await i.reply({embeds: [serverembed]});
+            }
+            
+            if (i.customId === 'avatar') {
+                button.components[0].setDisabled(true);
+                button.components[1].setDisabled(true);
+                button.components[2].setDisabled(true);
+                button.components[3].setDisabled(true);
+                interaction.editReply({components: [button]});
+                const avatarembed = new MessageEmbed()
+    
+                .setColor('#89e0dc')
+                .setTitle('Avatar')
+                .setDescription(`Avatarnya ${interaction.user.username}`)
+                .setImage(`${interaction.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
+                .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+            
+                await i.reply({embeds: [avatarembed]});
+                collector.stop()
+            }
+
+            collector.on('end', collected => console.log(collected.size));
+
+        });
+
+        interaction.reply({embeds: [embed], components: [button]});
     }
 
     if (commandName === 'osu') {
@@ -244,20 +379,20 @@ client.on('interactionCreate', async interaction => {
         const args2 = interaction.options.get("mode").value;
         const user = args1
         const mode = args2
-        if (!user) return interaction.reply('**Username tidak ditemukan**')
-        if (!mode) return interaction.reply('**Mode tidak ditemukan**')
+        if (!user) return interaction.reply('**Username tidak ditemukan**');
+        if (!mode) return interaction.reply('**Mode tidak ditemukan**');
         const data = await osuApi.getUser({
             u: user, m: mode
-        })
-        if (!data) return interaction.reply('**Data tidak ditemukan**')
-        if (!data.pp.rank || !data.accuracy === null) return interaction.reply('**Data tidak ditemukan**')
+        });
+        if (!data) return interaction.reply('**Data tidak ditemukan**');
+        if (!data.pp.rank || !data.accuracy === null) return interaction.reply('**Data tidak ditemukan**');
         const osuembed = new MessageEmbed()
 
         .setColor('#CE0F3D')
         .setTitle(`OSU ${data.name} Profile`)
         .setThumbnail(`https://s.ppy.sh/a/${data.id}`)
         .setDescription(`:flag_${data.country.toLowerCase()}: **${data.name}**`)
-        .setFooter(`https://osu.ppy.sh/users/${data.id}`, `https://s.ppy.sh/a/${data.id}`)
+        .setFooter({text: `https://osu.ppy.sh/users/${data.id}`, iconURL:`https://s.ppy.sh/a/${data.id}`})
         .setTimestamp()
 
         osuembed.addField('Nama', data.name, true)
@@ -270,6 +405,28 @@ client.on('interactionCreate', async interaction => {
         interaction.reply({embeds: [osuembed]});
     }
 
+    if (commandName === 'mal') {
+        const animevalue = interaction.options.get("anime").value;
+        const animescraper = await malScraper.getInfoFromName(animevalue);
+        if (!animescraper) return interaction.reply(process.env.DEFAULT_ERROR);
+        const animeembed = new MessageEmbed()
+
+        .setColor('#CE0F3D')
+        .setAuthor({name: animescraper.title, iconURL: client.user.displayAvatarURL(), url: animescraper.url})
+        .setImage(animescraper.picture)
+        .setDescription(animescraper.synopsis)
+        .addField('Type', animescraper.type, true)
+        .addField('Episode', animescraper.episodes, true)
+        .addField('Duration', animescraper.duration, true)
+        .addField('Status', animescraper.status, true)
+        .addField('Genre', animescraper.genres, true)
+        .addField('Rating', animescraper.rating, true)
+        .setFooter({text: animescraper.url, iconURL: 'https://pbs.twimg.com/profile_images/1190380284295950339/Py6XnxvH_400x400.jpg'})
+        .setTimestamp()
+
+        interaction.reply({embeds: [animeembed]});
+    }
+
     if (commandName === 'weather') {
         let kota = interaction.options.get("kota").value;
         let degreeType = 'C';
@@ -277,8 +434,8 @@ client.on('interactionCreate', async interaction => {
         await weather.find({search: kota, degreeType: degreeType}, function(err, result) {
             if(err) console.log(err);
             console.log(JSON.stringify(result, null, 2));
-            if (!kota) return interaction.reply('**[2] - ERR_TIDAK_ADA_ARGS**')
-            if (err || result === undefined || result.length === 0) return interaction.reply('**Data tidak ditemukan**')
+            if (!kota) return interaction.reply('**Berikan args**');
+            if (err || result === undefined || result.length === 0) return interaction.reply(process.env.DEFAULT_ERROR);
             
             let current = result[0].current;
             let location = result[0].location;
@@ -289,7 +446,7 @@ client.on('interactionCreate', async interaction => {
             .setTitle('Cuaca')
             .setThumbnail(current.imageUrl)
             .setDescription('Powered by weather-js')
-            .setFooter(`Direquest oleh ${interaction.member.displayName}`, `${interaction.member.displayAvatarURL({format : 'png', dynamic : true, size : 1024})}`)
+            .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
             .setTimestamp()
 
             cuaca.addField('Nama', location.name, true)
@@ -305,26 +462,27 @@ client.on('interactionCreate', async interaction => {
 
     if (commandName === 'corona') {
         const negara = interaction.options.get("negara").value;
-        const coronacountries = await track.countries(negara)
+        const coronacountries = await track.countries(negara);
+        if (typeof coronacountries.country === 'undefined') return interaction.reply(process.env.DEFAULT_ERROR);
         const countriesembed = new MessageEmbed()
 
         .setColor('#ff0000')
         .setTitle(`Corona Stats ${coronacountries.country}`)
         .setDescription(`**Total kasus corona di ${coronacountries.country}**\n\n Kasus : **${coronacountries.cases}**\n Meninggal : **${coronacountries.deaths}**\n Sembuh : **${coronacountries.recovered}**\n\n**Total penambahan kasus hari ini**\n\n Kasus : **${coronacountries.todayCases}**\n Meninggal : **${coronacountries.todayDeaths}**`)
-        .setFooter(`Direquest oleh ${interaction.member.displayName}`, `${interaction.member.displayAvatarURL({format : 'png', dynamic : true, size : 1024})}`)
+        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
 
         await interaction.reply({embeds: [countriesembed]});
     }
 
     if (commandName === 'totalcorona') {
-        const data = await track.all()
+        const data = await track.all();
         const coronaembed = new MessageEmbed()
 
         .setColor('#ff0000')
         .setTitle('Corona Stats')
         .setDescription(`**Total kasus corona\n\n Kasus** : **${data.cases}**\n Meninggal : **${data.deaths}**\n Sembuh : **${data.recovered}**\n\n**Total penambahan kasus hari ini**\n\n Kasus : **${data.todayCases}**\n Meninggal : **${data.todayDeaths}**`)
-        .setFooter(`Direquest oleh ${interaction.member.displayName}`, `${interaction.member.displayAvatarURL({format : 'png', dynamic : true, size : 1024})}`)
+        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
     
         await interaction.reply({embeds: [coronaembed]});
@@ -333,14 +491,14 @@ client.on('interactionCreate', async interaction => {
     if (commandName === 'link') {
         const serverid = client.guilds.cache.get(process.env.SERVERID);
         const ownerid = serverid.ownerId;
-        const ownercache = client.users.cache.get(ownerid)
+        const ownercache = client.users.cache.get(ownerid);
         const embedmessage = new MessageEmbed()
 
         .setColor('#89e0dc')
         .setTitle(`${serverid.name} Server`)
         .setThumbnail(interaction.guild.iconURL({format : 'png', dynamic : true, size : 4096}))
         .setDescription(`**${process.env.DISCORDLINK}\n\nName : ${serverid.name}\n\nOwner : ${ownercache.username}#${ownercache.discriminator}\n\nMember : ${serverid.memberCount}**`)
-        .setFooter(`Direquest oleh ${interaction.user.username}`, `${interaction.member.displayAvatarURL({format : 'png', dynamic : true, size : 1024})}`)
+        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
 
         interaction.reply({embeds: [embedmessage]});
@@ -370,7 +528,7 @@ client.on('interactionCreate', async interaction => {
             if (!queue.connection) await queue.connect(interaction.member.voice.channel);
         } catch {
             queue.destroy();
-            return await interaction.reply({ content: "undefined", ephemeral: true });
+            return await interaction.reply({ content: 'undefined', ephemeral: true });
         }
 
         if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply('**Kamu tidak divoice channel yang sama!**');
@@ -400,8 +558,8 @@ client.on('interactionCreate', async interaction => {
         if (!queue || !queue.playing) return interaction.reply('**Tidak ada music yang berjalan**');
         if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
         if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply('**Kamu tidak divoice channel yang sama!**');
-        queue.skip()
-        await interaction.reply('**Lagu telah diskip**')
+        queue.skip();
+        await interaction.reply('**Lagu telah diskip**');
     }
 
     if (commandName === 'queue') {
@@ -421,7 +579,7 @@ client.on('interactionCreate', async interaction => {
         const numbervalue = interaction.options.get("number").value;
         if (Math.round(parseInt(numbervalue)) < 1 || Math.round(parseInt(numbervalue)) > 100) return interaction.reply('berikan nomor 1 - 100 !');
         queue.setVolume(numbervalue);
-        interaction.reply(`Volume telah diubah ke ${numbervalue}%`)
+        interaction.reply(`Volume telah diubah ke ${numbervalue}%`);
     }
 
     if (commandName === 'pause') {
@@ -430,8 +588,8 @@ client.on('interactionCreate', async interaction => {
         if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
         if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply('**Kamu tidak divoice channel yang sama!**');
         if (queue.setPaused(true)) return interaction.reply('**Lagu sedang dipause**');
-        queue.setPaused(true)
-        interaction.reply('**Lagu telah dipause**')
+        queue.setPaused(true);
+        interaction.reply('**Lagu telah dipause**');
     }
 
     if (commandName === 'resume') {
@@ -440,8 +598,8 @@ client.on('interactionCreate', async interaction => {
         if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
         if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply('**Kamu tidak divoice channel yang sama!**');
         if (queue.setPaused(false)) return interaction.reply('**Lagu sedang berlangsung**');
-        queue.setPaused(false)
-        interaction.reply('**Lagu dilanjutkan**')
+        queue.setPaused(false);
+        interaction.reply('**Lagu dilanjutkan**');
     }
 
     if (commandName === 'repeat') {
@@ -460,7 +618,7 @@ client.on('interactionCreate', async interaction => {
         .setColor('#89e0dc')
         .setTitle(queue.current.title)
         .setThumbnail(queue.current.thumbnail)
-        .setFooter(`${queue.current.url}`, `${interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 1024})}`)
+        .setFooter({text: queue.current.url, iconURL: interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .addField('Channel', `${queue.current.author}`, true)
         .addField('Requested by', `${queue.current.requestedBy.username}`, true)
         .addField('Duration', `${queue.current.duration}`, true)
@@ -471,42 +629,55 @@ client.on('interactionCreate', async interaction => {
         .addField('Progress Bar', `${queue.createProgressBar()}`, true)
         .setTimestamp()
 
-        await interaction.reply({embeds: [nowplayingembed]})
+        await interaction.reply({embeds: [nowplayingembed]});
+    }
+
+    if (commandName === 'filter') {
+        const queue = player.getQueue(interaction.guild.id);
+        if (!queue || !queue.playing) return interaction.reply('**Tidak ada music yang berjalan**');
+        if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
+        const filters = [];
+        queue.getFiltersEnabled().map(x => filters.push(x));
+        queue.getFiltersDisabled().map(x => filters.push(x));
+        const filtervalue = interaction.options.get("filter").value;
+        const filtersupdated = {};
+        filtersupdated[filtervalue] = queue.getFiltersEnabled().includes(filtervalue) ? false : true;
+        await queue.setFilters(filtersupdated);
+        interaction.reply(`**Filter ${queue.getFiltersEnabled().includes(filtervalue) ? 'Dinyalakan' : 'Dimatikan'}**`);
     }
 
     if (commandName === 'lock') {
         if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
-        let everyone = interaction.member.guild.roles.cache.get(process.env.EVERYONE_ID)
+        let everyone = interaction.member.guild.roles.cache.get(process.env.EVERYONE_ID);
         interaction.member.voice.channel.permissionOverwrites.edit(everyone, {
             CONNECT: false
         })
-        await interaction.reply('**Locked !!**');
+        await interaction.reply('**Locked!**');
     }
 
     if (commandName === 'unlock') {
         if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
-        let everyone = interaction.member.guild.roles.cache.get(process.env.EVERYONE_ID)
+        let everyone = interaction.member.guild.roles.cache.get(process.env.EVERYONE_ID);
         interaction.member.voice.channel.permissionOverwrites.edit(everyone, {
             CONNECT: true
         })
-        await interaction.reply('**Unlocked !!**');
+        await interaction.reply('**Unlocked!**');
     }
 
     if (commandName === 'bitrate') {
         if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
         if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply('**Kamu tidak divoice channel yang sama!**');
         const numbervalue = interaction.options.get("number").value;
-        if (!numbervalue || isNaN(numbervalue) || numbervalue === 'string') return interaction.reply('**[2] - ERR_TIDAK_ADA_ARGS**');
         if (Math.round(parseInt(numbervalue)) < 8000 || Math.round(parseInt(numbervalue)) > 96000) return interaction.reply('**berikan nomor 8000 - 96000!**');
         interaction.member.voice.channel.setBitrate(numbervalue)
-        await interaction.reply(`Bitrate telah diubah ke **${numbervalue}** !`);
+        await interaction.reply(`Bitrate telah diubah ke **${numbervalue}**!`);
     }
 
     if (commandName === 'activities') {
         const appid = interaction.options.get("value").value;
         if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
         const channel = interaction.member.voice.channel;
-        fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
+        fetch(`https://discord.com/api/v9/channels/${channel.id}/invites`, {
             method: "POST",
             body: JSON.stringify({
                 max_age: 86400,
@@ -523,9 +694,9 @@ client.on('interactionCreate', async interaction => {
         })
         .then(res => res.json())
         .then(invite => {
-            if(!invite.code) return interaction.reply('**Error**')
-            interaction.reply(`> https://discord.com/invite/${invite.code}`)
-        })
+            if (!invite.code) return interaction.reply(process.env.DEFAULT_ERROR);
+            interaction.reply(`> https://discord.com/invite/${invite.code}`);
+        });
     }
 
     const command = client.commands.get(interaction.commandName);
@@ -536,7 +707,7 @@ client.on('interactionCreate', async interaction => {
 		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
-		await interaction.reply({ content: process.env.DEFAULT_ERROR, ephemeral: true });
+		await interaction.reply({ content: process.env.DEFAULT_ERROR });
 	}
 
 });
@@ -549,39 +720,8 @@ client.on('messageCreate', async message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     if (!message.guild) return;
 
-    if (command === 'help') {
-        const embed = {
-            color: '#89e0dc',
-            author: { name: 'Help commands' },
-            footer: { text: `${prefix}help` },
-            fields: [
-                { name: 'General command', value: 'ping, uptime, time, userinfo, serverinfo, osu, avatar, stats, weather, aboutbot, corona, totalcorona, tictactoe, snake, activities' },
-                { name: 'DM command', value: 'report' },
-                { name: 'Music command', value: 'play, skip, stop, pause, resume, volume, queue, nowplaying, repeat, bitrate, lock, unlock' },
-                { name: 'Moderator command', value: 'nickname' },
-                { name: 'Admin command', value: 'warn, kick, ban, mute, unmute' },
-            ],
-            timestamp: new Date(),
-            description: `Prefix = **${prefix}**`,
-        }
-        message.channel.send({embeds: [embed]});
-    }
-
-    if (command === 'aboutbot') { 
-        const aboutbotembed = new MessageEmbed()
-        
-        .setColor('#89e0dc')
-        .setTitle('About BOT')
-        .setThumbnail(`${message.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
-        .setDescription(`Nama : **${message.client.user.username}**\n\nVersi : **${botversion}**\n\nPrefix : **${prefix}**\n\nDev : **${botauthor}**\n\nSource Code : **https://github.com/Muunatic/RyU**`)
-        .setFooter(`Direquest oleh ${message.author.username}`, `${message.author.avatarURL({format : 'png', dynamic : true, size : 1024})}`)
-        .setTimestamp()
-
-        message.channel.send({embeds: [aboutbotembed]});
-    }
-
     if (command === 'register') {
-        setTimeout(() => message.delete(), 5000)
+        setTimeout(() => message.delete(), 5000);
 
         if (!message.member.roles.cache.get(process.env.UNREGISTER_ID)) return message.channel.send('**Kamu sudah teregistrasi**')
         .then(msg => {
@@ -594,11 +734,11 @@ client.on('messageCreate', async message => {
         });
 
         const channel = client.channels.cache.get(process.env.GENERALCHAT);
-        const user = message.author.id
+        const user = message.author.id;
         const emoji = client.emojis.cache.get('835987657892298802');
         
         message.member.roles.add(process.env.REGISTER_ID);
-        let channellog = client.channels.cache.get(process.env.CHANNELLOGID)
+        let channellog = client.channels.cache.get(process.env.CHANNELLOGID);
 
         message.channel.send(`**Selesai, anda sudah teregistrasi...\nSelamat datang <@${user}> kamu sudah bisa chat di ${channel} setelah membaca pesan ini**`)
         .then(msg => {
@@ -610,45 +750,26 @@ client.on('messageCreate', async message => {
         let channellogembed = new MessageEmbed()
 
         .setColor('#00ff00')
-        .setAuthor('Member Joined', message.author.avatarURL({format : 'png', dynamic : true, size : 1024}))
+        .setAuthor({name: 'Member Joined', iconURL: message.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setDescription(`**${emoji} - ${message.author.username} telah join ke server**`)
-        .setFooter(message.author.username , message.client.user.avatarURL({format : 'png', dynamic : true, size : 1024}))
+        .setFooter({text: message.author.username, iconURL: message.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
 
-        channellog.send({embeds: [channellogembed]})
+        channellog.send({embeds: [channellogembed]});
     }
-
-    if (command === 'tictactoe') {
-        if (!message.mentions.members.first()) return message.channel.send('**[MultiplayerRequire]** Tag user lain untuk bermain tictactoe')
-        const { tictactoe } = require("reconlx");
-        new tictactoe({
-         message: message,
-            player_two: message.mentions.members.first(),
-        });
-    }
-
-    if (command === 'snake') {
-        const snakeGame = new SnakeGame({
-            title: 'Maen uler',
-            color: "GREEN",
-            timestamp: true,
-            gameOverTitle: "Kalah"
-        });
-        snakeGame.newGame(message)
-    }
-
+    
     if (command === 'user') {
-        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini')
-        const dmuser = client.users.cache.get(args[0])
-        dmuser.send(args.slice(1).join(" "));
+        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
+        const dmuser = client.users.cache.get(args[0]);
+        dmuser.send(args.slice(1).join(' '));
     }
 
     if (command === 'giveaway') {
-        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini')
+        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         if (!args[0]) return message.channel.send(`${prefix}giveaway **<mentionschannel>** <time> <winner> <args>`);
         if (!args.join(' ')) return message.channel.send(`**${prefix}giveaway <mentionschannel> <time> <winner> <args>**`);
-        const channelsend = message.mentions.channels.first()
-        const prize = args.slice(3).join(' ')
+        const channelsend = message.mentions.channels.first();
+        const prize = args.slice(3).join(' ');
         client.giveawaysManager.start(channelsend, {
             duration: ms(args[1]),
             winnerCount: parseInt(args[2]),
@@ -694,15 +815,15 @@ client.on('messageCreate', async message => {
 
     if (command === 'nickname') {
         if (!message.member.roles.cache.get(process.env.MOD_ROLE)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
-        if (!message.mentions.users.first()) return message.channel.send('Mention user untuk menggunakan command')
+        if (!message.mentions.users.first()) return message.channel.send('Mention user untuk menggunakan command');
         const membername = message.mentions.members.first();
-        message.channel.send('**Please confirm your choice**\n\`\`\`[Yes] or [No]\`\`\`')
+        message.channel.send('**Please confirm your choice**\n\`\`\`[Yes] or [No]\`\`\`');
         const collector = new MessageCollector(message.channel, m => m.author.id === message.author.id, { time: 10000 });
         collector.on('collect', message => {
             const msgct = message.content.toLowerCase();
             if (msgct === 'yes') {
-                membername.setNickname(args.slice(1).join(" "));
-                message.channel.send(`Nickname <@${membername.id}> telah diubah menjadi **${args.slice(1).join(" ")}**`);
+                membername.setNickname(args.slice(1).join(' '));
+                message.channel.send(`Nickname <@${membername.id}> telah diubah menjadi **${args.slice(1).join(' ')}**`);
                 collector.stop();
             } else if (msgct === 'no') {
                 message.channel.send('**Canceled**');
@@ -715,8 +836,8 @@ client.on('messageCreate', async message => {
         if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         if (!message.mentions.users.first()) return message.channel.send('**Mention user untuk melakukan mute**');
         const muterole = message.guild.roles.cache.get(process.env.MUTE_ROLE);
-        const mentionsusername = message.mentions.users.first()
-        const mentionsmember = message.mentions.members.first()
+        const mentionsusername = message.mentions.users.first();
+        const mentionsmember = message.mentions.members.first();
         if (mentionsmember.roles.cache.get(process.env.MUTE_ROLE)) return message.channel.send('**User masih dimute**');
         mentionsmember.roles.add(muterole);
         message.channel.send(`**<@${mentionsmember.id}>** telah dimute oleh **<@${message.author.id}>**`);
@@ -725,19 +846,19 @@ client.on('messageCreate', async message => {
         let channellogembed = new MessageEmbed()
 
         .setColor('#ff0000')
-        .setAuthor('Member Muted', message.client.user.avatarURL({format : 'png', dynamic : true, size : 1024}))
+        .setAuthor({name: 'Member Muted', iconURL:message.client.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setDescription(`**⚠️ - ${mentionsusername.username} dimuted oleh ${message.author.username}**`)
         .setTimestamp()
 
-        channellog.send({embeds: [channellogembed]})
+        channellog.send({embeds: [channellogembed]});
     }
 
     if (command === 'unmute') {
         if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         if (!message.mentions.users.first()) return message.channel.send('**Mention user untuk melakukan unmute**');
         const muterole = message.guild.roles.cache.get(process.env.MUTE_ROLE);
-        const mentionsusername = message.mentions.users.first()
-        const mentionsmember = message.mentions.members.first()
+        const mentionsusername = message.mentions.users.first();
+        const mentionsmember = message.mentions.members.first();
         if (!mentionsmember.roles.cache.get(process.env.MUTE_ROLE)) return message.channel.send('**User tidak dimute**');
         mentionsmember.roles.remove(muterole);
         message.channel.send(`**<@${mentionsmember.id}>** telah diunmute oleh **<@${message.author.id}>**`);
@@ -746,7 +867,7 @@ client.on('messageCreate', async message => {
         let channellogembed = new MessageEmbed()
 
         .setColor('#00ff00')
-        .setAuthor('Member Unmuted', message.client.user.avatarURL({format : 'png', dynamic : true, size : 1024}))
+        .setAuthor({name: 'Member Unmuted', iconURL:message.client.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setDescription(`**⚠️ - ${mentionsusername.username} diunmuted oleh ${message.author.username}**`)
         .setTimestamp()
 
@@ -756,14 +877,14 @@ client.on('messageCreate', async message => {
     if (command === 'warn') {
         if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         const mentionsuser = message.mentions.users.first();
-        if (!message.mentions.users.first()) return message.channel.send('**Mention user sebelum memberikan alasan\n\n\`\`\`/warn <mention> <reason>\`\`\`**')
+        if (!message.mentions.users.first()) return message.channel.send('**Mention user sebelum memberikan alasan\n\n\`\`\`/warn <mention> <reason>\`\`\`**');
         const warnembed = new MessageEmbed()
 
         .setColor('#f82c2c')
         .setTitle(`**${mentionsuser.username} Warning**`)
         .setThumbnail(`${mentionsuser.avatarURL({format : 'png', dynamic : true, size : 1024})}`)
-        .setDescription(`${mentionsuser.username} **berhasil diwarn dengan alasan:**\`\`\`diff\n- ${args.slice(1).join(" ")}\`\`\``)
-        .setFooter(`Diwarn oleh ${message.author.username}`, `${message.author.avatarURL({format : 'png', dynamic : true, size : 1024})}`)
+        .setDescription(`${mentionsuser.username} **berhasil diwarn dengan alasan:**\`\`\`diff\n- ${args.slice(1).join(' ')}\`\`\``)
+        .setFooter({text: `Diwarn oleh ${message.author.username}`, iconURL: message.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
 
         message.channel.send({embeds: [warnembed]});
@@ -772,11 +893,11 @@ client.on('messageCreate', async message => {
         let channellogembed = new MessageEmbed()
 
         .setColor('#ff0000')
-        .setAuthor(`${mentionsuser.username} Warning`, mentionsuser.avatarURL({format : 'png', dynamic : true, size : 1024}))
+        .setAuthor({name: `${mentionsuser.username} Warning`, iconURL: mentionsuser.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setDescription(`**⚠️ - ${mentionsuser.username} telah diwarn oleh ${message.author.username}**`)
         .setTimestamp()
 
-        channellog.send({embeds: [channellogembed]})
+        channellog.send({embeds: [channellogembed]});
     }
 
     if (command === 'kick') {
@@ -787,9 +908,9 @@ client.on('messageCreate', async message => {
           if (member) {
             member.kick(`Telah dikick dari server oleh ${message.author.username}`)
               .then(() => {
-                  if (args[1]) return message.channel.send(`**${user.tag} Telah dikick dikarenakan ${args.slice(1).join(" ")}**`)
+                  if (args[1]) return message.channel.send(`**${user.tag} Telah dikick dikarenakan ${args.slice(1).join(' ')}**`);
                   if (!args[1]) return message.channel.send(`**${user.tag} Telah dikick**`);
-              })
+              });
           } else {
             message.channel.send('**User tidak ditemukan**');
           }
@@ -808,7 +929,7 @@ client.on('messageCreate', async message => {
                 days: 0
               })
               .then(() => {
-                if (args[1]) return message.channel.send(`**${user.tag} Telah diban permanen dikarenakan ${args.slice(1).join(" ")}**`)
+                if (args[1]) return message.channel.send(`**${user.tag} Telah diban permanen dikarenakan ${args.slice(1).join(' ')}**`);
                 if (!args[1]) return message.channel.send(`**${user.tag} Telah diban permanen**`);
               });
           } else {
@@ -822,9 +943,9 @@ client.on('messageCreate', async message => {
     if (command === 'say') {
         if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         const channel = client.channels.cache.get(args[0])
-        if (!client.channels.cache.get(args[0])) return message.channel.send('Error');
+        if (!client.channels.cache.get(args[0])) return message.channel.send(process.env.DEFAULT_ERROR);
         if (!args[1]) return message.channel.send('**Berikan args**');
-        channel.send(args.slice(1).join(" "));
+        channel.send(args.slice(1).join(' '));
         message.react('✅');
     }
 
@@ -836,12 +957,12 @@ client.on('messageCreate', async msg => {
     const command = args.shift().toLowerCase();
 
     if (msg.channel.type === 'DM') {
-        let dmchannel = client.channels.cache.get(process.env.CHANNELLOGPRIVATE)
+        let dmchannel = client.channels.cache.get(process.env.CHANNELLOGPRIVATE);
         let dmembed = new MessageEmbed()
 
         .setTitle('DM Channel')
         .setColor('#89e0dc')
-        .setAuthor(msg.author.username, msg.author.avatarURL({format : 'png', dynamic : true, size : 1024}))
+        .setAuthor({name: msg.author.username, iconURL: msg.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setDescription(msg.content)
         .setTimestamp()
 
@@ -849,10 +970,10 @@ client.on('messageCreate', async msg => {
     }
 
     if (command === 'report') {
-        if (msg.guild) return msg.react('❎') && msg.channel.send('**Declined**')
-        if (!args[0]) return msg.channel.send('**[2] - ERR_TIDAK_ADA_ARGS**')
+        if (msg.guild) return msg.react('❎') && msg.channel.send('**Declined**');
+        if (!args[0]) return msg.channel.send('**Berikan args**');
         if (reportcooldown.has(msg.author.id)) {
-            return msg.channel.send('**Kamu telah mengirimkan laporan hari ini, silahkan kirim laporan lain besok.**') && msg.react('❎')
+            return msg.channel.send('**Kamu telah mengirimkan laporan hari ini, silahkan kirim laporan lain besok.**') && msg.react('❎');
         } else {
             msg.channel.send('**Please confirm your choice**\n\`\`\`[Yes] or [No]\`\`\`')
             const collector = new MessageCollector(msg.channel, m => m.author.id === msg.author.id, { time: 10000 });
@@ -863,9 +984,9 @@ client.on('messageCreate', async msg => {
                     setTimeout(() => {
                         reportcooldown.delete(msg.author.id);
                     }, 86400000);
-                    const reportargs = args.join(" ");
+                    const reportargs = args.join(' ');
                     const channeltarget = client.channels.cache.get(process.env.CHANNELLOGPRIVATE);
-                    channeltarget.send(reportargs)
+                    channeltarget.send(reportargs);
                     msg.react('✅');
             
                     let channellog = client.channels.cache.get(process.env.CHANNELLOGID);
@@ -873,16 +994,16 @@ client.on('messageCreate', async msg => {
                     let channellogembed = new MessageEmbed()
             
                     .setColor('#ff0000')
-                    .setAuthor('Bug Report', msg.author.avatarURL({format : 'png', dynamic : true, size : 1024}))
+                    .setAuthor({name: 'Bug Report', iconURL: msg.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
                     .setDescription(`**${emoji} - Laporan Bug**\n\nNama : **${msg.author.username}**\nReport ID : **${msg.id}**\nBug : **${reportargs}**`)
                     .setTimestamp()
             
-                    channellog.send({embeds: [channellogembed]})
+                    channellog.send({embeds: [channellogembed]});
                     msg.channel.send(`**Reported**\n\n\`\`\`Report ID : ${msg.id}\`\`\``);
-                    collector.stop()
+                    collector.stop();
                 } else if (msgct === 'no') {
                     msg.channel.send('**Canceled**');
-                    collector.stop()
+                    collector.stop();
                 }
             })
         }

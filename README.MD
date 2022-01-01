@@ -5,10 +5,10 @@
 <p align="center">
 
 <img src="https://img.shields.io/github/repo-size/Muunatic/RyU?style=flat-square">
-<img alt="GitHub package version" src="https://img.shields.io/github/package-json/v/Muunatic/RyU?style=flat-square">
-<img alt="GitHub Vulnerabilities" src="https://img.shields.io/snyk/vulnerabilities/github/Muunatic/RyU?style=flat-square">
-<img alt="GitHub ESLint" src="https://img.shields.io/github/workflow/status/Muunatic/RyU/ESLint?style=flat-square">
-<img alt="Download" src="https://img.shields.io/github/downloads/Muunatic/RyU/total?style=flat-square">
+<img src="https://img.shields.io/github/package-json/v/Muunatic/RyU?style=flat-square">
+<img src="https://img.shields.io/snyk/vulnerabilities/github/Muunatic/RyU?style=flat-square">
+<img src="https://img.shields.io/github/workflow/status/Muunatic/RyU/ESLint?style=flat-square">
+<img src="https://img.shields.io/github/downloads/Muunatic/RyU/total?style=flat-square">
 
 
 ***
@@ -21,7 +21,7 @@
 |Tools|Version|
 |-|-|
 |**Node.JS**|**>=16.13.1**|
-|**NPM**|**>=8.2.0**|
+|**NPM**|**>=8.3.0**|
 
 ## How to use
 
@@ -45,7 +45,7 @@ config.json.example > config.json
 ```
 npm run deploy
 ```
-5. Setelah itu jalankan **npm start** untuk menjalankan client
+5. Terakhir jalankan **npm start** untuk menjalankan client
 ```
 npm start
 ```
@@ -54,6 +54,7 @@ npm start
 
 |Version|Vulnerability|
 |-|-|
+|5.2.x|:heavy_check_mark:|
 |5.1.x|:heavy_check_mark:|
 |5.0.x|:x:|
 

@@ -69,6 +69,14 @@ const commands = [
   ),
 
   new SlashCommandBuilder()
+  .setName('help')
+  .setDescription('Help command'),
+
+  new SlashCommandBuilder()
+  .setName('aboutbot')
+  .setDescription('About bot'),
+  
+  new SlashCommandBuilder()
   .setName('ping')
   .setDescription('Client ping'),
   
@@ -93,6 +101,15 @@ const commands = [
   .setDescription('Server time'),
 
   new SlashCommandBuilder()
+  .setName('mal')
+  .setDescription('MAL scraper')
+  .addStringOption(option =>
+    option.setName('anime')
+    .setDescription('Anime name')
+    .setRequired(true)
+  ),
+
+  new SlashCommandBuilder()
   .setName('osu')
   .setDescription('Osu profile')
   .addStringOption(option =>
@@ -113,13 +130,27 @@ const commands = [
     option.setName('value')
     .setDescription('Activities value')
     .setRequired(true)
-    .addChoice('Youtube Together', '755600276941176913')
+    .addChoice('Youtube Together', '880218394199220334')
     .addChoice('Fishington', '814288819477020702')
     .addChoice('Chess In The Park', '832012774040141894')
     .addChoice('Betrayal', '773336526917861400')
     .addChoice('Poker In The Night', '755827207812677713')
     .addChoice('Word Snacks', '879863976006127627')
     .addChoice('Letter Tile', '879863686565621790')
+  ),
+
+  new SlashCommandBuilder()
+  .setName('filter')
+  .setDescription('Audio filter')
+  .addStringOption(option => 
+    option.setName('filter')
+    .setDescription('Choose audio filter')
+    .setRequired(true)
+    .addChoice('Bassboost', 'bassboost')
+    .addChoice('Karaoke', 'karaoke')
+    .addChoice('Nightcore', 'nightcore')
+    .addChoice('8D', '8D')
+    .addChoice('Earrape', 'earrape')
   ),
 
   new SlashCommandBuilder()
