@@ -28,7 +28,7 @@
     "node-osu": "^2.2.1",
     "novelcovid": "^1.2.7",
     "weather-js": "^2.0.0",
-    "ytdl-core": "^4.9.2"
+    "ytdl-core": "^4.10.0"
   },
   "devDependencies": {
     "eslint": "^8.6.0"
