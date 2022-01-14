@@ -166,7 +166,7 @@ const commands = [
   .setDescription('Info cuaca')
   .addStringOption(option =>
     option.setName('kota')
-    .setDescription('berikan nama kota')
+    .setDescription('Berikan nama kota')
     .setRequired(true)
   ),
 
