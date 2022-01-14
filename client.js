@@ -31,9 +31,10 @@ const client = new Client({
     [
         "CHANNEL",
         "GUILD_MEMBER",
+        "GUILD_SCHEDULED_EVENT",
         "MESSAGE",
         "REACTION",
-        "USER"
+        "USER",   
     ]
 
 });
@@ -46,7 +47,7 @@ const clientversion = packagejson.version;
 const clientauthor = packagejson.author;
 const clienthomepage = packagejson.homepage;
 
-const malScraper = require('mal-scraper')
+const malScraper = require('mal-scraper');
 
 const osu = require('node-osu');
 const osuApi = new osu.Api(process.env.OSU_API);
@@ -72,6 +73,7 @@ const manager = new GiveawaysManager(client, {
 client.giveawaysManager = manager;
 
 const { Player, QueueRepeatMode } = require('discord-player');
+const { randomstring } = require('stringor');
 const player = new Player(client);
 client.player = player;
 
@@ -89,7 +91,7 @@ client.on('ready', () => {
     const presencelist = [
         `Version ${clientversion} | ${prefix}help`, 
         `${process.env.DISCORDLINK} | ${prefix}help`,
-        `${client.guilds.cache.size} server | ${prefix}help`,
+        `82 server | ${prefix}help`,
     ];
     
     let i = 0;
@@ -130,8 +132,9 @@ player.on('error', (error) => {
 });
 
 client.on('interactionCreate', async interaction => {
-    
+
     if (!interaction.isCommand()) return;
+    if (!interaction.guild) return;
     const { commandName } = interaction;
 
     if (commandName === 'ping') {
@@ -194,7 +197,7 @@ client.on('interactionCreate', async interaction => {
 
         await interaction.reply({embeds: [uptimeembed]});
     }
-    
+
     if (commandName === 'serverinfo') {
         const serverembed = new MessageEmbed()
 
@@ -207,7 +210,7 @@ client.on('interactionCreate', async interaction => {
         
         await interaction.reply({embeds: [serverembed]});
     } 
-    
+
     if (commandName === 'userinfo') {
         const userinfoembed = new MessageEmbed()
         
@@ -254,9 +257,9 @@ client.on('interactionCreate', async interaction => {
             author: { name: 'Help commands' },
             footer: { text: `${prefix}help` },
             fields: [
-                { name: 'General command', value: 'ping, uptime, time, userinfo, serverinfo, osu, avatar, stats, weather, aboutbot, corona, totalcorona, activities' },
+                { name: 'General command', value: 'ping, uptime, time, userinfo, serverinfo, osu, avatar, stats, weather, aboutbot, corona, totalcorona, activities, mal' },
                 { name: 'DM command', value: 'report' },
-                { name: 'Music command', value: 'play, skip, stop, pause, resume, volume, queue, nowplaying, repeat, bitrate, lock, unlock' },
+                { name: 'Music command', value: 'play, skip, stop, pause, resume, volume, queue, nowplaying, repeat, bitrate, lock, unlock, filter' },
                 { name: 'Moderator command', value: 'nickname' },
                 { name: 'Admin command', value: 'warn, kick, ban, mute, unmute' },
             ],
@@ -297,9 +300,8 @@ client.on('interactionCreate', async interaction => {
         )
 
         const btnfilter = i => i.user.id === interaction.user.id;
-
         const collector = interaction.channel.createMessageComponentCollector({ filter: btnfilter, time: 60000 });
-        
+
         collector.on('collect', async i => {
 
             if (i.customId === 'ping') {
@@ -345,10 +347,10 @@ client.on('interactionCreate', async interaction => {
                 .setDescription(`Nama server : **${interaction.guild.name}**\n\nID server : **${interaction.guild.id}**\n\nJumlah member : **${interaction.guild.memberCount}**\n\nServer dibuat pada tanggal : **${interaction.guild.createdAt}**`)
                 .setFooter({text: `Info server ${interaction.guild.name}`, iconURL: interaction.guild.iconURL({format : 'png', dynamic : true, size : 1024})})
                 .setTimestamp()
-                
+
                 await i.reply({embeds: [serverembed]});
             }
-            
+
             if (i.customId === 'avatar') {
                 button.components[0].setDisabled(true);
                 button.components[1].setDisabled(true);
@@ -356,7 +358,7 @@ client.on('interactionCreate', async interaction => {
                 button.components[3].setDisabled(true);
                 interaction.editReply({components: [button]});
                 const avatarembed = new MessageEmbed()
-    
+
                 .setColor('#89e0dc')
                 .setTitle('Avatar')
                 .setDescription(`Avatarnya ${interaction.user.username}`)
@@ -418,9 +420,9 @@ client.on('interactionCreate', async interaction => {
         .addField('Type', animescraper.type, true)
         .addField('Episode', animescraper.episodes, true)
         .addField('Duration', animescraper.duration, true)
+        .addField('Genres', animescraper.genres.join(', '), true)
         .addField('Status', animescraper.status, true)
-        .addField('Genre', animescraper.genres, true)
-        .addField('Rating', animescraper.rating, true)
+        .addField('Score', animescraper.score, true)
         .setFooter({text: animescraper.url, iconURL: 'https://pbs.twimg.com/profile_images/1190380284295950339/Py6XnxvH_400x400.jpg'})
         .setTimestamp()
 
@@ -700,15 +702,15 @@ client.on('interactionCreate', async interaction => {
     }
 
     const command = client.commands.get(interaction.commandName);
-
-	if (!command) return;
-
-	try {
-		await command.execute(interaction);
-	} catch (error) {
-		console.error(error);
-		await interaction.reply({ content: process.env.DEFAULT_ERROR });
-	}
+    
+    if (!command) return;
+    
+    try {
+        await command.execute(interaction);
+    } catch (error) {
+        console.error(error);
+        await interaction.reply({ content: process.env.DEFAULT_ERROR });
+    }
 
 });
 
@@ -721,43 +723,60 @@ client.on('messageCreate', async message => {
     if (!message.guild) return;
 
     if (command === 'register') {
-        setTimeout(() => message.delete(), 5000);
-
         if (!message.member.roles.cache.get(process.env.UNREGISTER_ID)) return message.channel.send('**Kamu sudah teregistrasi**')
         .then(msg => {
             setTimeout(() => msg.delete(), 5000)
         });
-        
         if (message.member.roles.cache.get(process.env.REGISTER_ID)) return message.channel.send('**Kamu sudah teregistrasi**')
         .then(msg => {
             setTimeout(() => msg.delete(), 5000)
         });
+        const otpcode = randomstring(64);
+        message.author.send(`**Masukan kode verifikasi: **\`\`\`${otpcode}\`\`\``);
+        message.reply('**Kode verifikasi terkirim**');
+        const collector = new MessageCollector(message.channel, {filter: m => m.author.id === message.author.id, time: 60000});
+        collector.on('collect', async message => {
+            if (message.content === otpcode) {
+                collector.stop();
+                setTimeout(() => message.delete(), 5000);
 
-        const channel = client.channels.cache.get(process.env.GENERALCHAT);
-        const user = message.author.id;
-        const emoji = client.emojis.cache.get('835987657892298802');
-        
-        message.member.roles.add(process.env.REGISTER_ID);
-        let channellog = client.channels.cache.get(process.env.CHANNELLOGID);
+                const emoji = client.emojis.cache.get('835987657892298802');
+                
+                message.member.roles.add(process.env.REGISTER_ID);
+                let channellog = client.channels.cache.get(process.env.CHANNELLOGID);
 
-        message.channel.send(`**Selesai, anda sudah teregistrasi...\nSelamat datang <@${user}> kamu sudah bisa chat di ${channel} setelah membaca pesan ini**`)
-        .then(msg => {
-            setTimeout(() => msg.delete(), 5000)
-        });
-        
-        message.member.roles.remove(process.env.UNREGISTER_ID);
+                message.reply('**Kode verifikasi diterima**')
+                .then(msg => {
+                    setTimeout(() => msg.delete(), 5000)
+                });
+                
+                message.member.roles.remove(process.env.UNREGISTER_ID);
 
-        let channellogembed = new MessageEmbed()
+                let channellogembed = new MessageEmbed()
 
-        .setColor('#00ff00')
-        .setAuthor({name: 'Member Joined', iconURL: message.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
-        .setDescription(`**${emoji} - ${message.author.username} telah join ke server**`)
-        .setFooter({text: message.author.username, iconURL: message.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
-        .setTimestamp()
-
-        channellog.send({embeds: [channellogembed]});
+                .setColor('#00ff00')
+                .setAuthor({name: 'Member Joined', iconURL: message.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
+                .setDescription(`**${emoji} - ${message.author.username} telah join ke server**`)
+                .setFooter({text: message.author.username, iconURL: message.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
+                .setTimestamp()
+                
+                channellog.send({embeds: [channellogembed]});
+            } else if (message.content === `${prefix}register`) {
+                collector.stop();
+                message.channel.send('**Kode verifikasi telah digantikan**')
+                .then(msg => {
+                    setTimeout(() => msg.delete(), 5000)
+                });
+            } else if (message.content !== otpcode) {
+                collector.stop();
+                message.channel.send('**Kode verifikasi ditolak**')
+                .then(msg => {
+                    setTimeout(() => msg.delete(), 5000)
+                });
+            } 
+        })
     }
-    
+
     if (command === 'user') {
         if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         const dmuser = client.users.cache.get(args[0]);
@@ -970,11 +989,19 @@ client.on('messageCreate', async msg => {
     }
 
     if (command === 'report') {
+        const reportargs = args.join(' ');
+        const emoji = client.emojis.cache.get('835987657892298802');
         if (msg.guild) return msg.react('❎') && msg.channel.send('**Declined**');
         if (!args[0]) return msg.channel.send('**Berikan args**');
         if (reportcooldown.has(msg.author.id)) {
             return msg.channel.send('**Kamu telah mengirimkan laporan hari ini, silahkan kirim laporan lain besok.**') && msg.react('❎');
         } else {
+            const embedpreview = new MessageEmbed()
+            .setColor('#ff0000')
+            .setAuthor({name: 'Report preview', iconURL: msg.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
+            .setDescription(`**${emoji} - Laporan Bug**\n\nNama : **${msg.author.username}**\nReport ID : **${msg.id}**\n\nBug : **${reportargs}**`)
+            .setTimestamp()
+            msg.channel.send({embeds: [embedpreview]})
             msg.channel.send('**Please confirm your choice**\n\`\`\`[Yes] or [No]\`\`\`')
             const collector = new MessageCollector(msg.channel, m => m.author.id === msg.author.id, { time: 10000 });
             collector.on('collect', msg => {
@@ -984,22 +1011,20 @@ client.on('messageCreate', async msg => {
                     setTimeout(() => {
                         reportcooldown.delete(msg.author.id);
                     }, 86400000);
-                    const reportargs = args.join(' ');
                     const channeltarget = client.channels.cache.get(process.env.CHANNELLOGPRIVATE);
                     channeltarget.send(reportargs);
                     msg.react('✅');
             
-                    let channellog = client.channels.cache.get(process.env.CHANNELLOGID);
-                    let emoji = client.emojis.cache.get('835987657892298802');
-                    let channellogembed = new MessageEmbed()
+                    const channellog = client.channels.cache.get(process.env.CHANNELLOGID);
+                    const channellogembed = new MessageEmbed()
             
                     .setColor('#ff0000')
-                    .setAuthor({name: 'Bug Report', iconURL: msg.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
-                    .setDescription(`**${emoji} - Laporan Bug**\n\nNama : **${msg.author.username}**\nReport ID : **${msg.id}**\nBug : **${reportargs}**`)
+                    .setAuthor({name: 'Bug report', iconURL: msg.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
+                    .setDescription(`**${emoji} - Laporan Bug**\n\nNama : **${msg.author.username}**\nReport ID : **${msg.id}**\n\nBug : **${reportargs}**`)
                     .setTimestamp()
             
                     channellog.send({embeds: [channellogembed]});
-                    msg.channel.send(`**Reported**\n\n\`\`\`Report ID : ${msg.id}\`\`\``);
+                    msg.channel.send(`**Reported**\n\`\`\`Report ID : ${msg.id}\`\`\``);
                     collector.stop();
                 } else if (msgct === 'no') {
                     msg.channel.send('**Canceled**');
