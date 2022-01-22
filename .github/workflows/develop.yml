@@ -1,10 +1,10 @@
-name: ESLint patch
+name: ESLint develop
 
 on:
   push:
-    branches: [ patch ]
+    branches: [ develop ]
   pull_request:
-    branches: [ patch ]
+    branches: [ develop ]
 
 jobs:
   build:
