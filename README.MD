@@ -8,7 +8,7 @@
 <img src="https://img.shields.io/github/package-json/v/Muunatic/RyU?style=flat-square">
 <img src="https://img.shields.io/snyk/vulnerabilities/github/Muunatic/RyU?style=flat-square">
 <img src="https://img.shields.io/github/workflow/status/Muunatic/RyU/ESLint?style=flat-square">
-<img src="https://img.shields.io/github/downloads/Muunatic/RyU/total?style=flat-square">
+<img src="https://img.shields.io/github/languages/top/Muunatic/RyU?style=flat-square">
 
 
 ***
@@ -21,7 +21,7 @@
 |Tools|Version|
 |-|-|
 |**Node.JS**|**>=16.13.1**|
-|**NPM**|**>=8.3.0**|
+|**NPM**|**>=8.1.2**|
 
 ## How to use
 
@@ -55,7 +55,7 @@ npm start
 |Version|Vulnerability|
 |-|-|
 |5.2.x|:heavy_check_mark:|
-|5.1.x|:heavy_check_mark:|
+|5.1.x|:x:|
 |5.0.x|:x:|
 
 Klik redirect untuk info lebih lanjut.

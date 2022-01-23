@@ -1,4 +1,4 @@
-name: ESLint patch
+name: ESLint develop
 
 on:
   push:

@@ -4,7 +4,9 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    target-branch: "patch"
+      time: "05:00"
+      timezone: "Asia/Jakarta"
+    target-branch: "develop"
     labels:
       - "dependencies"
     commit-message:
@@ -12,4 +14,3 @@ updates:
       include: "scope"
     ignore:
     - dependency-name: "novelcovid"
-    - dependency-name: "reconlx"
