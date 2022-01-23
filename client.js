@@ -39,15 +39,12 @@ const client = new Client({
 
 });
 
+const malScraper = require('mal-scraper');
 const moment = require('moment-timezone');
 const weather = require('weather-js');
+const { randomstring } = require('stringor');
 
 const packagejson = require('./package.json');
-const clientversion = packagejson.version;
-const clientauthor = packagejson.author;
-const clienthomepage = packagejson.homepage;
-
-const malScraper = require('mal-scraper');
 
 const osu = require('node-osu');
 const osuApi = new osu.Api(process.env.OSU_API);
@@ -73,7 +70,6 @@ const manager = new GiveawaysManager(client, {
 client.giveawaysManager = manager;
 
 const { Player, QueueRepeatMode } = require('discord-player');
-const { randomstring } = require('stringor');
 const player = new Player(client);
 client.player = player;
 
@@ -86,12 +82,13 @@ for (const file of commandFiles) {
 }
 
 client.on('ready', () => {
+
     console.log(client.user.username + '#' + client.user.discriminator + ': Hello, World!');
 
     const presencelist = [
-        `Version ${clientversion} | ${prefix}help`, 
-        `${process.env.DISCORDLINK} | ${prefix}help`,
-        `82 server | ${prefix}help`,
+        `Version ${packagejson.version} | /help`, 
+        `${process.env.DISCORDLINK} | /help`,
+        `${client.guilds.cache.size} server | /help`,
     ];
     
     let i = 0;
@@ -102,8 +99,6 @@ client.on('ready', () => {
         console.log(presencelist[index]);
         if (i === presencelist.length) i = i - presencelist.length;
     }, 5000);
-
-    client.user.setPresence({ status: 'online' });
 
 });
 
@@ -138,7 +133,7 @@ client.on('interactionCreate', async interaction => {
     const { commandName } = interaction;
 
     if (commandName === 'ping') {
-        await interaction.reply(`Pong !! \`${client.ws.ping}ms.\` Latensi \`${Date.now() - interaction.createdTimestamp}ms.\``);
+        interaction.reply(`Pong !! \`${client.ws.ping}ms.\` Latensi \`${Date.now() - interaction.createdTimestamp}ms.\``);
     }
 
     if (commandName === 'time') {
@@ -195,7 +190,7 @@ client.on('interactionCreate', async interaction => {
         .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
 
-        await interaction.reply({embeds: [uptimeembed]});
+        interaction.reply({embeds: [uptimeembed]});
     }
 
     if (commandName === 'serverinfo') {
@@ -208,7 +203,7 @@ client.on('interactionCreate', async interaction => {
         .setFooter({text: `Info server ${interaction.guild.name}`, iconURL: interaction.guild.iconURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
         
-        await interaction.reply({embeds: [serverembed]});
+        interaction.reply({embeds: [serverembed]});
     } 
 
     if (commandName === 'userinfo') {
@@ -221,7 +216,7 @@ client.on('interactionCreate', async interaction => {
         .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
         
-        await interaction.reply({embeds: [userinfoembed]});
+        interaction.reply({embeds: [userinfoembed]});
     }
 
     if (commandName === 'avatar') {
@@ -244,7 +239,7 @@ client.on('interactionCreate', async interaction => {
         .setColor('#89e0dc')
         .setTitle('Client Info')
         .setThumbnail(`${interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
-        .setDescription(`Nama : **${interaction.client.user.username}**\n\nVersi : **${clientversion}**\n\nPrefix : **${prefix}**\n\nDev : **${clientauthor}**\n\nSource Code : **${clienthomepage}**`)
+        .setDescription(`Nama : **${interaction.client.user.username}**\n\nVersi : **${packagejson.version}**\n\nPrefix : **${prefix}**\n\nDev : **${packagejson.author}**\n\nSource Code : **${packagejson.homepage}**`)
         .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
 
@@ -255,13 +250,12 @@ client.on('interactionCreate', async interaction => {
         const embed = {
             color: '#89e0dc',
             author: { name: 'Help commands' },
-            footer: { text: `${prefix}help` },
             fields: [
                 { name: 'General command', value: 'ping, uptime, time, userinfo, serverinfo, osu, avatar, stats, weather, aboutbot, corona, totalcorona, activities, mal' },
                 { name: 'DM command', value: 'report' },
                 { name: 'Music command', value: 'play, skip, stop, pause, resume, volume, queue, nowplaying, repeat, bitrate, lock, unlock, filter' },
                 { name: 'Moderator command', value: 'nickname' },
-                { name: 'Admin command', value: 'warn, kick, ban, mute, unmute' },
+                { name: 'Admin command', value: 'warn, kick, ban, mute, unmute, user, add, reroll, end, eval' },
             ],
             timestamp: new Date(),
             description: `Prefix = **${prefix}**`,
@@ -552,7 +546,7 @@ client.on('interactionCreate', async interaction => {
         if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
         if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply('**Kamu tidak divoice channel yang sama!**');
         queue.destroy();
-        await interaction.reply('**Lagu telah distop**');
+        interaction.reply('**Lagu telah distop**');
     }
 
     if (commandName === 'skip') {
@@ -561,7 +555,7 @@ client.on('interactionCreate', async interaction => {
         if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
         if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply('**Kamu tidak divoice channel yang sama!**');
         queue.skip();
-        await interaction.reply('**Lagu telah diskip**');
+        interaction.reply('**Lagu telah diskip**');
     }
 
     if (commandName === 'queue') {
@@ -610,7 +604,7 @@ client.on('interactionCreate', async interaction => {
         if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
         if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply('**Kamu tidak divoice channel yang sama!**');
         const repeatmode = queue.setRepeatMode(queue.repeatMode === 0 ? QueueRepeatMode.TRACK : QueueRepeatMode.OFF);
-        return interaction.reply(repeatmode ? `Loop **${queue.repeatMode === 0 ? 'dimatikan' : 'dinyalakan'}**` : `Repeat mode **${queue.repeatMode === 0 ? 'dimatikan' : 'dinyalakan'}**`);
+        interaction.reply(repeatmode ? `Loop **${queue.repeatMode === 0 ? 'dimatikan' : 'dinyalakan'}**` : `Repeat mode **${queue.repeatMode === 0 ? 'dimatikan' : 'dinyalakan'}**`);
     }
 
     if (commandName === 'nowplaying') {
@@ -631,7 +625,7 @@ client.on('interactionCreate', async interaction => {
         .addField('Progress Bar', `${queue.createProgressBar()}`, true)
         .setTimestamp()
 
-        await interaction.reply({embeds: [nowplayingembed]});
+        interaction.reply({embeds: [nowplayingembed]});
     }
 
     if (commandName === 'filter') {
@@ -653,8 +647,8 @@ client.on('interactionCreate', async interaction => {
         let everyone = interaction.member.guild.roles.cache.get(process.env.EVERYONE_ID);
         interaction.member.voice.channel.permissionOverwrites.edit(everyone, {
             CONNECT: false
-        })
-        await interaction.reply('**Locked!**');
+        });
+        interaction.reply('**Locked!**');
     }
 
     if (commandName === 'unlock') {
@@ -662,8 +656,8 @@ client.on('interactionCreate', async interaction => {
         let everyone = interaction.member.guild.roles.cache.get(process.env.EVERYONE_ID);
         interaction.member.voice.channel.permissionOverwrites.edit(everyone, {
             CONNECT: true
-        })
-        await interaction.reply('**Unlocked!**');
+        });
+        interaction.reply('**Unlocked!**');
     }
 
     if (commandName === 'bitrate') {
@@ -671,8 +665,8 @@ client.on('interactionCreate', async interaction => {
         if (interaction.guild.me.voice.channel && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply('**Kamu tidak divoice channel yang sama!**');
         const numbervalue = interaction.options.get("number").value;
         if (Math.round(parseInt(numbervalue)) < 8000 || Math.round(parseInt(numbervalue)) > 96000) return interaction.reply('**berikan nomor 8000 - 96000!**');
-        interaction.member.voice.channel.setBitrate(numbervalue)
-        await interaction.reply(`Bitrate telah diubah ke **${numbervalue}**!`);
+        interaction.member.voice.channel.setBitrate(numbervalue);
+        interaction.reply(`Bitrate telah diubah ke **${numbervalue}**!`);
     }
 
     if (commandName === 'activities') {
@@ -709,7 +703,7 @@ client.on('interactionCreate', async interaction => {
         await command.execute(interaction);
     } catch (error) {
         console.error(error);
-        await interaction.reply({ content: process.env.DEFAULT_ERROR });
+        await interaction.reply({ content: process.env.DEFAULT_ERROR, ephemeral: true });
     }
 
 });
@@ -721,6 +715,10 @@ client.on('messageCreate', async message => {
 
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     if (!message.guild) return;
+
+    if (command === 'help') {
+        message.channel.send('**Slash command required \`\`\`/help\`\`\`**');
+    }
 
     if (command === 'register') {
         if (!message.member.roles.cache.get(process.env.UNREGISTER_ID)) return message.channel.send('**Kamu sudah teregistrasi**')
@@ -739,8 +737,6 @@ client.on('messageCreate', async message => {
             if (message.content === otpcode) {
                 collector.stop();
                 setTimeout(() => message.delete(), 5000);
-
-                const emoji = client.emojis.cache.get('835987657892298802');
                 
                 message.member.roles.add(process.env.REGISTER_ID);
                 let channellog = client.channels.cache.get(process.env.CHANNELLOGID);
@@ -756,7 +752,7 @@ client.on('messageCreate', async message => {
 
                 .setColor('#00ff00')
                 .setAuthor({name: 'Member Joined', iconURL: message.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
-                .setDescription(`**${emoji} - ${message.author.username} telah join ke server**`)
+                .setDescription(`**${client.emojis.cache.get('835987657892298802')} - ${message.author.username} telah join ke server**`)
                 .setFooter({text: message.author.username, iconURL: message.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
                 .setTimestamp()
                 
@@ -783,7 +779,7 @@ client.on('messageCreate', async message => {
         dmuser.send(args.slice(1).join(' '));
     }
 
-    if (command === 'giveaway') {
+    if (command === 'add') {
         if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         if (!args[0]) return message.channel.send(`${prefix}giveaway **<mentionschannel>** <time> <winner> <args>`);
         if (!args.join(' ')) return message.channel.send(`**${prefix}giveaway <mentionschannel> <time> <winner> <args>**`);
@@ -990,7 +986,6 @@ client.on('messageCreate', async msg => {
 
     if (command === 'report') {
         const reportargs = args.join(' ');
-        const emoji = client.emojis.cache.get('835987657892298802');
         if (msg.guild) return msg.react('❎') && msg.channel.send('**Declined**');
         if (!args[0]) return msg.channel.send('**Berikan args**');
         if (reportcooldown.has(msg.author.id)) {
@@ -999,7 +994,7 @@ client.on('messageCreate', async msg => {
             const embedpreview = new MessageEmbed()
             .setColor('#ff0000')
             .setAuthor({name: 'Report preview', iconURL: msg.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
-            .setDescription(`**${emoji} - Laporan Bug**\n\nNama : **${msg.author.username}**\nReport ID : **${msg.id}**\n\nBug : **${reportargs}**`)
+            .setDescription(`**${client.emojis.cache.get('835987657892298802')} - Laporan Bug**\n\nNama : **${msg.author.username}**\nReport ID : **${msg.id}**\n\nBug : **${reportargs}**`)
             .setTimestamp()
             msg.channel.send({embeds: [embedpreview]})
             msg.channel.send('**Please confirm your choice**\n\`\`\`[Yes] or [No]\`\`\`')
@@ -1020,7 +1015,7 @@ client.on('messageCreate', async msg => {
             
                     .setColor('#ff0000')
                     .setAuthor({name: 'Bug report', iconURL: msg.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
-                    .setDescription(`**${emoji} - Laporan Bug**\n\nNama : **${msg.author.username}**\nReport ID : **${msg.id}**\n\nBug : **${reportargs}**`)
+                    .setDescription(`**${client.emojis.cache.get('835987657892298802')} - Laporan Bug**\n\nNama : **${msg.author.username}**\nReport ID : **${msg.id}**\n\nBug : **${reportargs}**`)
                     .setTimestamp()
             
                     channellog.send({embeds: [channellogembed]});
