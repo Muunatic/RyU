@@ -13,7 +13,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@discordjs/builders": "^0.11.0",
-    "@discordjs/rest": "^0.2.0-canary.0",
+    "@discordjs/rest": "^0.3.0-dev.1644106030.d8184f9",
     "cpu-stat": "^2.0.1",
     "discord-api-types": "^0.26.1",
     "discord-giveaways": "^5.1.0",
