@@ -40,6 +40,6 @@
   },
   "optionalDependencies": {
     "@discordjs/opus": "^0.7.0",
-    "@discordjs/voice": "^0.7.5"
+    "@discordjs/voice": "^0.8.0"
   }
 }
