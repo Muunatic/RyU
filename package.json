@@ -16,7 +16,7 @@
     "@discordjs/rest": "^0.2.0-canary.0",
     "cpu-stat": "^2.0.1",
     "discord-api-types": "^0.26.1",
-    "discord-giveaways": "^5.1.0",
+    "discord-giveaways": "^5.1.1",
     "discord-player": "^5.2.2",
     "discord.js": "^13.6.0",
     "dotenv": "^14.3.2",
