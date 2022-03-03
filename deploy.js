@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
+const { Routes } = require('discord-api-types/v10');
 const { token, clientId } = require('./src/data/config.json')
 
 const commands = [
@@ -97,6 +97,18 @@ const commands = [
   ),
 
   new SlashCommandBuilder()
+  .setName('genshin')
+  .setDescription('Genshin impact')
+  .addStringOption(characters =>
+    characters.setName('characters')
+    .setDescription('Characters')
+  )
+  .addStringOption(weapon =>
+    weapon.setName('weapon')
+    .setDescription('Weapon')
+  ),
+
+  new SlashCommandBuilder()
   .setName('time')
   .setDescription('Server time'),
 
@@ -136,7 +148,7 @@ const commands = [
     .addChoice('Betrayal', '773336526917861400')
     .addChoice('Poker In The Night', '755827207812677713')
     .addChoice('Word Snacks', '879863976006127627')
-    .addChoice('Letter Tile', '879863686565621790')
+    .addChoice('Letter League', '879863686565621790')
   ),
 
   new SlashCommandBuilder()
@@ -198,7 +210,7 @@ for (const file of commandFiles) {
 	commands.push(command.data.toJSON());
 }
 
-const rest = new REST({ version: '9' }).setToken(token);
+const rest = new REST({ version: '10' }).setToken(token);
 
 (async () => {
 	try {
