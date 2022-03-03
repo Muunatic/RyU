@@ -6,6 +6,7 @@ updates:
       interval: "daily"
       time: "05:00"
       timezone: "Asia/Jakarta"
+    open-pull-requests-limit: 20
     target-branch: "develop"
     labels:
       - "dependencies"
