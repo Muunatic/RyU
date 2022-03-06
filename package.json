@@ -30,7 +30,7 @@
     "novelcovid": "^1.2.7",
     "stringor": "^0.1.0",
     "weather-js": "^2.0.0",
-    "ytdl-core": "^4.10.1"
+    "ytdl-core": "^4.11.0"
   },
   "devDependencies": {
     "eslint": "^8.10.0"
