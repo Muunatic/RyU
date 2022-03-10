@@ -14,7 +14,7 @@
 ***
 
 <h1 align="center">RyU</h1>
-<p align="center"><b>Powerful discord client written in JavaScript. Lightweight, Efficient, Feature-rich.</b></p>
+<p align="center"><b>Powerful Discord Client written in JavaScript. Lightweight, Efficient, Feature-rich.</b></p>
 
 # Requirements
 
@@ -54,7 +54,8 @@ npm start
 
 |Version|Vulnerability|
 |-|-|
-|5.2.x|:heavy_check_mark:|
+|5.3.x|:heavy_check_mark:|
+|5.2.x|:x:|
 |5.1.x|:x:|
 |5.0.x|:x:|
 
