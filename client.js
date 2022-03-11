@@ -161,7 +161,7 @@ client.on('interactionCreate', async interaction => {
             .setColor('#89e0dc')
             .setTitle('Client Stats')
             .setThumbnail(`${interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
-            .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+            .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
             .setTimestamp()
 
             .addField(`CPU`, `${os.cpus().map((i) => `${i.model}`)[0]}`, true)
@@ -189,7 +189,7 @@ client.on('interactionCreate', async interaction => {
         .setTitle('Uptime')
         .setThumbnail(`${interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
         .setDescription(`bot ini telah aktif selama **${days} hari, ${hours} jam, ${minutes} menit, dan ${seconds} detik**.`)
-        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+        .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
 
         interaction.reply({embeds: [uptimeembed]});
@@ -215,7 +215,7 @@ client.on('interactionCreate', async interaction => {
         .setTitle(`${interaction.user.username} Info`)
         .setThumbnail(`${interaction.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
         .setDescription(`Username : **${interaction.user.username}**\n\nNickname : **${interaction.member.nickname || interaction.user.username}**\n\nID : **${interaction.user.id}**\n\nTanggal dibuatnya akun : **${interaction.user.createdAt}**\n\nTanggal join server : **${interaction.member.joinedAt}**\n\nRole : **<@&${interaction.member.roles.highest.id}>**`)
-        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+        .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
         
         interaction.reply({embeds: [userinfoembed]});
@@ -230,7 +230,7 @@ client.on('interactionCreate', async interaction => {
         .setTitle('Avatar')
         .setDescription(`Avatarnya ${usernamevalue.username}`)
         .setImage(`${uservalue.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
-        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+        .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
 
         interaction.reply({embeds: [avatarembed]});
     }
@@ -242,7 +242,7 @@ client.on('interactionCreate', async interaction => {
         .setTitle('Client Info')
         .setThumbnail(`${interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
         .setDescription(`Nama : **${interaction.client.user.username}**\n\nVersi : **${packagejson.version}**\n\nPrefix : **${prefix}**\n\nDev : **${packagejson.author}**\n\nSource Code : **${packagejson.homepage}**`)
-        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+        .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
 
         interaction.reply({embeds: [aboutbotembed]});
@@ -261,7 +261,7 @@ client.on('interactionCreate', async interaction => {
             { name: 'Moderator command', value: 'nickname' },
             { name: 'Admin command', value: 'warn, kick, ban, mute, unmute, user, add, reroll, end, eval'}
         )
-        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+        .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
 
         const button = new MessageActionRow()
@@ -323,7 +323,7 @@ client.on('interactionCreate', async interaction => {
                 .setTitle(`${interaction.user.username} Info`)
                 .setThumbnail(`${interaction.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
                 .setDescription(`Username : **${interaction.user.username}**\n\nNickname : **${interaction.member.nickname || interaction.user.username}**\n\nID : **${interaction.user.id}**\n\nTanggal dibuatnya akun : **${interaction.user.createdAt}**\n\nTanggal join server : **${interaction.member.joinedAt}**\n\nRole : **<@&${interaction.member.roles.highest.id}>**`)
-                .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL:interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+                .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
                 .setTimestamp()
                 
                 await i.reply({embeds: [userinfoembed]});
@@ -360,7 +360,7 @@ client.on('interactionCreate', async interaction => {
                 .setTitle('Avatar')
                 .setDescription(`Avatarnya ${interaction.user.username}`)
                 .setImage(`${interaction.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
-                .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+                .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
             
                 await i.reply({embeds: [avatarembed]});
                 collector.stop()
@@ -453,7 +453,7 @@ client.on('interactionCreate', async interaction => {
             .setTitle('Cuaca')
             .setThumbnail(current.imageUrl)
             .setDescription('Powered by weather-js')
-            .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+            .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
             .setTimestamp()
 
             cuaca.addField('Nama', location.name, true)
@@ -476,7 +476,7 @@ client.on('interactionCreate', async interaction => {
         .setColor('#ff0000')
         .setTitle(`Corona Stats ${coronacountries.country}`)
         .setDescription(`**Total kasus corona di ${coronacountries.country}**\n\n Kasus : **${coronacountries.cases}**\n Meninggal : **${coronacountries.deaths}**\n Sembuh : **${coronacountries.recovered}**\n\n**Total penambahan kasus hari ini**\n\n Kasus : **${coronacountries.todayCases}**\n Meninggal : **${coronacountries.todayDeaths}**`)
-        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+        .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
 
         await interaction.reply({embeds: [countriesembed]});
@@ -489,7 +489,7 @@ client.on('interactionCreate', async interaction => {
         .setColor('#ff0000')
         .setTitle('Corona Stats')
         .setDescription(`**Total kasus corona\n\n Kasus** : **${data.cases}**\n Meninggal : **${data.deaths}**\n Sembuh : **${data.recovered}**\n\n**Total penambahan kasus hari ini**\n\n Kasus : **${data.todayCases}**\n Meninggal : **${data.todayDeaths}**`)
-        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+        .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
     
         await interaction.reply({embeds: [coronaembed]});
@@ -505,7 +505,7 @@ client.on('interactionCreate', async interaction => {
         .setTitle(`${serverid.name} Server`)
         .setThumbnail(interaction.guild.iconURL({format : 'png', dynamic : true, size : 4096}))
         .setDescription(`**${process.env.DISCORDLINK}\n\nName : ${serverid.name}\n\nOwner : ${ownercache.username}#${ownercache.discriminator}\n\nMember : ${serverid.memberCount}**`)
-        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+        .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
 
         interaction.reply({embeds: [embedmessage]});
@@ -522,8 +522,7 @@ client.on('interactionCreate', async interaction => {
                 quality: "highestaudio",
                 filter: "audioonly",
                 highWaterMark: 1 << 25,
-                dlChunkSize: 0,
-                begin: '4m16s'
+                dlChunkSize: 0
             },
             metadata: {
                 channel: interaction.channel
@@ -730,7 +729,7 @@ client.on('interactionCreate', async interaction => {
             .addField('Material', material1 + ', ' + material2 + ', ' + material3)
             .addField('Costs', `${moracosts}`)
     
-            .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+            .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
             .setTimestamp()
             interaction.reply({embeds: [embed]});
         } else if (interaction.options.get("characters")) {
@@ -759,7 +758,7 @@ client.on('interactionCreate', async interaction => {
             .addField('Material', material1 + ', ' + material2 + ', ' + material3 + ', ' + material4 + ', ' + material5)
             .addField('Costs', `${moracosts}`)
     
-            .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+            .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
             .setTimestamp()
     
             interaction.reply({embeds: [embed]});
