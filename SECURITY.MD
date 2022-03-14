@@ -13,4 +13,4 @@
 |5.0.1|:x:|
 |5.0.0|:x:|
 
-Please report security issues to [Repository Issues](https://github.com/Muunatic/RyU/issues)
+Please report security issues to [Muunatic](https://discordapp.com/users/527415996508536832)
