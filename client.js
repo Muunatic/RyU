@@ -75,14 +75,6 @@ const { Player, QueueRepeatMode } = require('discord-player');
 const player = new Player(client);
 client.player = player;
 
-client.commands = new Collection();
-const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-    const command = require(`./src/commands/${file}`);
-    client.commands.set(command.data.name, command);
-}
-
 client.on('ready', () => {
 
     console.log(client.user.username + '#' + client.user.discriminator + ': Hello, World!');
