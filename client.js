@@ -1,6 +1,5 @@
 const fetch = require('node-fetch');
-const fs = require('fs');
-const { Client, Collection, Intents, MessageEmbed,  MessageCollector, Permissions, MessageButton, MessageActionRow } = require('discord.js');
+const { Client, Intents, MessageEmbed,  MessageCollector, Permissions, MessageButton, MessageActionRow } = require('discord.js');
 const os = require('os');
 const cpuStat = require('cpu-stat');
 require('dotenv').config();
@@ -74,14 +73,6 @@ client.giveawaysManager = manager;
 const { Player, QueueRepeatMode } = require('discord-player');
 const player = new Player(client);
 client.player = player;
-
-client.commands = new Collection();
-const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-    const command = require(`./src/commands/${file}`);
-    client.commands.set(command.data.name, command);
-}
 
 client.on('ready', () => {
 
