@@ -1,6 +1,5 @@
 const fetch = require('node-fetch');
-const fs = require('fs');
-const { Client, Collection, Intents, MessageEmbed,  MessageCollector, Permissions, MessageButton, MessageActionRow } = require('discord.js');
+const { Client, Intents, MessageEmbed,  MessageCollector, Permissions, MessageButton, MessageActionRow } = require('discord.js');
 const os = require('os');
 const cpuStat = require('cpu-stat');
 require('dotenv').config();
