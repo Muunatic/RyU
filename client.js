@@ -46,6 +46,8 @@ const { randomstring } = require('stringor');
 
 const packagejson = require('./package.json');
 
+const genshindb = require('genshin-db');
+
 const osu = require('node-osu');
 const osuApi = new osu.Api(process.env.OSU_API);
 
@@ -94,7 +96,7 @@ client.on('ready', () => {
     let i = 0;
     setInterval(() => {
         const index = Math.floor(i);
-        client.user.setActivity({name: presencelist[index], type: 'COMPETING', url: 'https://www.twitch.tv/discord', });
+        client.user.setActivity({ name: presencelist[index], type: 'COMPETING', url: 'https://www.twitch.tv/discord' });
         i = i + 1;
         console.log(presencelist[index]);
         if (i === presencelist.length) i = i - presencelist.length;
@@ -212,7 +214,7 @@ client.on('interactionCreate', async interaction => {
         .setColor('#89e0dc')
         .setTitle(`${interaction.user.username} Info`)
         .setThumbnail(`${interaction.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
-        .setDescription(`Username : **${interaction.user.username}**\n\nNickname : **${interaction.member.nickname}**\n\nID : **${interaction.user.id}**\n\nTanggal dibuatnya akun : **${interaction.user.createdAt}**\n\nTanggal join server : **${interaction.member.joinedAt}**\n\nRole : **<@&${interaction.member.roles.highest.id}>**`)
+        .setDescription(`Username : **${interaction.user.username}**\n\nNickname : **${interaction.member.nickname || interaction.user.username}**\n\nID : **${interaction.user.id}**\n\nTanggal dibuatnya akun : **${interaction.user.createdAt}**\n\nTanggal join server : **${interaction.member.joinedAt}**\n\nRole : **<@&${interaction.member.roles.highest.id}>**`)
         .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
         
@@ -247,19 +249,20 @@ client.on('interactionCreate', async interaction => {
     }
 
     if (commandName === 'help') {
-        const embed = {
-            color: '#89e0dc',
-            author: { name: 'Help commands' },
-            fields: [
-                { name: 'General command', value: 'ping, uptime, time, userinfo, serverinfo, osu, avatar, stats, weather, aboutbot, corona, totalcorona, activities, mal' },
-                { name: 'DM command', value: 'report' },
-                { name: 'Music command', value: 'play, skip, stop, pause, resume, volume, queue, nowplaying, repeat, bitrate, lock, unlock, filter' },
-                { name: 'Moderator command', value: 'nickname' },
-                { name: 'Admin command', value: 'warn, kick, ban, mute, unmute, user, add, reroll, end, eval' },
-            ],
-            timestamp: new Date(),
-            description: `Prefix = **${prefix}**`,
-        }
+        const embed = new MessageEmbed()
+
+        .setColor('#89e0dc')
+        .setTitle('Help commands')
+        .setDescription(`Prefix = **${prefix}**`)
+        .addFields(
+            { name: 'General command', value: 'ping, uptime, time, userinfo, serverinfo, osu, avatar, stats, weather, aboutbot, corona, totalcorona, activities, mal, genshin' },
+            { name: 'DM command', value: 'report' },
+            { name: 'Music command', value: 'play, skip, stop, pause, resume, volume, queue, nowplaying, repeat, bitrate, lock, unlock, filter' },
+            { name: 'Moderator command', value: 'nickname' },
+            { name: 'Admin command', value: 'warn, kick, ban, mute, unmute, user, add, reroll, end, eval'}
+        )
+        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+        .setTimestamp()
 
         const button = new MessageActionRow()
         .addComponents(
@@ -290,7 +293,7 @@ client.on('interactionCreate', async interaction => {
             new MessageButton()
             .setLabel('GitHub')
             .setStyle('LINK')
-            .setURL('https://github.com/Muunatic/RyU')
+            .setURL(packagejson.homepage)
         )
 
         const btnfilter = i => i.user.id === interaction.user.id;
@@ -304,7 +307,7 @@ client.on('interactionCreate', async interaction => {
                 button.components[2].setDisabled(true);
                 button.components[3].setDisabled(true);
                 interaction.editReply({components: [button]});
-                await i.reply({content: `Pong !! \`${client.ws.ping}ms.\` Latensi \`${Date.now() - interaction.createdTimestamp}ms.\``});
+                await i.reply({content: `Pong !! \`${client.ws.ping}ms.\` Latensi \`${Date.now() - i.createdTimestamp}ms.\``});
                 collector.stop();
             }
 
@@ -319,7 +322,7 @@ client.on('interactionCreate', async interaction => {
                 .setColor('#89e0dc')
                 .setTitle(`${interaction.user.username} Info`)
                 .setThumbnail(`${interaction.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
-                .setDescription(`Username : **${interaction.user.username}**\n\nNickname : **${interaction.member.nickname}**\n\nID : **${interaction.user.id}**\n\nTanggal dibuatnya akun : **${interaction.user.createdAt}**\n\nTanggal join server : **${interaction.member.joinedAt}**\n\nRole : **<@&${interaction.member.roles.highest.id}>**`)
+                .setDescription(`Username : **${interaction.user.username}**\n\nNickname : **${interaction.member.nickname || interaction.user.username}**\n\nID : **${interaction.user.id}**\n\nTanggal dibuatnya akun : **${interaction.user.createdAt}**\n\nTanggal join server : **${interaction.member.joinedAt}**\n\nRole : **<@&${interaction.member.roles.highest.id}>**`)
                 .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL:interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
                 .setTimestamp()
                 
@@ -368,6 +371,14 @@ client.on('interactionCreate', async interaction => {
         });
 
         interaction.reply({embeds: [embed], components: [button]});
+        setTimeout(() => {
+            button.components[0].setDisabled(true);
+            button.components[1].setDisabled(true);
+            button.components[2].setDisabled(true);
+            button.components[3].setDisabled(true);
+            interaction.editReply({components: [button]});
+            collector.stop();
+        }, 60000);
     }
 
     if (commandName === 'osu') {
@@ -504,7 +515,7 @@ client.on('interactionCreate', async interaction => {
         const query = interaction.options.get("args").value;
         const queue = await player.createQueue(interaction.guild, {
             autoSelfDeaf: false,
-            leaveOnEnd: false,
+            leaveOnEnd: true,
             leaveOnEmpty: true,
             leaveOnEmptyCooldown: 60000,
             ytdlOptions: {
@@ -673,7 +684,7 @@ client.on('interactionCreate', async interaction => {
         const appid = interaction.options.get("value").value;
         if (!interaction.member.voice.channel) return interaction.reply('**Kamu tidak divoice channel!**');
         const channel = interaction.member.voice.channel;
-        fetch(`https://discord.com/api/v9/channels/${channel.id}/invites`, {
+        fetch(`https://discord.com/api/v10/channels/${channel.id}/invites`, {
             method: "POST",
             body: JSON.stringify({
                 max_age: 86400,
@@ -693,6 +704,67 @@ client.on('interactionCreate', async interaction => {
             if (!invite.code) return interaction.reply(process.env.DEFAULT_ERROR);
             interaction.reply(`> https://discord.com/invite/${invite.code}`);
         });
+    }
+
+    if (commandName === 'genshin') {
+        if (interaction.options.get("weapon")) {
+            const data = genshindb.weapons(interaction.options.get("weapon").value);
+            let datastringtify = JSON.stringify(data);
+            let dataparse = JSON.parse(datastringtify)
+            let current = dataparse;
+            let material1 = current.costs.ascend6[0].name;
+            let material2 = current.costs.ascend6[1].name;
+            let material3 = current.costs.ascend6[2].name;
+            let moracosts = current.costs.ascend1[0].count + current.costs.ascend2[0].count + current.costs.ascend3[0].count + current.costs.ascend4[0].count + current.costs.ascend5[0].count + current.costs.ascend6[0].count;
+            const embed = new MessageEmbed()
+
+            .setColor('#89e0dc')
+            .setTitle(current.name)
+            .setDescription(current.description)
+            .setThumbnail(current.images.icon)
+            .addField('Weapon', `${current.weapontype}`, true)
+            .addField('Rarity', `${current.rarity}✰`, true)
+            .addField('Substat', `${current.substat}`, true)
+            .addField('Refine', `${current.effect}`,)
+            .addField('Material', material1 + ', ' + material2 + ', ' + material3)
+            .addField('Costs', `${moracosts}`)
+    
+            .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+            .setTimestamp()
+            interaction.reply({embeds: [embed]});
+        } else if (interaction.options.get("characters")) {
+            const data = genshindb.characters(interaction.options.get("characters").value);
+            let datastringtify = JSON.stringify(data);
+            let dataparse = JSON.parse(datastringtify)
+            let current = dataparse;
+            let material1 = current.costs.ascend6[0].name;
+            let material2 = current.costs.ascend6[1].name;
+            let material3 = current.costs.ascend6[2].name;
+            let material4 = current.costs.ascend6[3].name;
+            let material5 = current.costs.ascend6[4].name;
+            let moracosts = current.costs.ascend1[0].count + current.costs.ascend2[0].count + current.costs.ascend3[0].count + current.costs.ascend4[0].count + current.costs.ascend5[0].count + current.costs.ascend6[0].count;
+            const embed = new MessageEmbed()
+    
+            .setColor('#89e0dc')
+            .setTitle(current.name)
+            .setDescription(current.description)
+            .setThumbnail(current.images.icon)
+            .addField('Weapon', `${current.weapontype}`, true)
+            .addField('Vision', `${current.element}`, true)
+            .addField('Rarity', `${current.rarity}✰`, true)
+            .addField('Substat', `${current.substat}`, true)
+            .addField('Region', `${current.region}`, true)
+            .addField('Birthday', `${current.birthday}`, true)
+            .addField('Material', material1 + ', ' + material2 + ', ' + material3 + ', ' + material4 + ', ' + material5)
+            .addField('Costs', `${moracosts}`)
+    
+            .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+            .setTimestamp()
+    
+            interaction.reply({embeds: [embed]});
+        } else {
+            interaction.reply('**Pilih salah satu option yang disediakan**');
+        }
     }
 
     const command = client.commands.get(interaction.commandName);
@@ -717,7 +789,7 @@ client.on('messageCreate', async message => {
     if (!message.guild) return;
 
     if (command === 'help') {
-        message.channel.send('**Slash command required \`\`\`/help\`\`\`**');
+        message.reply('**Slash command required \`\`\`/help\`\`\`**');
     }
 
     if (command === 'register') {
