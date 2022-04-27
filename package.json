@@ -15,7 +15,7 @@
     "@discordjs/builders": "^0.13.0",
     "@discordjs/rest": "^0.4.1",
     "cpu-stat": "^2.0.1",
-    "discord-api-types": "^0.31.2",
+    "discord-api-types": "^0.32.0",
     "discord-giveaways": "^5.1.1",
     "discord-player": "^5.2.2",
     "discord-rpc": "^4.0.1",
