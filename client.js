@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
-const { Client, Intents, MessageEmbed,  MessageCollector, Permissions, MessageButton, MessageActionRow } = require('discord.js');
+const fs = require('fs');
+const { Client, Collection, Intents, MessageEmbed,  MessageCollector, Permissions, MessageButton, MessageActionRow } = require('discord.js');
 const os = require('os');
 const cpuStat = require('cpu-stat');
 require('dotenv').config();
@@ -57,7 +58,7 @@ const reportcooldown = new Set();
 const ms = require('ms');
 const { GiveawaysManager } = require('discord-giveaways');
 const manager = new GiveawaysManager(client, {
-    storage: './database.json',
+    storage: './src/data/database.json',
     updateCountdownEvery: 5000,
     hasGuildMembersIntent: true,
     default: {
@@ -73,6 +74,14 @@ client.giveawaysManager = manager;
 const { Player, QueueRepeatMode } = require('discord-player');
 const player = new Player(client);
 client.player = player;
+
+client.commands = new Collection();
+const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+    const command = require(`./src/commands/${file}`);
+    client.commands.set(command.data.name, command);
+}
 
 client.on('ready', () => {
 
@@ -100,11 +109,11 @@ process.on('unhandledRejection', error => {
 });
 
 process.on('uncaughtException', error => {
-    console.error('uncaughtException:', error)
+    console.error('uncaughtException:', error);
 });
 
 process.on('uncaughtExceptionMonitor', error => {
-    console.error('uncaughtExceptionMonitor:', error)
+    console.error('uncaughtExceptionMonitor:', error);
 });
 
 player.on('channelEmpty', async (queue) => {
@@ -152,7 +161,7 @@ client.on('interactionCreate', async interaction => {
             .setColor('#89e0dc')
             .setTitle('Client Stats')
             .setThumbnail(`${interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
-            .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+            .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
             .setTimestamp()
 
             .addField(`CPU`, `${os.cpus().map((i) => `${i.model}`)[0]}`, true)
@@ -180,7 +189,7 @@ client.on('interactionCreate', async interaction => {
         .setTitle('Uptime')
         .setThumbnail(`${interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
         .setDescription(`bot ini telah aktif selama **${days} hari, ${hours} jam, ${minutes} menit, dan ${seconds} detik**.`)
-        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+        .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
 
         interaction.reply({embeds: [uptimeembed]});
@@ -206,7 +215,7 @@ client.on('interactionCreate', async interaction => {
         .setTitle(`${interaction.user.username} Info`)
         .setThumbnail(`${interaction.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
         .setDescription(`Username : **${interaction.user.username}**\n\nNickname : **${interaction.member.nickname || interaction.user.username}**\n\nID : **${interaction.user.id}**\n\nTanggal dibuatnya akun : **${interaction.user.createdAt}**\n\nTanggal join server : **${interaction.member.joinedAt}**\n\nRole : **<@&${interaction.member.roles.highest.id}>**`)
-        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+        .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
         
         interaction.reply({embeds: [userinfoembed]});
@@ -221,7 +230,7 @@ client.on('interactionCreate', async interaction => {
         .setTitle('Avatar')
         .setDescription(`Avatarnya ${usernamevalue.username}`)
         .setImage(`${uservalue.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
-        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+        .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
 
         interaction.reply({embeds: [avatarembed]});
     }
@@ -233,7 +242,7 @@ client.on('interactionCreate', async interaction => {
         .setTitle('Client Info')
         .setThumbnail(`${interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
         .setDescription(`Nama : **${interaction.client.user.username}**\n\nVersi : **${packagejson.version}**\n\nPrefix : **${prefix}**\n\nDev : **${packagejson.author}**\n\nSource Code : **${packagejson.homepage}**`)
-        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+        .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
 
         interaction.reply({embeds: [aboutbotembed]});
@@ -252,7 +261,7 @@ client.on('interactionCreate', async interaction => {
             { name: 'Moderator command', value: 'nickname' },
             { name: 'Admin command', value: 'warn, kick, ban, mute, unmute, user, add, reroll, end, eval'}
         )
-        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+        .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
 
         const button = new MessageActionRow()
@@ -314,7 +323,7 @@ client.on('interactionCreate', async interaction => {
                 .setTitle(`${interaction.user.username} Info`)
                 .setThumbnail(`${interaction.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
                 .setDescription(`Username : **${interaction.user.username}**\n\nNickname : **${interaction.member.nickname || interaction.user.username}**\n\nID : **${interaction.user.id}**\n\nTanggal dibuatnya akun : **${interaction.user.createdAt}**\n\nTanggal join server : **${interaction.member.joinedAt}**\n\nRole : **<@&${interaction.member.roles.highest.id}>**`)
-                .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL:interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+                .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
                 .setTimestamp()
                 
                 await i.reply({embeds: [userinfoembed]});
@@ -351,7 +360,7 @@ client.on('interactionCreate', async interaction => {
                 .setTitle('Avatar')
                 .setDescription(`Avatarnya ${interaction.user.username}`)
                 .setImage(`${interaction.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
-                .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+                .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
             
                 await i.reply({embeds: [avatarembed]});
                 collector.stop()
@@ -444,7 +453,7 @@ client.on('interactionCreate', async interaction => {
             .setTitle('Cuaca')
             .setThumbnail(current.imageUrl)
             .setDescription('Powered by weather-js')
-            .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+            .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
             .setTimestamp()
 
             cuaca.addField('Nama', location.name, true)
@@ -467,7 +476,7 @@ client.on('interactionCreate', async interaction => {
         .setColor('#ff0000')
         .setTitle(`Corona Stats ${coronacountries.country}`)
         .setDescription(`**Total kasus corona di ${coronacountries.country}**\n\n Kasus : **${coronacountries.cases}**\n Meninggal : **${coronacountries.deaths}**\n Sembuh : **${coronacountries.recovered}**\n\n**Total penambahan kasus hari ini**\n\n Kasus : **${coronacountries.todayCases}**\n Meninggal : **${coronacountries.todayDeaths}**`)
-        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+        .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
 
         await interaction.reply({embeds: [countriesembed]});
@@ -480,7 +489,7 @@ client.on('interactionCreate', async interaction => {
         .setColor('#ff0000')
         .setTitle('Corona Stats')
         .setDescription(`**Total kasus corona\n\n Kasus** : **${data.cases}**\n Meninggal : **${data.deaths}**\n Sembuh : **${data.recovered}**\n\n**Total penambahan kasus hari ini**\n\n Kasus : **${data.todayCases}**\n Meninggal : **${data.todayDeaths}**`)
-        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+        .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
     
         await interaction.reply({embeds: [coronaembed]});
@@ -496,7 +505,7 @@ client.on('interactionCreate', async interaction => {
         .setTitle(`${serverid.name} Server`)
         .setThumbnail(interaction.guild.iconURL({format : 'png', dynamic : true, size : 4096}))
         .setDescription(`**${process.env.DISCORDLINK}\n\nName : ${serverid.name}\n\nOwner : ${ownercache.username}#${ownercache.discriminator}\n\nMember : ${serverid.memberCount}**`)
-        .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+        .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp()
 
         interaction.reply({embeds: [embedmessage]});
@@ -506,15 +515,14 @@ client.on('interactionCreate', async interaction => {
         const query = interaction.options.get("args").value;
         const queue = player.createQueue(interaction.guild, {
             autoSelfDeaf: false,
-            leaveOnEnd: false,
+            leaveOnEnd: true,
             leaveOnEmpty: true,
             leaveOnEmptyCooldown: 60000,
             ytdlOptions: {
                 quality: "highestaudio",
                 filter: "audioonly",
                 highWaterMark: 1 << 25,
-                dlChunkSize: 0,
-                begin: '4m16s'
+                dlChunkSize: 0
             },
             metadata: {
                 channel: interaction.channel
@@ -628,7 +636,100 @@ client.on('interactionCreate', async interaction => {
         .addField('Progress Bar', `${queue.createProgressBar()}`, true)
         .setTimestamp()
 
-        interaction.reply({embeds: [nowplayingembed]});
+        const button = new MessageActionRow()
+        .addComponents(
+            new MessageButton()
+            .setCustomId('resume')
+            .setLabel('▶️')
+            .setStyle('SUCCESS')
+        )
+        .addComponents(
+            new MessageButton()
+            .setCustomId('pause')
+            .setLabel('⏸️')
+            .setStyle('PRIMARY')
+        )
+        .addComponents(
+            new MessageButton()
+            .setCustomId('skip')
+            .setLabel('⏭️')
+            .setStyle('PRIMARY')
+        )
+        .addComponents(
+            new MessageButton()
+            .setCustomId('stop')
+            .setLabel('⏹️')
+            .setStyle('DANGER')
+        )
+
+        const btnfilter = i => i.user.id === interaction.user.id;
+        const collector = interaction.channel.createMessageComponentCollector({ filter: btnfilter, time: 60000 });
+
+        collector.on('collect', async i => {
+
+            if (i.customId === 'resume') {
+                button.components[0].setDisabled(true);
+                button.components[1].setDisabled(true);
+                button.components[2].setDisabled(true);
+                button.components[3].setDisabled(true);
+                interaction.editReply({components: [button]});
+                const queue = player.getQueue(interaction.guild.id);
+                if (queue.setPaused(false)) return i.reply({content: '**Lagu berlangsung**'});
+                queue.setPaused(false);
+                await i.reply({content: '**Lagu telah diresume**'});
+                collector.stop();
+            }
+
+            if (i.customId === 'pause') {
+                button.components[0].setDisabled(true);
+                button.components[1].setDisabled(true);
+                button.components[2].setDisabled(true);
+                button.components[3].setDisabled(true);
+                interaction.editReply({components: [button]});
+                const queue = player.getQueue(interaction.guild.id);
+                if (queue.setPaused(true)) return i.reply({content: '**Lagu dipause**'});
+                queue.setPaused(true);
+                await i.reply({content: '**Lagu telah dipause**'});
+                collector.stop();
+            }
+
+            if (i.customId === 'skip') {
+                button.components[0].setDisabled(true);
+                button.components[1].setDisabled(true);
+                button.components[2].setDisabled(true);
+                button.components[3].setDisabled(true);
+                interaction.editReply({components: [button]});
+                const queue = player.getQueue(interaction.guild.id);
+                queue.skip();
+                await i.reply({content: '**Lagu diskip**'});
+                collector.stop();
+            }
+
+            if (i.customId === 'stop') {
+                button.components[0].setDisabled(true);
+                button.components[1].setDisabled(true);
+                button.components[2].setDisabled(true);
+                button.components[3].setDisabled(true);
+                interaction.editReply({components: [button]});
+                const queue = player.getQueue(interaction.guild.id);
+                queue.destroy();
+                await i.reply({content: '**Lagu distop**'});
+                collector.stop();
+            }
+    
+            collector.on('end', collected => console.log(collected.size));
+
+        });
+
+        interaction.reply({embeds: [nowplayingembed], components: [button]});
+        setTimeout(() => {
+            button.components[0].setDisabled(true);
+            button.components[1].setDisabled(true);
+            button.components[2].setDisabled(true);
+            button.components[3].setDisabled(true);
+            interaction.editReply({components: [button]});
+            collector.stop();
+        }, 60000);
     }
 
     if (commandName === 'filter') {
@@ -721,7 +822,7 @@ client.on('interactionCreate', async interaction => {
             .addField('Material', material1 + ', ' + material2 + ', ' + material3)
             .addField('Costs', `${moracosts}`)
     
-            .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+            .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
             .setTimestamp()
             interaction.reply({embeds: [embed]});
         } else if (interaction.options.get("characters")) {
@@ -750,13 +851,21 @@ client.on('interactionCreate', async interaction => {
             .addField('Material', material1 + ', ' + material2 + ', ' + material3 + ', ' + material4 + ', ' + material5)
             .addField('Costs', `${moracosts}`)
     
-            .setFooter({text: `Direquest oleh ${interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+            .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
             .setTimestamp()
     
             interaction.reply({embeds: [embed]});
         } else {
             interaction.reply('**Pilih salah satu option yang disediakan**');
         }
+    }
+
+    if(commandName == 'afk') {
+        const afkjson = require('./src/data/afk.json');
+        afkjson.afkvalue.push(interaction.user.id);
+        fs.writeFileSync('./src/data/afk.json', JSON.stringify(afkjson));
+        interaction.reply(`**\`${interaction.user.username}\` telah AFK!**`);
+        interaction.member.setNickname(`[AFK] ${interaction.user.username}`);
     }
 
     const command = client.commands.get(interaction.commandName);
@@ -776,6 +885,22 @@ client.on('messageCreate', async message => {
 
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
+
+    const afkjson = require('./src/data/afk.json');
+
+    if (afkjson.afkvalue.indexOf(message.author.id) != -1) {
+        afkjson.afkvalue.splice(afkjson.afkvalue.indexOf(message.author.id), 1);
+        fs.writeFileSync('./src/data/afk.json', JSON.stringify(afkjson));
+        message.member.setNickname(message.author.username)
+        message.channel.send(`**\`${message.author.username}\` telah kembali dari AFK!**`);
+    }
+
+    let mentioned = message.mentions.members.first();
+    
+    if (mentioned) {
+        if (afkjson.afkvalue.indexOf(mentioned.id) != -1)
+        message.channel.send(`**\`${mentioned.user.username}\` sedang AFK!**`);
+    }
 
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     if (!message.guild) return;
@@ -1091,6 +1216,41 @@ client.on('messageCreate', async msg => {
                 }
             })
         }
+    }
+
+});
+
+client.on('presenceUpdate', async (updatePresence, oldupdatePresence) => {
+
+    const ApexRole = oldupdatePresence.guild.roles.cache.get('965725484883275837');
+    const GenshinImpactRole = oldupdatePresence.guild.roles.cache.get('965765239251566653');
+    const SeaofThievesRole = oldupdatePresence.guild.roles.cache.get('966017120762724493');
+    const VALORANTRole = oldupdatePresence.guild.roles.cache.get('965725484883275837');
+    const CSGORole = oldupdatePresence.guild.roles.cache.get('965763554793889923');
+    const SpotifyRole = oldupdatePresence.guild.roles.cache.get('965766007555780639');
+    if (!ApexRole) return;
+    if (!GenshinImpactRole) return;
+    if (!SeaofThievesRole) return;
+    if (!VALORANTRole) return;
+    if (!CSGORole) return;
+    if (!SpotifyRole) return;
+
+    console.log(updatePresence.member.presence.activities[0]);
+
+    if (updatePresence.member.presence.activities[0] === undefined) {
+        updatePresence.member.roles.remove(ApexRole) && updatePresence.member.roles.remove(GenshinImpactRole) && updatePresence.member.roles.remove(VALORANTRole) && updatePresence.member.roles.remove(CSGORole) && updatePresence.member.roles.remove(SpotifyRole);
+    } else if (updatePresence.member.presence.activities[0].name === "Apex Legends") {
+        updatePresence.member.roles.add(ApexRole);
+    } else if (updatePresence.member.presence.activities[0].name === "Genshin Impact") {
+        updatePresence.member.roles.add(GenshinImpactRole);
+    } else if (updatePresence.member.presence.activities[0].name === "Sea of Thieves") {
+        updatePresence.member.roles.add(SeaofThievesRole);
+    } else if (updatePresence.member.presence.activities[0].name === "VALORANT") {
+        updatePresence.member.roles.add(VALORANTRole);
+    } else if (updatePresence.member.presence.activities[0].name === "Counter-Strike: Global Offensive") {
+        updatePresence.member.roles.add(CSGORole);
+    } else if (updatePresence.member.presence.activities[0].name === "Spotify") {
+        updatePresence.member.roles.add(SpotifyRole);
     }
 
 });
