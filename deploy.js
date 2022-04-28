@@ -2,7 +2,7 @@ const fs = require('fs');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v10');
-const { token, clientId } = require('./src/data/config.json')
+const { token, clientId } = require('./src/data/config.json');
 
 const commands = [
   new SlashCommandBuilder()
@@ -109,6 +109,10 @@ const commands = [
   ),
 
   new SlashCommandBuilder()
+  .setName('afk')
+  .setDescription('Set AFK'),
+
+  new SlashCommandBuilder()
   .setName('time')
   .setDescription('Server time'),
 
@@ -142,13 +146,15 @@ const commands = [
     option.setName('value')
     .setDescription('Activities value')
     .setRequired(true)
-    .addChoice('Youtube Together', '880218394199220334')
-    .addChoice('Fishington', '814288819477020702')
-    .addChoice('Chess In The Park', '832012774040141894')
-    .addChoice('Betrayal', '773336526917861400')
-    .addChoice('Poker In The Night', '755827207812677713')
-    .addChoice('Word Snacks', '879863976006127627')
-    .addChoice('Letter League', '879863686565621790')
+    .addChoices(
+      {name: 'Youtube Together', value: '880218394199220334'},
+      {name: 'Fishington', value: '814288819477020702'},
+      {name: 'Chess In The Park', value: '832012774040141894'},
+      {name: 'Betrayal', value: '773336526917861400'},
+      {name: 'Poker In The Night', value: '755827207812677713'},
+      {name: 'Word Snacks', value: '879863976006127627'},
+      {name: 'Letter League', value: '879863686565621790'},
+    )
   ),
 
   new SlashCommandBuilder()
@@ -158,11 +164,13 @@ const commands = [
     option.setName('filter')
     .setDescription('Choose audio filter')
     .setRequired(true)
-    .addChoice('Bassboost', 'bassboost')
-    .addChoice('Karaoke', 'karaoke')
-    .addChoice('Nightcore', 'nightcore')
-    .addChoice('8D', '8D')
-    .addChoice('Earrape', 'earrape')
+    .addChoices(
+      {name: 'Bassboost', value: 'bassboost'},
+      {name: 'Karaoke', value: 'karaoke'},
+      {name: 'Nightcore', value: 'nightcore'},
+      {name: '8D', value: '8D'},
+      {name: 'Earrape', value: 'earrape'},
+    )
   ),
 
   new SlashCommandBuilder()
@@ -185,19 +193,6 @@ const commands = [
   new SlashCommandBuilder()
   .setName('link')
   .setDescription('Server link'),
-
-  new SlashCommandBuilder()
-  .setName('corona')
-  .setDescription('Corona tracker')
-  .addStringOption(option =>
-    option.setName('negara')
-    .setDescription('Berikan nama negara')
-    .setRequired(true)
-  ),
-
-  new SlashCommandBuilder()
-  .setName('totalcorona')
-  .setDescription('Total corona'),
 
 ]
 
