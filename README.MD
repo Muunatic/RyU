@@ -54,6 +54,7 @@ npm start
 
 |Version|Vulnerability|
 |-|-|
+|5.4.x|:heavy_check_mark:|
 |5.3.x|:heavy_check_mark:|
 |5.2.x|:x:|
 |5.1.x|:x:|
