@@ -12,7 +12,7 @@
   "author": "Muunatic",
   "license": "UNLICENSED",
   "dependencies": {
-    "@discordjs/builders": "^0.13.0",
+    "@discordjs/builders": "^0.15.0",
     "@discordjs/rest": "^0.4.1",
     "cpu-stat": "^2.0.1",
     "discord-api-types": "^0.32.1",
