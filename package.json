@@ -31,7 +31,7 @@
     "ytdl-core": "^4.11.0"
   },
   "devDependencies": {
-    "eslint": "^8.18.0"
+    "eslint": "^8.19.0"
   },
   "optionalDependencies": {
     "@discordjs/voice": "^0.10.0"
