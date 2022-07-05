@@ -38,7 +38,7 @@
     "npm": ">=8.5.0"
   },
   "optionalDependencies": {
-    "@discordjs/opus": "^0.7.0",
+    "@discordjs/opus": "^0.8.0",
     "@discordjs/voice": "^0.9.0"
   }
 }
