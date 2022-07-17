@@ -19,7 +19,7 @@
     "discord-api-types": "^0.34.0",
     "discord-giveaways": "^5.2.2",
     "discord-player": "^5.2.2",
-    "discord.js": "^13.8.0",
+    "discord.js": "^14.0.1",
     "dotenv": "^16.0.1",
     "ffmpeg": "^0.0.4",
     "mal-scraper": "^2.11.4",
