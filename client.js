@@ -136,29 +136,37 @@ client.on('interactionCreate', async interaction => {
         interaction.reply(`Pong !! \`${client.ws.ping}ms.\` Latensi \`${Date.now() - interaction.createdTimestamp}ms.\``);
     }
 
-    if (commandName === 'time') {
+    if (commandName === 'stats') {
+
         let indonesiaTime = moment().tz('Asia/Jakarta').format();
         setInterval(() => { 
             indonesiaTime -= 2000;
         });
     
-        const jammenitdetikindonesia = indonesiaTime.slice(11, -6);
-        const tanggalindonesia = indonesiaTime.slice(0, -15);
+        const idTime = indonesiaTime.slice(11, -6);
+        const idDate = indonesiaTime.slice(0, -15);
+        const gmtSevenPlus = idTime + ' ' + idDate;
 
-        interaction.reply(`**${jammenitdetikindonesia} ${tanggalindonesia}**`);
-    }
-
-    if (commandName === 'stats') {
-        cpuStat.usagePercent(function(err, percent) {
+        cpuStat.usagePercent((err, percent) => {
             if (err) {
               return console.log(err);
             }
 
+            let totalSeconds = (client.uptime / 1000);
+            let days = Math.floor(totalSeconds / 86400);
+            totalSeconds %= 86400;
+            let hours = Math.floor(totalSeconds / 3600);
+            totalSeconds %= 3600;
+            let minutes = Math.floor(totalSeconds / 60);
+            let seconds = Math.floor(totalSeconds % 60);
+
             let statsembed = new MessageEmbed()
 
+            .setAuthor({name: 'Client Stats', iconURL: client.user.displayAvatarURL({format : 'png', dynamic : true, size : 1024})})
             .setColor('#89e0dc')
-            .setTitle('Client Stats')
+            .setTitle(gmtSevenPlus)
             .setThumbnail(`${interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
+            .setDescription(`client telah aktif selama **${days} hari, ${hours} jam, ${minutes} menit, dan ${seconds} detik**.`)
             .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
             .setTimestamp()
 
@@ -171,26 +179,6 @@ client.on('interactionCreate', async interaction => {
             
             interaction.reply({embeds: [statsembed]})
         });
-    }
-
-    if (commandName === 'uptime') {
-        let totalSeconds = (client.uptime / 1000);
-        let days = Math.floor(totalSeconds / 86400);
-        totalSeconds %= 86400;
-        let hours = Math.floor(totalSeconds / 3600);
-        totalSeconds %= 3600;
-        let minutes = Math.floor(totalSeconds / 60);
-        let seconds = Math.floor(totalSeconds % 60);
-        const uptimeembed = new MessageEmbed()
-
-        .setColor('#89e0dc')
-        .setTitle('Uptime')
-        .setThumbnail(`${interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
-        .setDescription(`bot ini telah aktif selama **${days} hari, ${hours} jam, ${minutes} menit, dan ${seconds} detik**.`)
-        .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
-        .setTimestamp()
-
-        interaction.reply({embeds: [uptimeembed]});
     }
 
     if (commandName === 'serverinfo') {
@@ -233,19 +221,6 @@ client.on('interactionCreate', async interaction => {
         interaction.reply({embeds: [avatarembed]});
     }
 
-    if (commandName === 'aboutbot') { 
-        const aboutbotembed = new MessageEmbed()
-        
-        .setColor('#89e0dc')
-        .setTitle('Client Info')
-        .setThumbnail(`${interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
-        .setDescription(`Nama : **${interaction.client.user.username}**\n\nVersi : **${packagejson.version}**\n\nPrefix : **${prefix}**\n\nDev : **${packagejson.author}**\n\nSource Code : **${packagejson.homepage}**`)
-        .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
-        .setTimestamp()
-
-        interaction.reply({embeds: [aboutbotembed]});
-    }
-
     if (commandName === 'help') {
         const embed = new MessageEmbed()
 
@@ -253,7 +228,7 @@ client.on('interactionCreate', async interaction => {
         .setTitle('Help commands')
         .setDescription(`Prefix = **${prefix}**`)
         .addFields(
-            { name: 'General command', value: 'ping, uptime, time, userinfo, serverinfo, osu, avatar, stats, weather, aboutbot, afk, activities, mal, genshin' },
+            { name: 'General command', value: 'ping, time, userinfo, serverinfo, osu, avatar, stats, weather, afk, activities, mal, genshin' },
             { name: 'DM command', value: 'report' },
             { name: 'Music command', value: 'play, skip, stop, pause, resume, volume, queue, nowplaying, repeat, bitrate, lock, unlock, filter' },
             { name: 'Moderator command', value: 'nickname' },
@@ -463,22 +438,6 @@ client.on('interactionCreate', async interaction => {
 
             interaction.reply({embeds: [cuaca]});
         });
-    }
-
-    if (commandName === 'link') {
-        const serverid = client.guilds.cache.get(process.env.SERVERID);
-        const ownerid = serverid.ownerId;
-        const ownercache = client.users.cache.get(ownerid);
-        const embedmessage = new MessageEmbed()
-
-        .setColor('#89e0dc')
-        .setTitle(`${serverid.name} Server`)
-        .setThumbnail(interaction.guild.iconURL({format : 'png', dynamic : true, size : 4096}))
-        .setDescription(`**${process.env.DISCORDLINK}\n\nName : ${serverid.name}\n\nOwner : ${ownercache.username}#${ownercache.discriminator}\n\nMember : ${serverid.memberCount}**`)
-        .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
-        .setTimestamp()
-
-        interaction.reply({embeds: [embedmessage]});
     }
 
     if (commandName === 'play') {
@@ -1192,35 +1151,44 @@ client.on('messageCreate', async msg => {
 
 client.on('presenceUpdate', async (updatePresence, oldupdatePresence) => {
 
-    const ApexRole = oldupdatePresence.guild.roles.cache.get('ROLE_ID');
-    const GenshinImpactRole = oldupdatePresence.guild.roles.cache.get('ROLE_ID');
-    const SeaofThievesRole = oldupdatePresence.guild.roles.cache.get('ROLE_ID');
-    const VALORANTRole = oldupdatePresence.guild.roles.cache.get('ROLE_ID');
-    const CSGORole = oldupdatePresence.guild.roles.cache.get('ROLE_ID');
-    const SpotifyRole = oldupdatePresence.guild.roles.cache.get('ROLE_ID');
-    if (!ApexRole) return;
-    if (!GenshinImpactRole) return;
-    if (!SeaofThievesRole) return;
-    if (!VALORANTRole) return;
-    if (!CSGORole) return;
-    if (!SpotifyRole) return;
+    const getEnv = process.env;
+    const cacheId = oldupdatePresence.guild.roles.cache;
+    
+    if (!cacheId.get(getEnv.activityRole1 || getEnv.activityRole2 || getEnv.activityRole3 || getEnv.activityRole4 || getEnv.activityRole5 || getEnv.activityRole6)) return;
 
-    console.log(updatePresence.member.presence.activities[0]);
+    const presence0 = updatePresence.member.presence.activities[0];
+    const presence1 = updatePresence.member.presence.activities[1];
 
-    if (updatePresence.member.presence.activities[0] === undefined) {
-        updatePresence.member.roles.remove(ApexRole) && updatePresence.member.roles.remove(GenshinImpactRole) && updatePresence.member.roles.remove(VALORANTRole) && updatePresence.member.roles.remove(CSGORole) && updatePresence.member.roles.remove(SpotifyRole);
-    } else if (updatePresence.member.presence.activities[0].name === "Apex Legends") {
-        updatePresence.member.roles.add(ApexRole);
-    } else if (updatePresence.member.presence.activities[0].name === "Genshin Impact") {
-        updatePresence.member.roles.add(GenshinImpactRole);
-    } else if (updatePresence.member.presence.activities[0].name === "Sea of Thieves") {
-        updatePresence.member.roles.add(SeaofThievesRole);
-    } else if (updatePresence.member.presence.activities[0].name === "VALORANT") {
-        updatePresence.member.roles.add(VALORANTRole);
-    } else if (updatePresence.member.presence.activities[0].name === "Counter-Strike: Global Offensive") {
-        updatePresence.member.roles.add(CSGORole);
-    } else if (updatePresence.member.presence.activities[0].name === "Spotify") {
-        updatePresence.member.roles.add(SpotifyRole);
+    if (presence0?.name === undefined) {
+        updatePresence.member.roles.remove(getEnv.activityRole1) && updatePresence.member.roles.remove(getEnv.activityRole2) && updatePresence.member.roles.remove(getEnv.activityRole3) && updatePresence.member.roles.remove(getEnv.activityRole4) && updatePresence.member.roles.remove(getEnv.activityRole5) && updatePresence.member.roles.remove(getEnv.activityRole6);
+    } else if (presence0.name === "Custom Status") {
+        if (presence1?.name === undefined) {
+            updatePresence.member.roles.remove(getEnv.activityRole1) && updatePresence.member.roles.remove(getEnv.activityRole2) && updatePresence.member.roles.remove(getEnv.activityRole3) && updatePresence.member.roles.remove(getEnv.activityRole4) && updatePresence.member.roles.remove(getEnv.activityRole5) && updatePresence.member.roles.remove(getEnv.activityRole6);
+        } else if (presence1.name === "Apex Legends") {
+            updatePresence.member.roles.add(getEnv.activityRole1);
+        } else if (presence1.name === "Genshin Impact") {
+            updatePresence.member.roles.add(getEnv.activityRole2);
+        } else if (presence1.name === "Sea of Thieves") {
+            updatePresence.member.roles.add(getEnv.activityRole3);
+        } else if (presence1.name === "VALORANT") {
+            updatePresence.member.roles.add(getEnv.activityRole4);
+        } else if (presence1.name === "Counter-Strike: Global Offensive") {
+            updatePresence.member.roles.add(getEnv.activityRole5);
+        } else if (presence1.name === "Spotify") {
+            updatePresence.member.roles.add(getEnv.activityRole6);
+        }
+    } else if (presence0.name === "Apex Legends") {
+        updatePresence.member.roles.add(getEnv.activityRole1);
+    } else if (presence0.name === "Genshin Impact") {
+        updatePresence.member.roles.add(getEnv.activityRole2);
+    } else if (presence0.name === "Sea of Thieves") {
+        updatePresence.member.roles.add(getEnv.activityRole3);
+    } else if (presence0.name === "VALORANT") {
+        updatePresence.member.roles.add(getEnv.activityRole4);
+    } else if (presence0.name === "Counter-Strike: Global Offensive") {
+        updatePresence.member.roles.add(getEnv.activityRole5);
+    } else if (presence0.name === "Spotify") {
+        updatePresence.member.roles.add(getEnv.activityRole6);
     }
 
 });

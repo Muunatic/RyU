@@ -71,10 +71,6 @@ const commands = [
   new SlashCommandBuilder()
   .setName('help')
   .setDescription('Help command'),
-
-  new SlashCommandBuilder()
-  .setName('aboutbot')
-  .setDescription('About bot'),
   
   new SlashCommandBuilder()
   .setName('ping')
@@ -111,10 +107,6 @@ const commands = [
   new SlashCommandBuilder()
   .setName('afk')
   .setDescription('Set AFK'),
-
-  new SlashCommandBuilder()
-  .setName('time')
-  .setDescription('Server time'),
 
   new SlashCommandBuilder()
   .setName('mal')
@@ -178,10 +170,6 @@ const commands = [
   .setDescription('Client stats'),
 
   new SlashCommandBuilder()
-  .setName('uptime')
-  .setDescription('Client uptime'),
-
-  new SlashCommandBuilder()
   .setName('weather')
   .setDescription('Info cuaca')
   .addStringOption(option =>
@@ -189,10 +177,6 @@ const commands = [
     .setDescription('Berikan nama kota')
     .setRequired(true)
   ),
-
-  new SlashCommandBuilder()
-  .setName('link')
-  .setDescription('Server link'),
 
 ]
 

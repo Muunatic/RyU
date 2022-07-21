@@ -1,6 +1,6 @@
 {
   "name": "ryu",
-  "version": "5.4.0",
+  "version": "5.4.1",
   "description": "RyU Framework",
   "main": "index.js",
   "scripts": {
@@ -15,14 +15,14 @@
     "@discordjs/builders": "^0.13.0",
     "@discordjs/rest": "^0.4.1",
     "cpu-stat": "^2.0.1",
-    "discord-api-types": "^0.32.0",
+    "discord-api-types": "^0.32.1",
     "discord-giveaways": "^5.1.1",
     "discord-player": "^5.2.2",
     "discord.js": "^13.6.0",
-    "dotenv": "^16.0.0",
+    "dotenv": "^16.0.1",
     "ffmpeg": "^0.0.4",
     "mal-scraper": "^2.11.4",
-    "moment": "^2.29.3",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.34",
     "ms": "^2.1.3",
     "node-osu": "^2.2.1",
@@ -31,14 +31,14 @@
     "ytdl-core": "^4.11.0"
   },
   "devDependencies": {
-    "eslint": "^8.14.0"
+    "eslint": "^8.20.0"
   },
   "engines": {
     "node": ">=16.14.2",
     "npm": ">=8.5.0"
   },
   "optionalDependencies": {
-    "@discordjs/opus": "^0.7.0",
+    "@discordjs/opus": "^0.8.0",
     "@discordjs/voice": "^0.9.0"
   }
 }
