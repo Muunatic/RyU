@@ -23,7 +23,7 @@
     "dotenv": "^16.0.1",
     "ffmpeg": "^0.0.4",
     "mal-scraper": "^2.11.4",
-    "moment": "^2.29.3",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.34",
     "ms": "^2.1.3",
     "node-osu": "^2.2.1",
