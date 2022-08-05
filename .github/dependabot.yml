@@ -29,4 +29,4 @@ updates:
     - dependency-name: "discord-giveaways"
       update-types: ["version-update:semver-major"]
     - dependency-name: "discord-player"
-      update-types: ["version-update:semver-major"]
+      update-types: ["version-update:semver-major", "version-update:semver-minor"]
