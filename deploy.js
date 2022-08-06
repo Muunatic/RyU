@@ -10,7 +10,7 @@ const commands = [
   .setDescription('Play music')
   .addStringOption(option =>
     option.setName('args')
-    .setDescription('Berikan args untuk memulai lagu')
+    .setDescription('Give args to playing music')
     .setRequired(true)
   ),
 
@@ -47,7 +47,7 @@ const commands = [
   .setDescription('Volume adjustment')
   .addNumberOption(option =>
     option.setName('number')
-    .setDescription('Berikan angka untuk mengubah volume')
+    .setDescription('Give number value to change volume')
     .setRequired(true)
   ),
 
@@ -64,7 +64,7 @@ const commands = [
   .setDescription('Bitrate voice channel')
   .addNumberOption(option =>
     option.setName('number')
-    .setDescription('Berikan angka untuk merubah bitrate')
+    .setDescription('Give number value to change bitrate')
     .setRequired(true)
   ),
 
@@ -119,10 +119,10 @@ const commands = [
 
   new SlashCommandBuilder()
   .setName('osu')
-  .setDescription('Osu profile')
+  .setDescription('OSU profile')
   .addStringOption(option =>
     option.setName('username')
-    .setDescription('Username osu')
+    .setDescription('OSU username')
     .setRequired(true)
   )
   .addStringOption(option2 =>
@@ -171,10 +171,10 @@ const commands = [
 
   new SlashCommandBuilder()
   .setName('weather')
-  .setDescription('Info cuaca')
+  .setDescription('Weather info')
   .addStringOption(option =>
-    option.setName('kota')
-    .setDescription('Berikan nama kota')
+    option.setName('city')
+    .setDescription('City value')
     .setRequired(true)
   ),
 
@@ -193,7 +193,7 @@ const rest = new REST({ version: '10' }).setToken(token);
 
 (async () => {
 	try {
-		console.log('Refreshing...');
+		console.log('Deploying');
 		await rest.put(
 			Routes.applicationCommands(clientId),
 			{ body: commands },
