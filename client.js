@@ -145,7 +145,7 @@ client.on('interactionCreate', async interaction => {
     
         const idTime = indonesiaTime.slice(11, -6);
         const idDate = indonesiaTime.slice(0, -15);
-        const gmtSevenPlus = idTime + ' ' + idDate;
+        const gmtPlusSeven = idTime + ' ' + idDate;
 
         cpuStat.usagePercent((err, percent) => {
             if (err) {
@@ -164,7 +164,7 @@ client.on('interactionCreate', async interaction => {
 
             .setAuthor({name: 'Client Stats', iconURL: client.user.displayAvatarURL({format : 'png', dynamic : true, size : 1024})})
             .setColor('#89e0dc')
-            .setTitle(gmtSevenPlus)
+            .setTitle(gmtPlusSeven)
             .setThumbnail(`${interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
             .setDescription(`client telah aktif selama **${days} hari, ${hours} jam, ${minutes} menit, dan ${seconds} detik**.`)
             .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
@@ -228,7 +228,7 @@ client.on('interactionCreate', async interaction => {
         .setTitle('Help commands')
         .setDescription(`Prefix = **${prefix}**`)
         .addFields(
-            { name: 'General command', value: 'ping, time, userinfo, serverinfo, osu, avatar, stats, weather, afk, activities, mal, genshin' },
+            { name: 'General command', value: 'ping, userinfo, serverinfo, osu, avatar, stats, weather, afk, activities, mal, genshin' },
             { name: 'DM command', value: 'report' },
             { name: 'Music command', value: 'play, skip, stop, pause, resume, volume, queue, nowplaying, repeat, bitrate, lock, unlock, filter' },
             { name: 'Moderator command', value: 'nickname' },
@@ -1159,36 +1159,62 @@ client.on('presenceUpdate', async (updatePresence, oldupdatePresence) => {
     const presence0 = updatePresence.member.presence.activities[0];
     const presence1 = updatePresence.member.presence.activities[1];
 
+    const removerole = updatePresence.member.roles.remove(getEnv.activityRole1) && updatePresence.member.roles.remove(getEnv.activityRole2) && updatePresence.member.roles.remove(getEnv.activityRole3) && updatePresence.member.roles.remove(getEnv.activityRole4) && updatePresence.member.roles.remove(getEnv.activityRole5) && updatePresence.member.roles.remove(getEnv.activityRole6);
+
     if (presence0?.name === undefined) {
-        updatePresence.member.roles.remove(getEnv.activityRole1) && updatePresence.member.roles.remove(getEnv.activityRole2) && updatePresence.member.roles.remove(getEnv.activityRole3) && updatePresence.member.roles.remove(getEnv.activityRole4) && updatePresence.member.roles.remove(getEnv.activityRole5) && updatePresence.member.roles.remove(getEnv.activityRole6);
+        removerole;
     } else if (presence0.name === "Custom Status") {
         if (presence1?.name === undefined) {
-            updatePresence.member.roles.remove(getEnv.activityRole1) && updatePresence.member.roles.remove(getEnv.activityRole2) && updatePresence.member.roles.remove(getEnv.activityRole3) && updatePresence.member.roles.remove(getEnv.activityRole4) && updatePresence.member.roles.remove(getEnv.activityRole5) && updatePresence.member.roles.remove(getEnv.activityRole6);
+            removerole;
         } else if (presence1.name === "Apex Legends") {
-            updatePresence.member.roles.add(getEnv.activityRole1);
+            removerole.then(() => {
+                updatePresence.member.roles.add(getEnv.activityRole1);
+            });
         } else if (presence1.name === "Genshin Impact") {
-            updatePresence.member.roles.add(getEnv.activityRole2);
+            removerole.then(() => {
+                updatePresence.member.roles.add(getEnv.activityRole2);
+            });
         } else if (presence1.name === "Sea of Thieves") {
-            updatePresence.member.roles.add(getEnv.activityRole3);
+            removerole.then(() => {
+                updatePresence.member.roles.add(getEnv.activityRole3);
+            });
         } else if (presence1.name === "VALORANT") {
-            updatePresence.member.roles.add(getEnv.activityRole4);
+            removerole.then(() => {
+                updatePresence.member.roles.add(getEnv.activityRole4);
+            });
         } else if (presence1.name === "Counter-Strike: Global Offensive") {
-            updatePresence.member.roles.add(getEnv.activityRole5);
+            removerole.then(() => {
+                updatePresence.member.roles.add(getEnv.activityRole5);
+            });
         } else if (presence1.name === "Spotify") {
-            updatePresence.member.roles.add(getEnv.activityRole6);
+            removerole.then(() => {
+                updatePresence.member.roles.add(getEnv.activityRole6);
+            });
         }
     } else if (presence0.name === "Apex Legends") {
-        updatePresence.member.roles.add(getEnv.activityRole1);
+        removerole.then(() => {
+            updatePresence.member.roles.add(getEnv.activityRole1);
+        });
     } else if (presence0.name === "Genshin Impact") {
-        updatePresence.member.roles.add(getEnv.activityRole2);
+        removerole.then(() => {
+            updatePresence.member.roles.add(getEnv.activityRole2);
+        });
     } else if (presence0.name === "Sea of Thieves") {
-        updatePresence.member.roles.add(getEnv.activityRole3);
+        removerole.then(() => {
+            updatePresence.member.roles.add(getEnv.activityRole3);
+        });
     } else if (presence0.name === "VALORANT") {
-        updatePresence.member.roles.add(getEnv.activityRole4);
+        removerole.then(() => {
+            updatePresence.member.roles.add(getEnv.activityRole4);
+        });
     } else if (presence0.name === "Counter-Strike: Global Offensive") {
-        updatePresence.member.roles.add(getEnv.activityRole5);
+        removerole.then(() => {
+            updatePresence.member.roles.add(getEnv.activityRole5);
+        });
     } else if (presence0.name === "Spotify") {
-        updatePresence.member.roles.add(getEnv.activityRole6);
+        removerole.then(() => {
+            updatePresence.member.roles.add(getEnv.activityRole6);
+        });
     }
 
 });

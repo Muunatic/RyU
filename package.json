@@ -1,6 +1,6 @@
 {
   "name": "ryu",
-  "version": "5.4.1",
+  "version": "5.4.1-1",
   "description": "RyU Framework",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "deploy": "node deploy.js",
     "test": "eslint ."
   },
-  "homepage": "https://github.com/Muunatic/RyU",
+  "homepage": "https://esrynt.org/ryu/",
   "author": "Muunatic",
   "license": "UNLICENSED",
   "dependencies": {
