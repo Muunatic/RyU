@@ -1,4 +1,5 @@
-version: 2
+version: 2.1
+
 jobs:
   lint:
     docker:
@@ -7,3 +8,8 @@ jobs:
       - checkout
       - run: npm ci
       - run: npm test
+
+workflows:
+  say-hello-workflow:
+    jobs:
+      - lint
