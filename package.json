@@ -20,7 +20,7 @@
     "discord-giveaways": "^5.2.2",
     "discord-player": "^5.2.2",
     "discord.js": "^13.10.3",
-    "dotenv": "^16.0.1",
+    "dotenv": "^16.0.2",
     "ffmpeg": "^0.0.4",
     "mal-scraper": "^2.11.4",
     "moment": "^2.29.4",
