@@ -10,6 +10,6 @@ jobs:
       - run: npm test
 
 workflows:
-  say-hello-workflow:
+  lint:
     jobs:
       - lint
