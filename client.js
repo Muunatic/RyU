@@ -336,7 +336,7 @@ client.on('interactionCreate', async interaction => {
                 .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
             
                 await i.reply({embeds: [avatarembed]});
-                collector.stop()
+                collector.stop();
             }
 
             collector.on('end', collected => console.log(collected.size));
@@ -357,8 +357,8 @@ client.on('interactionCreate', async interaction => {
     if (commandName === 'osu') {
         const args1 = interaction.options.get("username").value;
         const args2 = interaction.options.get("mode").value;
-        const user = args1
-        const mode = args2
+        const user = args1;
+        const mode = args2;
         if (!user) return interaction.reply('**Username tidak ditemukan**');
         if (!mode) return interaction.reply('**Mode tidak ditemukan**');
         const data = await osuApi.getUser({
@@ -888,7 +888,7 @@ client.on('messageCreate', async message => {
                     setTimeout(() => msg.delete(), 5000)
                 });
             } 
-        })
+        });
     }
 
     if (command === 'user') {
@@ -962,7 +962,7 @@ client.on('messageCreate', async message => {
                 message.channel.send('**Canceled**');
                 collector.stop();
             }
-        })
+        });
     }
 
     if (command === 'mute') {
@@ -1143,7 +1143,7 @@ client.on('messageCreate', async msg => {
                     msg.channel.send('**Canceled**');
                     collector.stop();
                 }
-            })
+            });
         }
     }
 
@@ -1162,56 +1162,68 @@ client.on('presenceUpdate', async (updatePresence, oldupdatePresence) => {
     const removerole = updatePresence.member.roles.remove(getEnv.activityRole1) && updatePresence.member.roles.remove(getEnv.activityRole2) && updatePresence.member.roles.remove(getEnv.activityRole3) && updatePresence.member.roles.remove(getEnv.activityRole4) && updatePresence.member.roles.remove(getEnv.activityRole5) && updatePresence.member.roles.remove(getEnv.activityRole6);
 
     if (presence0?.name === undefined) {
-        removerole;
+        return removerole;
     } else if (presence0.name === "Custom Status") {
         if (presence1?.name === undefined) {
-            removerole;
+            return removerole;
         } else if (presence1.name === "Apex Legends") {
+            if (updatePresence.member.roles.cache.get(getEnv.activityRole1)) return;
             removerole.then(() => {
                 updatePresence.member.roles.add(getEnv.activityRole1);
             });
         } else if (presence1.name === "Genshin Impact") {
+            if (updatePresence.member.roles.cache.get(getEnv.activityRole2)) return;
             removerole.then(() => {
                 updatePresence.member.roles.add(getEnv.activityRole2);
             });
-        } else if (presence1.name === "Sea of Thieves") {
+        } else if (presence1.name === "osu!") {
+            if (updatePresence.member.roles.cache.get(getEnv.activityRole3)) return;
             removerole.then(() => {
                 updatePresence.member.roles.add(getEnv.activityRole3);
             });
         } else if (presence1.name === "VALORANT") {
+            if (updatePresence.member.roles.cache.get(getEnv.activityRole4)) return;
             removerole.then(() => {
                 updatePresence.member.roles.add(getEnv.activityRole4);
             });
         } else if (presence1.name === "Counter-Strike: Global Offensive") {
+            if (updatePresence.member.roles.cache.get(getEnv.activityRole5)) return;
             removerole.then(() => {
                 updatePresence.member.roles.add(getEnv.activityRole5);
             });
         } else if (presence1.name === "Spotify") {
+            if (updatePresence.member.roles.cache.get(getEnv.activityRole6)) return;
             removerole.then(() => {
                 updatePresence.member.roles.add(getEnv.activityRole6);
             });
         }
     } else if (presence0.name === "Apex Legends") {
+        if (updatePresence.member.roles.cache.get(getEnv.activityRole1)) return;
         removerole.then(() => {
             updatePresence.member.roles.add(getEnv.activityRole1);
         });
     } else if (presence0.name === "Genshin Impact") {
+        if (updatePresence.member.roles.cache.get(getEnv.activityRole2)) return;
         removerole.then(() => {
             updatePresence.member.roles.add(getEnv.activityRole2);
         });
-    } else if (presence0.name === "Sea of Thieves") {
+    } else if (presence0.name === "osu!") {
+        if (updatePresence.member.roles.cache.get(getEnv.activityRole3)) return;
         removerole.then(() => {
             updatePresence.member.roles.add(getEnv.activityRole3);
         });
     } else if (presence0.name === "VALORANT") {
+        if (updatePresence.member.roles.cache.get(getEnv.activityRole4)) return;
         removerole.then(() => {
             updatePresence.member.roles.add(getEnv.activityRole4);
         });
     } else if (presence0.name === "Counter-Strike: Global Offensive") {
+        if (updatePresence.member.roles.cache.get(getEnv.activityRole5)) return;
         removerole.then(() => {
             updatePresence.member.roles.add(getEnv.activityRole5);
         });
     } else if (presence0.name === "Spotify") {
+        if (updatePresence.member.roles.cache.get(getEnv.activityRole6)) return;
         removerole.then(() => {
             updatePresence.member.roles.add(getEnv.activityRole6);
         });
