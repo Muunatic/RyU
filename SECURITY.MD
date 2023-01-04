@@ -2,7 +2,10 @@
 
 |Version|Vulnerability|
 |-|-|
-|5.4.1|:heavy_check_mark:|
+|5.5.0|:heavy_check_mark:|
+|5.4.1-2|:heavy_check_mark:|
+|5.4.1-1|:x:|
+|5.4.1|:x:|
 |5.4.0|:x:|
 |5.3.0|:x:|
 |5.2.2|:x:|
