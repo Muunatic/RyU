@@ -20,8 +20,8 @@
 
 |Tools|Version|
 |-|-|
-|**Node.JS**|**>=16.14.2**|
-|**NPM**|**>=8.5.0**|
+|**Node.JS**|**>=16.19.0**|
+|**NPM**|**>=8.19.3**|
 
 ## How to use
 
@@ -54,6 +54,7 @@ npm start
 
 |Version|Vulnerability|
 |-|-|
+|5.5.x|:heavy_check_mark:|
 |5.4.x|:heavy_check_mark:|
 |5.3.x|:x:|
 |5.2.x|:x:|
