@@ -1,10 +1,10 @@
 {
   "name": "ryu",
-  "version": "5.4.1-2",
+  "version": "5.5.0",
   "description": "RyU Framework",
   "main": "index.js",
   "scripts": {
-    "start": "node client.js",
+    "start": "node index.js",
     "deploy": "node deploy.js",
     "test": "eslint ."
   },
@@ -12,33 +12,26 @@
   "author": "Muunatic",
   "license": "UNLICENSED",
   "dependencies": {
-    "@discordjs/builders": "^0.13.0",
-    "@discordjs/rest": "^0.4.1",
-    "cpu-stat": "^2.0.1",
-    "discord-api-types": "^0.32.1",
-    "discord-giveaways": "^5.1.1",
-    "discord-player": "^5.2.2",
-    "discord.js": "^13.6.0",
-    "dotenv": "^16.0.1",
-    "ffmpeg": "^0.0.4",
-    "mal-scraper": "^2.11.4",
-    "moment": "^2.29.4",
-    "moment-timezone": "^0.5.37",
-    "ms": "^2.1.3",
-    "node-osu": "^2.2.1",
-    "stringor": "^0.1.0",
-    "weather-js": "^2.0.0",
-    "ytdl-core": "^4.11.0"
+    "@discordjs/builders": "0.15.0",
+    "@discordjs/rest": "0.5.0",
+    "cpu-stat": "2.0.1",
+    "discord-api-types": "0.37.25",
+    "discord-giveaways": "5.2.2",
+    "discord.js": "13.12.0",
+    "dotenv": "16.0.3",
+    "genshin-db": "^4.3.4",
+    "mal-scraper": "2.11.4",
+    "moment": "2.29.4",
+    "moment-timezone": "0.5.40",
+    "ms": "2.1.3",
+    "node-osu": "2.2.1",
+    "weather-js": "2.0.0"
   },
   "devDependencies": {
-    "eslint": "^8.20.0"
+    "eslint": "^8.31.0"
   },
   "engines": {
-    "node": ">=16.14.2",
-    "npm": ">=8.5.0"
-  },
-  "optionalDependencies": {
-    "@discordjs/opus": "^0.8.0",
-    "@discordjs/voice": "^0.9.0"
+    "node": ">=16.19.0",
+    "npm": ">=8.19.3"
   }
 }
