@@ -10,7 +10,7 @@ client.on('interactionCreate', async interaction => {
     if (!command) return;
     
     try {
-        await command.execute(interaction, client);
+        await command.execute(interaction);
     } catch (error) {
         console.error(error);
         await interaction.reply({ content: process.env.DEFAULT_ERROR, ephemeral: true });
