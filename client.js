@@ -1,10 +1,10 @@
 const { Client, Intents } = require('discord.js');
+
 require('dotenv').config();
 
 const client = new Client({
     
-    intents:
-    [
+    intents: [
         Intents.FLAGS.DIRECT_MESSAGES,
         Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
         Intents.FLAGS.DIRECT_MESSAGE_TYPING,
@@ -22,8 +22,7 @@ const client = new Client({
         Intents.FLAGS.GUILD_WEBHOOKS
     ],
 
-    partials:
-    [
+    partials: [
         "CHANNEL",
         "GUILD_MEMBER",
         "GUILD_SCHEDULED_EVENT",
@@ -35,10 +34,6 @@ const client = new Client({
 });
 
 const packagejson = require('./package.json');
-
-const { Player, QueueRepeatMode } = require('discord-player');
-const player = new Player(client);
-client.player = player;
 
 const { GiveawaysManager } = require('discord-giveaways');
 const manager = new GiveawaysManager(client, {
@@ -57,19 +52,6 @@ client.giveawaysManager = manager;
 
 module.exports = {
     client: client,
-    packagejson: packagejson,
-    player: player,
-    QueueRepeatMode: QueueRepeatMode,
-    manager: manager
-}
-
-require('./src/structures/error');
-require('./src/structures/handler');
-require('./src/structures/ready');
-require('./src/structures/events');
-require('./src/structures/presenceUpdate');
-require('./src/structures/InteractionCreate');
-require('./src/structures/messageCreate');
-require('./src/structures/dmMessage');
-
-client.login(process.env.CLIENT_TOKEN);
+    manager: manager,
+    packagejson: packagejson
+};

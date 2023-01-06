@@ -20,7 +20,7 @@ module.exports = {
             setTimeout(() => msg.delete(), 60000)
         });
         const collector = new MessageCollector(message.channel, {filter: m => m.author.id === message.author.id, time: 60000});
-        collector.on('collect', async message => {
+        collector.on('collect', async (message) => {
             if (message.content === otpcode) {
                 collector.stop();
                 setTimeout(() => message.delete(), 5000);

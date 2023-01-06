@@ -11,7 +11,7 @@ client.on('messageCreate', async (message) => {
 
     if (afkjson.afkvalue.indexOf(message.author.id) != -1) {
         afkjson.afkvalue.splice(afkjson.afkvalue.indexOf(message.author.id), 1);
-        fs.writeFileSync('../data/afk.json', JSON.stringify(afkjson));
+        fs.writeFileSync('./src/data/afk.json', JSON.stringify(afkjson));
         message.member.setNickname(message.author.username)
         message.channel.send(`**\`${message.author.username}\` telah kembali dari AFK!**`);
     }

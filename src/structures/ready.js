@@ -1,12 +1,11 @@
-const { packagejson } = require("../../client");
-const { client } = require("../../client");
+const { client, packagejson } = require('../../client');
 
 client.on('shardReady', () => {
 
-    console.log(client.user.username + '#' + client.user.discriminator + ': Reconnecting. Hello, World!');
+    console.log(client.user.username + '#' + client.user.discriminator + ': ' + '\x1b[32m' + 'Hello, World!' + '\x1b[0m');
 
     const presencelist = [
-        `Version ${packagejson.version}-rc.1 | /help`, 
+        `Version ${packagejson.version} | /help`, 
         `${process.env.DISCORDLINK} | /help`,
         `${client.guilds.cache.size} server | /help`,
     ];

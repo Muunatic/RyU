@@ -4,7 +4,7 @@ const { MessageEmbed, MessageCollector } = require('discord.js');
 
 const reportcooldown = new Set();
 
-client.on('messageCreate', async msg => {
+client.on('messageCreate', async (msg) => {
 
     const args = msg.content.slice(prefix.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
@@ -31,13 +31,14 @@ client.on('messageCreate', async msg => {
         } else {
             const embedpreview = new MessageEmbed()
             .setColor('#ff0000')
-            .setAuthor({name: 'Report preview', iconURL: msg.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
-            .setDescription(`**${client.emojis.cache.get('835987657892298802')} - Laporan Bug**\n\nNama : **${msg.author.username}**\nReport ID : **${msg.id}**\n\nBug : **${reportargs}**`)
+            .setTitle('Report preview')
+            .setDescription(`Nama : **${msg.author.username}**\nReport ID : **${msg.id}**\n\nBug : **${reportargs}**`)
+            .setFooter({text: `Direquest oleh ${msg.author.username}`, iconURL: msg.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
             .setTimestamp()
             msg.channel.send({embeds: [embedpreview]})
             msg.channel.send('**Please confirm your choice**\n\`\`\`[Yes] or [No]\`\`\`')
             const collector = new MessageCollector(msg.channel, m => m.author.id === msg.author.id, { time: 10000 });
-            collector.on('collect', msg => {
+            collector.on('collect', (msg) => {
                 const msgct = msg.content.toLowerCase();
                 if (msgct === 'yes') {
                     reportcooldown.add(msg.author.id);
@@ -52,8 +53,9 @@ client.on('messageCreate', async msg => {
                     const channellogembed = new MessageEmbed()
             
                     .setColor('#ff0000')
-                    .setAuthor({name: 'Bug report', iconURL: msg.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
-                    .setDescription(`**${client.emojis.cache.get('835987657892298802')} - Laporan Bug**\n\nNama : **${msg.author.username}**\nReport ID : **${msg.id}**\n\nBug : **${reportargs}**`)
+                    .setTitle('Report preview')
+                    .setDescription(`Nama : **${msg.author.username}**\nReport ID : **${msg.id}**\n\nBug : **${reportargs}**`)
+                    .setFooter()
                     .setTimestamp()
             
                     channellog.send({embeds: [channellogembed]});

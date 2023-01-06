@@ -56,10 +56,10 @@ client.on('presenceUpdate', async (updatePresence, oldupdatePresence) => {
                     if (presence1.name === "Spotify") {
                         return updatePresence.member.roles.add(getEnv.activityRole6);
                     } else {
-                        return removerole;
+                        return;
                     }
                 });
-            }, 15000);
+            }, 10000);
         }
     } else if (presence0.name === "Genshin Impact") {
         if (updatePresence.member.roles.cache.get(getEnv.activityRole2)) return;
@@ -82,15 +82,16 @@ client.on('presenceUpdate', async (updatePresence, oldupdatePresence) => {
             return updatePresence.member.roles.add(getEnv.activityRole5);
         });
     } else if (presence0.name === "Spotify") {
-        setTimeout(() => {
-            removerole.then(() => {
+        removerole.then(() => {
+            setTimeout(() => {
                 if (presence0.name === "Spotify") {
+                    if (updatePresence.member.roles.cache.get(getEnv.activityRole6)) return;
                     return updatePresence.member.roles.add(getEnv.activityRole6);
                 } else {
-                    return removerole;
+                    return;
                 }
-            });
-        }, 15000);
+            }, 10000);
+        });
     }
 
 });

@@ -7,25 +7,25 @@
 <img src="https://img.shields.io/github/repo-size/Muunatic/RyU?style=flat-square">
 <img src="https://img.shields.io/github/package-json/v/Muunatic/RyU?style=flat-square">
 <img src="https://img.shields.io/snyk/vulnerabilities/github/Muunatic/RyU?style=flat-square">
-<img src="https://img.shields.io/github/workflow/status/Muunatic/RyU/ESLint?style=flat-square">
+<img src="https://img.shields.io/github/actions/workflow/status/Muunatic/RyU/ESLint.yml?branch=v5&style=flat-square">
 <img src="https://img.shields.io/github/languages/top/Muunatic/RyU?style=flat-square">
 
 
 ***
 
 <h1 align="center">RyU</h1>
-<p align="center"><b>Discord Framework dengan Commands Handler, Music Player, dan Corona Tracker.</b></p>
+<p align="center"><b>Powerful Discord Client written in JavaScript. Lightweight, Efficient, Feature-rich.</b></p>
 
 # Requirements
 
 |Tools|Version|
 |-|-|
-|**Node.JS**|**>=16.13.1**|
-|**NPM**|**>=8.1.2**|
+|**Node.JS**|**>=16.19.0**|
+|**NPM**|**>=8.19.3**|
 
 ## How to use
 
-1. Install node.js lalu install semua package
+1. Install all dependencies or you can ignore optional dependencies if you want
 ```
 npm install
 
@@ -33,19 +33,19 @@ npm install
 
 npm install --no-optional
 ```
-2. Ubah file **.env.example** menjadi **.env** lalu isi value yang tersedia
+2. Rename **.env.example** become **.env** then fill all available values
 ```
 .env.example > .env
 ```
-3. Ubah file **config.json.example** menjadi **config.json** lalu isi value yang tersedia
+3. Rename **config.json.example** become **config.json** then fill all available values too
 ```
-config.json.example > config.json
+config.json.example > config.json 
 ```
-4. Setelah itu jalankan **npm run deploy** untuk deploy slash command
+4. After that run **npm run deploy** to registering your slash command to REST API
 ```
 npm run deploy
 ```
-5. Terakhir jalankan **npm start** untuk menjalankan client
+5. Last one run **npm start** to run your client
 ```
 npm start
 ```
@@ -54,11 +54,14 @@ npm start
 
 |Version|Vulnerability|
 |-|-|
-|5.2.x|:heavy_check_mark:|
+|5.5.x|:heavy_check_mark:|
+|5.4.x|:heavy_check_mark:|
+|5.3.x|:x:|
+|5.2.x|:x:|
 |5.1.x|:x:|
 |5.0.x|:x:|
 
-Klik redirect untuk info lebih lanjut.
+Click redirect for more info.
 <br>
 <a href="https://github.com/Muunatic/RyU/security/policy">**Redirect**</a>
 

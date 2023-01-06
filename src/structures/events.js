@@ -1,13 +1,12 @@
-const { player } = require('../../client');
+process.on('unhandledRejection', (error) => {
+    console.error('Unhandled Promise Rejection:', error);
+});
 
-player.on('channelEmpty', async (queue) => {
-    queue.metadata.channel.send('**Tidak ada member di voice**');
+process.on('uncaughtException', (error) => {
+    console.error('uncaughtException:', error);
 });
-player.on('trackStart', (queue, track) => queue.metadata.channel.send(`Memutar lagu **${track.title}**`));
-player.on('queueEnd', (queue) => queue.metadata.channel.send('**Tidak ada music yang tersisa**'));
-player.on('connectionError', (error) => {
-    console.log(`Connection Error: ${error.message}`);
-});
-player.on('error', (error) => {
-    console.log(error.message);
+
+process.on('uncaughtExceptionMonitor', (error) => {
+    console.error('uncaughtExceptionMonitor:', error);
+
 });

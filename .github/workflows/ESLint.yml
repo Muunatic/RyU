@@ -7,13 +7,13 @@ on:
     branches: [ v5 ]
 
 jobs:
-  build:
+  lint:
 
     runs-on: windows-latest
 
     strategy:
       matrix:
-        node-version: [16.14.2]
+        node-version: [16.19.0]
 
     steps:
     - uses: actions/checkout@v2
