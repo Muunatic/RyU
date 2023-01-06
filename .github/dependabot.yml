@@ -20,13 +20,7 @@ updates:
       update-types: ["version-update:semver-major"]
     - dependency-name: "@discordjs/rest"
       update-types: ["version-update:semver-major"]
-    - dependency-name: "@discordjs/opus"
-      update-types: ["version-update:semver-major"]
-    - dependency-name: "@discordjs/voice"
-      update-types: ["version-update:semver-major"]
     - dependency-name: "discord-api-types"
       update-types: ["version-update:semver-major"]
     - dependency-name: "discord-giveaways"
       update-types: ["version-update:semver-major"]
-    - dependency-name: "discord-player"
-      update-types: ["version-update:semver-major", "version-update:semver-minor"]
