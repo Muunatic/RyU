@@ -8,5 +8,4 @@ process.on('uncaughtException', (error) => {
 
 process.on('uncaughtExceptionMonitor', (error) => {
     console.error('uncaughtExceptionMonitor:', error);
-
 });

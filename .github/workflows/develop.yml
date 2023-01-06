@@ -8,13 +8,10 @@ on:
 
 jobs:
   lint:
-
     runs-on: windows-latest
-
     strategy:
       matrix:
         node-version: [16.19.0]
-
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
