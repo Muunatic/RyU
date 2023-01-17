@@ -12,15 +12,20 @@ client.on('messageCreate', async (message) => {
     if (afkjson.afkvalue.indexOf(message.author.id) != -1) {
         afkjson.afkvalue.splice(afkjson.afkvalue.indexOf(message.author.id), 1);
         fs.writeFileSync('./src/data/afk.json', JSON.stringify(afkjson));
-        message.member.setNickname(message.author.username)
+        message.member.setNickname(message.author.username);
         message.channel.send(`**\`${message.author.username}\` telah kembali dari AFK!**`);
     }
 
-    let mentioned = message.mentions.members.first();
+    let mentioned = message.mentions.members?.first();
     
     if (mentioned) {
-        if (afkjson.afkvalue.indexOf(mentioned.id) != -1)
-        message.channel.send(`**\`${mentioned.user.username}\` sedang AFK!**`);
+        if (afkjson.afkvalue.indexOf(mentioned.id) != -1) {
+            return message.channel.send(`**\`${mentioned.user.username}\` sedang AFK!**`);
+        } else {
+            return;
+        }
+    } else if (mentioned == null) {
+        return;
     }
 
     if (!message.content.startsWith(prefix) || message.author.bot) return;
