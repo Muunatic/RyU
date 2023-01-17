@@ -55,7 +55,7 @@ client.on('messageCreate', async (msg) => {
                     .setColor('#ff0000')
                     .setTitle('Report preview')
                     .setDescription(`Nama : **${msg.author.username}**\nReport ID : **${msg.id}**\n\nBug : **${reportargs}**`)
-                    .setFooter()
+                    .setFooter({text: msg.author.username, iconURL: msg.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
                     .setTimestamp()
             
                     channellog.send({embeds: [channellogembed]});
@@ -65,7 +65,7 @@ client.on('messageCreate', async (msg) => {
                     msg.channel.send('**Canceled**');
                     collector.stop();
                 }
-            })
+            });
         }
     }
 
