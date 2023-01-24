@@ -30,7 +30,7 @@ module.exports = {
           { name: 'Score', value: `${animescraper.score}`, inline: true },
         )
         .setFooter({text: animescraper.url, iconURL: 'https://pbs.twimg.com/profile_images/1190380284295950339/Py6XnxvH_400x400.jpg'})
-        .setTimestamp()
+        .setTimestamp();
 
         interaction.reply({embeds: [animeembed]});
     },

@@ -18,7 +18,7 @@ module.exports = {
         if (interaction.options.get("weapon")) {
             const data = genshindb.weapons(interaction.options.get("weapon").value);
             let datastringtify = JSON.stringify(data);
-            let dataparse = JSON.parse(datastringtify)
+            let dataparse = JSON.parse(datastringtify);
             let current = dataparse;
             let moracosts = current.costs.ascend1[0].count + current.costs.ascend2[0].count + current.costs.ascend3[0].count + current.costs.ascend4[0].count + current.costs.ascend5[0].count + current.costs.ascend6[0].count;
             const embed = new MessageEmbed()
@@ -36,12 +36,12 @@ module.exports = {
                 { name: 'Costs', value: `${moracosts}`, inline: true },
             )
             .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
-            .setTimestamp()
+            .setTimestamp();
             interaction.reply({embeds: [embed]});
         } else if (interaction.options.get("characters")) {
             const data = genshindb.characters(interaction.options.get("characters").value);
             let datastringtify = JSON.stringify(data);
-            let dataparse = JSON.parse(datastringtify)
+            let dataparse = JSON.parse(datastringtify);
             let current = dataparse;
             let moracosts = current.costs.ascend1[0].count + current.costs.ascend2[0].count + current.costs.ascend3[0].count + current.costs.ascend4[0].count + current.costs.ascend5[0].count + current.costs.ascend6[0].count;
             const embed = new MessageEmbed()
@@ -61,7 +61,7 @@ module.exports = {
                 { name: 'Costs', value: `${moracosts}`, inline: true },
             )
             .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
-            .setTimestamp()
+            .setTimestamp();
     
             interaction.reply({embeds: [embed]});
         } else {
