@@ -19,7 +19,7 @@ module.exports = {
             { name: 'Admin command', value: 'warn, kick, ban, mute, unmute, user, add, reroll, end, eval'}
         )
         .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
-        .setTimestamp()
+        .setTimestamp();
         
         const button = new MessageActionRow()
         .addComponents(
@@ -39,7 +39,7 @@ module.exports = {
             .setCustomId('avatar')
             .setLabel('Avatar')
             .setStyle('SECONDARY')
-        )
+        );
         
         const btnfilter = i => i.user.id === interaction.user.id;
         const collector = interaction.channel.createMessageComponentCollector({ filter: btnfilter, time: 60000 });
@@ -67,7 +67,7 @@ module.exports = {
                 .setThumbnail(`${interaction.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
                 .setDescription(`Username : **${interaction.user.username}**\n\nNickname : **${interaction.member.nickname || interaction.user.username}**\n\nID : **${interaction.user.id}**\n\nTanggal dibuatnya akun : **${interaction.user.createdAt}**\n\nTanggal join server : **${interaction.member.joinedAt}**\n\nRole : **<@&${interaction.member.roles.highest.id}>**`)
                 .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
-                .setTimestamp()
+                .setTimestamp();
                 
                 await i.reply({embeds: [userinfoembed]});
                 collector.stop();
@@ -84,10 +84,10 @@ module.exports = {
                 .setTitle('Avatar')
                 .setDescription(`Avatarnya ${interaction.user.username}`)
                 .setImage(`${interaction.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
-                .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
+                .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})});
             
                 await i.reply({embeds: [avatarembed]});
-                collector.stop()
+                collector.stop();
             }
         
             collector.on('end', collected => console.log(collected.size));

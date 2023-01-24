@@ -17,7 +17,7 @@ client.on('messageCreate', async (msg) => {
         .setColor('#89e0dc')
         .setAuthor({name: msg.author.username, iconURL: msg.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setDescription(msg.content)
-        .setTimestamp()
+        .setTimestamp();
 
         dmchannel.send({embeds: [dmembed]});
     }
@@ -34,9 +34,9 @@ client.on('messageCreate', async (msg) => {
             .setTitle('Report preview')
             .setDescription(`Nama : **${msg.author.username}**\nReport ID : **${msg.id}**\n\nBug : **${reportargs}**`)
             .setFooter({text: `Direquest oleh ${msg.author.username}`, iconURL: msg.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
-            .setTimestamp()
-            msg.channel.send({embeds: [embedpreview]})
-            msg.channel.send('**Please confirm your choice**\n\`\`\`[Yes] or [No]\`\`\`')
+            .setTimestamp();
+            msg.channel.send({embeds: [embedpreview]});
+            msg.channel.send('**Please confirm your choice**\n\`\`\`[Yes] or [No]\`\`\`');
             const collector = new MessageCollector(msg.channel, m => m.author.id === msg.author.id, { time: 10000 });
             collector.on('collect', (msg) => {
                 const msgct = msg.content.toLowerCase();
@@ -55,8 +55,8 @@ client.on('messageCreate', async (msg) => {
                     .setColor('#ff0000')
                     .setTitle('Report preview')
                     .setDescription(`Nama : **${msg.author.username}**\nReport ID : **${msg.id}**\n\nBug : **${reportargs}**`)
-                    .setFooter()
-                    .setTimestamp()
+                    .setFooter({text: msg.author.username, iconURL: msg.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
+                    .setTimestamp();
             
                     channellog.send({embeds: [channellogembed]});
                     msg.channel.send(`**Reported**\n\`\`\`Report ID : ${msg.id}\`\`\``);
@@ -65,7 +65,7 @@ client.on('messageCreate', async (msg) => {
                     msg.channel.send('**Canceled**');
                     collector.stop();
                 }
-            })
+            });
         }
     }
 

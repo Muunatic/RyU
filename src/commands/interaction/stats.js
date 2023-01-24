@@ -36,9 +36,9 @@ module.exports = {
                 { name: 'Engine', value: `${process.version}`, inline: true },
             )
             .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
-            .setTimestamp()
+            .setTimestamp();
             
-            interaction.reply({embeds: [statsembed]})
+            interaction.reply({embeds: [statsembed]});
         });
     },
 };

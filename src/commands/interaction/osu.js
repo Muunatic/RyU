@@ -25,8 +25,8 @@ module.exports = {
     async execute(interaction) {
         const args1 = interaction.options.get("username").value;
         const args2 = interaction.options.get("mode").value;
-        const user = args1
-        const mode = args2
+        const user = args1;
+        const mode = args2;
         if (!user) return interaction.reply('**Username tidak ditemukan**');
         if (!mode) return interaction.reply('**Mode tidak ditemukan**');
         const data = await osuApi.getUser({
@@ -49,7 +49,7 @@ module.exports = {
             { name: 'Performance Point', value: `${data.pp.raw}`, inline: true },
         )
         .setFooter({text: `https://osu.ppy.sh/users/${data.id}`, iconURL:`https://s.ppy.sh/a/${data.id}`})
-        .setTimestamp()
+        .setTimestamp();
         
         interaction.reply({embeds: [osuembed]});
     },

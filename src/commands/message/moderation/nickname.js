@@ -1,4 +1,4 @@
-const { MessageCollector } = require('discord.js')
+const { MessageCollector } = require('discord.js');
 
 module.exports = {
     name: 'nickname',
@@ -18,6 +18,6 @@ module.exports = {
                 message.channel.send('**Canceled**');
                 collector.stop();
             }
-        })
+        });
     },
 };
