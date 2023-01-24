@@ -6,15 +6,15 @@ client.on('presenceUpdate', async (updatePresence, oldupdatePresence) => {
     const cacheId = oldupdatePresence.guild.roles.cache;
     
     if (!cacheId.get(getEnv.activityRole1 || getEnv.activityRole2 || getEnv.activityRole3 || getEnv.activityRole4 || getEnv.activityRole5 || getEnv.activityRole6)) return;
-    const presence0 = updatePresence.member.presence.activities[0];
-    const presence1 = updatePresence.member.presence.activities[1];
+    const presence0 = updatePresence?.member.presence.activities[0];
+    const presence1 = updatePresence?.member.presence.activities[1];
 
     const removerole = updatePresence.member.roles.remove(getEnv.activityRole1) && updatePresence.member.roles.remove(getEnv.activityRole2) && updatePresence.member.roles.remove(getEnv.activityRole3) && updatePresence.member.roles.remove(getEnv.activityRole4) && updatePresence.member.roles.remove(getEnv.activityRole5) && updatePresence.member.roles.remove(getEnv.activityRole6);
     
-    if (presence0?.name === undefined) {
+    if (presence0.name === undefined) {
         return removerole;
     } else if (presence0.name === "Custom Status") {
-        if (presence1?.name === undefined) {
+        if (presence1.name === undefined) {
             return removerole;
         }
     }
