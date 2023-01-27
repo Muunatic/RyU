@@ -14,7 +14,7 @@ module.exports = {
         .setThumbnail(`${mentionsuser.avatarURL({format : 'png', dynamic : true, size : 1024})}`)
         .setDescription(`${mentionsuser.username} **berhasil diwarn dengan alasan:**\`\`\`diff\n- ${args.slice(1).join(' ')}\`\`\``)
         .setFooter({text: `Diwarn oleh ${message.author.username}`, iconURL: message.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
-        .setTimestamp()
+        .setTimestamp();
         
         message.channel.send({embeds: [warnembed]});
         
@@ -24,7 +24,7 @@ module.exports = {
         .setColor('#ff0000')
         .setAuthor({name: `${mentionsuser.username} Warning`, iconURL: mentionsuser.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setDescription(`**⚠️ - ${mentionsuser.username} telah diwarn oleh ${message.author.username}**`)
-        .setTimestamp()
+        .setTimestamp();
         
         channellog.send({embeds: [channellogembed]});
     },

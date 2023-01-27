@@ -38,6 +38,7 @@ client.on('messageCreate', async (message) => {
     } catch (error) {
         console.error(error);
         message.reply(process.env.DEFAULT_ERROR);
+        
     }
 
 });

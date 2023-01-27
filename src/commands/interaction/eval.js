@@ -18,13 +18,13 @@ module.exports = {
             const result = await eval(args);
             let output = result;
             if (typeof result !== 'string') {
-                output = inspect(result)
+                output = inspect(result);
             }
     
-            interaction.reply(output, { code: 'js'})
+            interaction.reply(output, { code: 'js'});
         } catch (error) {
             console.log(error);
-            interaction.reply(process.env.DEFAULT_ERROR)
+            interaction.reply(process.env.DEFAULT_ERROR);
         }
      },
 };

@@ -9,6 +9,9 @@
         "ecmaVersion": 12
     },
     "rules": {
+        "eol-last": ["warn", "always"],
+        "semi": "warn",
+        "semi-style": ["warn", "last"],
         "no-unused-vars": 1,
         "no-useless-escape": 0
     }

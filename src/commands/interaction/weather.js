@@ -31,15 +31,15 @@ module.exports = {
             .setThumbnail(current.imageUrl)
             .setDescription('Powered by weather-js')
             .addFields(
-                { name: 'Nama', value: location.name, inline: true },
-                { name: 'Cuaca', value: current.skytext, inline: true },
-                { name: 'Suhu', value: current.temperature, inline: true },
-                { name: 'Kelembapan', value: current.humidity, inline: true },
-                { name: 'Tanggal', value: current.date, inline: true },
-                { name: 'Kecepatan angin', value: current.windspeed, inline: true },
+                { name: 'Nama', value: `${location.name}`, inline: true },
+                { name: 'Cuaca', value: `${current.skytext}`, inline: true },
+                { name: 'Suhu', value: `${current.temperature}`, inline: true },
+                { name: 'Kelembapan', value: `${current.humidity}`, inline: true },
+                { name: 'Tanggal', value: `${current.date}`, inline: true },
+                { name: 'Kecepatan angin', value: `${current.windspeed}`, inline: true },
             )
             .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
-            .setTimestamp()
+            .setTimestamp();
 
             interaction.reply({embeds: [cuaca]});
         });

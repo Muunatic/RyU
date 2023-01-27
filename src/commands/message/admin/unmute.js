@@ -19,7 +19,7 @@ module.exports = {
         .setColor('#00ff00')
         .setAuthor({name: 'Member Unmuted', iconURL:message.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setDescription(`**⚠️ - ${mentionsusername.username} diunmuted oleh ${message.author.username}**`)
-        .setTimestamp()
+        .setTimestamp();
         
         channellog.send({embeds: [channellogembed]});
     },
