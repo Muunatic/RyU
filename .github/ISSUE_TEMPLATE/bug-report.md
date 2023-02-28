@@ -20,5 +20,5 @@ Steps to reproduce the behavior:
 A clear and concise description of what you expected to happen.
 
 **Version**
- - Node.JS: v.16.x.x
+ - Node.JS: v16.x.x
  - NPM: v8.x.x
