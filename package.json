@@ -1,6 +1,6 @@
 {
   "name": "ryu",
-  "version": "5.5.1",
+  "version": "5.5.1-1",
   "description": "RyU Framework",
   "main": "index.js",
   "type": "commonjs",
