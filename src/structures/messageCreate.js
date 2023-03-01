@@ -7,6 +7,18 @@ client.on('messageCreate', async (message) => {
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
 
+    if (!message.content.startsWith(prefix) || message.author.bot) return;
+    if (!message.guild) return;
+
+    if (!client.commands.has(command)) return;
+
+    try {
+        client.commands.get(command).execute(message, args, client);
+    } catch (error) {
+        console.error(error);
+        message.reply(process.env.DEFAULT_ERROR);
+    }
+
     const afkjson = require('../data/afk.json');
 
     if (afkjson.afkvalue.indexOf(message.author.id) != -1) {
@@ -26,19 +38,6 @@ client.on('messageCreate', async (message) => {
         }
     } else if (mentioned == null) {
         return;
-    }
-
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
-    if (!message.guild) return;
-
-    if (!client.commands.has(command)) return;
-
-    try {
-        client.commands.get(command).execute(message, args, client);
-    } catch (error) {
-        console.error(error);
-        message.reply(process.env.DEFAULT_ERROR);
-        
     }
 
 });
