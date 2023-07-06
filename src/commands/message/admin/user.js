@@ -7,5 +7,5 @@ module.exports = {
         if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         const dmuser = client.users.cache.get(args[0]);
         dmuser.send(args.slice(1).join(' '));
-    },
+    }
 };

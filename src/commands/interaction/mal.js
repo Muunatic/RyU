@@ -7,14 +7,15 @@ module.exports = {
     .setName('mal')
     .setDescription('MAL scraper')
     .addStringOption(option =>
-      option.setName('anime')
-      .setDescription('Anime name')
-      .setRequired(true)
+        option.setName('anime')
+        .setDescription('Anime name')
+        .setRequired(true)
     ),
     async execute(interaction, client) {
-        const animevalue = interaction.options.get("anime").value;
+        const animevalue = interaction.options.get('anime').value;
         const animescraper = await malScraper.getInfoFromName(animevalue);
         if (!animescraper) return interaction.reply(process.env.DEFAULT_ERROR);
+
         const animeembed = new MessageEmbed()
 
         .setColor('#CE0F3D')
@@ -22,16 +23,16 @@ module.exports = {
         .setImage(animescraper.picture)
         .setDescription(animescraper.synopsis)
         .addFields(
-          { name: 'Type', value: `${animescraper.type}`, inline: true },
-          { name: 'Episode', value: `${animescraper.episodes}`, inline: true },
-          { name: 'Duration', value: `${animescraper.duration}`, inline: true },
-          { name: 'Genres', value: `${animescraper.genres.join(', ')}`, inline: true },
-          { name: 'Status', value: `${animescraper.status}`, inline: true },
-          { name: 'Score', value: `${animescraper.score}`, inline: true },
+            { name: 'Type', value: `${animescraper.type}`, inline: true },
+            { name: 'Episode', value: `${animescraper.episodes}`, inline: true },
+            { name: 'Duration', value: `${animescraper.duration}`, inline: true },
+            { name: 'Genres', value: `${animescraper.genres.join(', ')}`, inline: true },
+            { name: 'Status', value: `${animescraper.status}`, inline: true },
+            { name: 'Score', value: `${animescraper.score}`, inline: true }
         )
         .setFooter({text: animescraper.url, iconURL: 'https://pbs.twimg.com/profile_images/1190380284295950339/Py6XnxvH_400x400.jpg'})
         .setTimestamp();
 
         interaction.reply({embeds: [animeembed]});
-    },
+    }
 };

@@ -6,5 +6,5 @@ module.exports = {
     .setDescription('Client ping'),
     async execute(interaction, client) {
         interaction.reply(`Pong !! \`${client.ws.ping}ms.\` Latensi \`${Date.now() - interaction.createdTimestamp}ms.\``);
-    },
+    }
 };

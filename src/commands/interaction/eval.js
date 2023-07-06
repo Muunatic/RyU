@@ -11,20 +11,19 @@ module.exports = {
         .setRequired(true)
     ),
     async execute(interaction) {
-        const args = interaction.options.get("value").value;
-        if (interaction.user.id !== '321979003898429443') return interaction.reply(process.env.DEFAULT_ERROR);
-    
+        const args = interaction.options.get('value').value;
+        if (interaction.user.id !== process.env.OWNERID) return interaction.reply(process.env.DEFAULT_ERROR);
+
         try {
             const result = await eval(args);
             let output = result;
             if (typeof result !== 'string') {
                 output = inspect(result);
             }
-    
-            interaction.reply(output, { code: 'js'});
+            interaction.reply({content: output});
         } catch (error) {
             console.log(error);
             interaction.reply(process.env.DEFAULT_ERROR);
         }
-     },
+    }
 };

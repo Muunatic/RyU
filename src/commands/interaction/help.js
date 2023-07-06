@@ -20,7 +20,7 @@ module.exports = {
         )
         .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp();
-        
+
         const button = new MessageActionRow()
         .addComponents(
             new MessageButton()
@@ -40,12 +40,12 @@ module.exports = {
             .setLabel('Avatar')
             .setStyle('SECONDARY')
         );
-        
+
         const btnfilter = i => i.user.id === interaction.user.id;
         const collector = interaction.channel.createMessageComponentCollector({ filter: btnfilter, time: 60000 });
-        
+
         collector.on('collect', async i => {
-        
+
             if (i.customId === 'ping') {
                 button.components[0].setDisabled(true);
                 button.components[1].setDisabled(true);
@@ -54,46 +54,46 @@ module.exports = {
                 await i.reply({content: `Pong !! \`${client.ws.ping}ms.\` Latensi \`${Date.now() - i.createdTimestamp}ms.\``});
                 collector.stop();
             }
-        
+
             if (i.customId === 'userinfo') {
                 button.components[0].setDisabled(true);
                 button.components[1].setDisabled(true);
                 button.components[2].setDisabled(true);
                 interaction.editReply({components: [button]});
                 const userinfoembed = new MessageEmbed()
-        
+
                 .setColor('#89e0dc')
                 .setTitle(`${interaction.user.username} Info`)
                 .setThumbnail(`${interaction.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
                 .setDescription(`Username : **${interaction.user.username}**\n\nNickname : **${interaction.member.nickname || interaction.user.username}**\n\nID : **${interaction.user.id}**\n\nTanggal dibuatnya akun : **${interaction.user.createdAt}**\n\nTanggal join server : **${interaction.member.joinedAt}**\n\nRole : **<@&${interaction.member.roles.highest.id}>**`)
                 .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
                 .setTimestamp();
-                
+
                 await i.reply({embeds: [userinfoembed]});
                 collector.stop();
             }
-        
+
             if (i.customId === 'avatar') {
                 button.components[0].setDisabled(true);
                 button.components[1].setDisabled(true);
                 button.components[2].setDisabled(true);
                 interaction.editReply({components: [button]});
                 const avatarembed = new MessageEmbed()
-        
+
                 .setColor('#89e0dc')
                 .setTitle('Avatar')
                 .setDescription(`Avatarnya ${interaction.user.username}`)
                 .setImage(`${interaction.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
                 .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})});
-            
+
                 await i.reply({embeds: [avatarembed]});
                 collector.stop();
             }
-        
+
             collector.on('end', collected => console.log(collected.size));
-        
+
         });
-        
+
         interaction.reply({embeds: [embed], components: [button]});
         setTimeout(() => {
             button.components[0].setDisabled(true);
@@ -103,5 +103,5 @@ module.exports = {
             interaction.editReply({components: [button]});
             collector.stop();
         }, 60000);
-    },
+    }
 };

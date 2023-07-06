@@ -10,5 +10,5 @@ module.exports = {
         if (!args[1]) return message.channel.send('**Berikan args**');
         channel.send(args.slice(1).join(' '));
         message.react('✅');
-    },
+    }
 };

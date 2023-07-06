@@ -14,7 +14,7 @@ module.exports = {
         .setDescription(`Nama server : **${interaction.guild.name}**\n\nID server : **${interaction.guild.id}**\n\nJumlah member : **${interaction.guild.memberCount}**\n\nServer dibuat pada tanggal : **${interaction.guild.createdAt}**`)
         .setFooter({text: `Info server ${interaction.guild.name}`, iconURL: interaction.guild.iconURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp();
-        
+
         interaction.reply({embeds: [serverembed]});
-    },
+    }
 };

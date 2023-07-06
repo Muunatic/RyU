@@ -11,5 +11,5 @@ module.exports = {
         fs.writeFileSync('./src/data/afk.json', JSON.stringify(afkjson));
         interaction.reply(`**\`${interaction.user.username}\` telah AFK!**`);
         interaction.member.setNickname(`[AFK] ${interaction.user.username}`);
-    },
+    }
 };

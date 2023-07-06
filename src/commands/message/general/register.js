@@ -1,17 +1,16 @@
 const crypto = require('crypto');
 const { client } = require('../../../../client');
 const { MessageEmbed, MessageCollector } = require('discord.js');
-const prefix = process.env.PREFIX;
 
 module.exports = {
     name: 'register',
     execute(message) {
         if (!message.member.roles.cache.get(process.env.UNREGISTER_ID)) return message.channel.send('**Kamu sudah teregistrasi**')
-        .then((msg) => {
+        .then(msg => {
             setTimeout(() => msg.delete(), 5000);
         });
         if (message.member.roles.cache.get(process.env.REGISTER_ID)) return message.channel.send('**Kamu sudah teregistrasi**')
-        .then((msg) => {
+        .then(msg => {
             setTimeout(() => msg.delete(), 5000);
         });
         const otpcode = crypto.createHash('sha256').update(message.id).digest('hex');
@@ -24,15 +23,15 @@ module.exports = {
             if (message.content === otpcode) {
                 collector.stop();
                 setTimeout(() => message.delete(), 5000);
-                
+
                 message.member.roles.add(process.env.REGISTER_ID);
                 let channellog = client.channels.cache.get(process.env.CHANNELLOGID);
 
                 message.reply('**Kode verifikasi diterima**')
-                .then((msg) => {
+                .then(msg => {
                     setTimeout(() => msg.delete(), 5000);
                 });
-                
+
                 message.member.roles.remove(process.env.UNREGISTER_ID);
 
                 let channellogembed = new MessageEmbed()
@@ -42,21 +41,21 @@ module.exports = {
                 .setDescription(`**${client.emojis.cache.get('835987657892298802')} - ${message.author.username} telah join ke server**`)
                 .setFooter({text: message.author.username, iconURL: message.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
                 .setTimestamp();
-                
+
                 channellog.send({embeds: [channellogembed]});
-            } else if (message.content === `${prefix}register`) {
+            } else if (message.content === `${process.env.PREFIX}register`) {
                 collector.stop();
                 message.channel.send('**Kode verifikasi telah digantikan**')
-                .then((msg) => {
+                .then(msg => {
                     setTimeout(() => msg.delete(), 5000);
                 });
             } else if (message.content !== otpcode) {
                 collector.stop();
                 message.channel.send('**Kode verifikasi ditolak**')
-                .then((msg) => {
+                .then(msg => {
                     setTimeout(() => msg.delete(), 5000);
                 });
-            } 
+            }
         });
-    },
+    }
 };

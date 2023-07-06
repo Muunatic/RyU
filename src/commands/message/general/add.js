@@ -1,14 +1,13 @@
 const ms = require('ms');
 const { Permissions } = require('discord.js');
 const { manager } = require('../../../../client');
-const prefix = process.env.PREFIX;
 
 module.exports = {
     name: 'add',
     execute(message, args) {
         if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
-        if (!args[0]) return message.channel.send(`${prefix}giveaway **<mentionschannel>** <time> <winner> <args>`);
-        if (!args.join(' ')) return message.channel.send(`**${prefix}giveaway <mentionschannel> <time> <winner> <args>**`);
+        if (!args[0]) return message.channel.send(`${process.env.PREFIX}giveaway **<mentionschannel>** <time> <winner> <args>`);
+        if (!args.join(' ')) return message.channel.send(`**${process.env.PREFIX}giveaway <mentionschannel> <time> <winner> <args>**`);
         const channelsend = message.mentions.channels.first();
         const prize = args.slice(3).join(' ');
         manager.start(channelsend, {
@@ -26,9 +25,9 @@ module.exports = {
                 winners: 'winner(s) ',
                 endedAt: 'Ended at',
                 drawing: `{timestamp}`
-            },
+            }
         }).then((gData) => {
             console.log(gData);
         });
-    },
+    }
 };

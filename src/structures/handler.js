@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { Collection } = require('discord.js');
-const { client} = require('../../client');
+const { client } = require('../../client');
 
 client.commands = new Collection();
 

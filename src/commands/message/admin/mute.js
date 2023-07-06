@@ -12,15 +12,15 @@ module.exports = {
         if (mentionsmember.roles.cache.get(process.env.MUTE_ROLE)) return message.channel.send('**User masih dimute**');
         mentionsmember.roles.add(muterole);
         message.channel.send(`**<@${mentionsmember.id}>** telah dimute oleh **<@${message.author.id}>**`);
-        
+
         let channellog = client.channels.cache.get(process.env.CHANNELLOGID);
         let channellogembed = new MessageEmbed()
-        
+
         .setColor('#ff0000')
         .setAuthor({name: 'Member Muted', iconURL:message.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setDescription(`**⚠️ - ${mentionsusername.username} dimuted oleh ${message.author.username}**`)
         .setTimestamp();
-        
+
         channellog.send({embeds: [channellogembed]});
-    },
+    }
 };
