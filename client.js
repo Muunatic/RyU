@@ -3,18 +3,18 @@ const { Client, Intents } = require('discord.js');
 require('dotenv').config();
 
 const client = new Client({
-    
+
     intents: [
         Intents.FLAGS.DIRECT_MESSAGES,
         Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
         Intents.FLAGS.DIRECT_MESSAGE_TYPING,
-        Intents.FLAGS.GUILDS, 
-        Intents.FLAGS.GUILD_BANS, 
-        Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, 
-        Intents.FLAGS.GUILD_INTEGRATIONS, 
-        Intents.FLAGS.GUILD_INVITES, 
-        Intents.FLAGS.GUILD_MEMBERS, 
-        Intents.FLAGS.GUILD_MESSAGES, 
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILD_BANS,
+        Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
+        Intents.FLAGS.GUILD_INTEGRATIONS,
+        Intents.FLAGS.GUILD_INVITES,
+        Intents.FLAGS.GUILD_MEMBERS,
+        Intents.FLAGS.GUILD_MESSAGES,
         Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
         Intents.FLAGS.GUILD_MESSAGE_TYPING,
         Intents.FLAGS.GUILD_PRESENCES,
@@ -28,7 +28,7 @@ const client = new Client({
         "GUILD_SCHEDULED_EVENT",
         "MESSAGE",
         "REACTION",
-        "USER",   
+        "USER"
     ]
 
 });
@@ -38,7 +38,7 @@ const packagejson = require('./package.json');
 const { GiveawaysManager } = require('discord-giveaways');
 const manager = new GiveawaysManager(client, {
     storage: './src/data/ga.json',
-    updateCountdownEvery: 5000,
+    updateCountdownEvery: 10000,
     hasGuildMembersIntent: true,
     default: {
         botsCanWin: false,
