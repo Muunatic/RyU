@@ -9,10 +9,20 @@
         "ecmaVersion": 12
     },
     "rules": {
+        "comma-dangle": ["warn", "never"],
+        "comma-style": ["warn", "last"],
         "eol-last": ["warn", "always"],
-        "semi": "warn",
-        "semi-style": ["warn", "last"],
+        "indent": ["warn", 4, {
+            "MemberExpression": 0
+        }],
+        "no-multiple-empty-lines": ["warn", {
+            "max": 1,
+            "maxEOF": 0
+        }],
+        "no-trailing-spaces": 1,
         "no-unused-vars": 1,
-        "no-useless-escape": 0
+        "no-useless-escape": 0,
+        "semi": 1,
+        "semi-style": ["warn", "last"]
     }
 }
