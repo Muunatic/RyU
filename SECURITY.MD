@@ -2,6 +2,7 @@
 
 |Version|Vulnerability|
 |-|-|
+|5.5.2|:white_check_mark:|
 |5.5.1-1|:x:|
 |5.5.1|:x:|
 |5.5.0|:x:|
@@ -20,4 +21,4 @@
 |5.0.1|:x:|
 |5.0.0|:x:|
 
-Please report security issues to [Muunatic](mailto:muunatic@esrynt.org)
+Please report security issues to [Muunatic](mailto:contact@muunatic.me)
