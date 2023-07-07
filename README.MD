@@ -6,14 +6,15 @@
 
 <img src="https://img.shields.io/github/repo-size/Muunatic/RyU?style=flat-square">
 <img src="https://img.shields.io/github/package-json/v/Muunatic/RyU?style=flat-square">
-<img src="https://img.shields.io/github/actions/workflow/status/Muunatic/RyU/ESLint.yml?branch=v5&style=flat-square">
 <img src="https://img.shields.io/github/languages/top/Muunatic/RyU?style=flat-square">
+<img src="https://img.shields.io/github/actions/workflow/status/Muunatic/RyU/ESLint.yml?branch=v5&style=flat-square&label=Lint">
+<img src="https://img.shields.io/circleci/build/github/Muunatic/RyU/v5?style=flat-square&label=CircleCI">
 
 
 ***
 
 <h1 align="center">RyU</h1>
-<p align="center"><b>Powerful Discord Client written in JavaScript. Lightweight, Efficient, Feature-rich.</b></p>
+<p align="center"><b>Powerful Discord Automaton written in JavaScript. Lightweight, Efficient, Feature-rich.</b></p>
 
 # Requirements
 
@@ -53,7 +54,7 @@ npm start
 
 |Version|Vulnerability|
 |-|-|
-|5.5.x|:heavy_check_mark:|
+|5.5.x|:white_check_mark:|
 |5.4.x|:x:|
 |5.3.x|:x:|
 |5.2.x|:x:|
