@@ -13,7 +13,7 @@ module.exports = {
         .setTitle('Help commands')
         .setDescription(`Prefix = **${prefix}**`)
         .addFields(
-            { name: 'General command', value: 'ping, time, userinfo, serverinfo, osu, avatar, stats, weather, afk, mal, genshin' },
+            { name: 'General command', value: 'ping, userinfo, serverinfo, osu, avatar, stats, afk, mal, genshin' },
             { name: 'DM command', value: 'report' },
             { name: 'Moderator command', value: 'nickname' },
             { name: 'Admin command', value: 'warn, kick, ban, mute, unmute, user, add, reroll, end, eval'}
