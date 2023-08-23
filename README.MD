@@ -61,14 +61,12 @@ npm start
 |5.1.x|:x:|
 |5.0.x|:x:|
 
-Click redirect for more info.
-<br>
-<a href="https://github.com/Muunatic/RyU/security/policy">**Redirect**</a>
+Click [here](https://github.com/Muunatic/RyU/security/policy) for more info.
 
 ## Disclaimer
 
 This file is part of the RyU project.
-<br>
+
 The RyU project can not be distributed without the express permission of Muunatic.
-<br>
-<a href="https://github.com/Muunatic/RyU/blob/v5/LICENSE">**Redirect**</a>
+
+Click [here](https://github.com/Muunatic/RyU/blob/v5/LICENSE) for more info.
