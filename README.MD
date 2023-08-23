@@ -69,4 +69,4 @@ This file is part of the RyU project.
 
 The RyU project can not be distributed without the express permission of Muunatic.
 
-[License](https://github.com/Muunatic/RyU/blob/v5/LICENSE)
+Click [here](https://github.com/Muunatic/RyU/blob/v5/LICENSE) for more info.
