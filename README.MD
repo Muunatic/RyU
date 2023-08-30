@@ -25,7 +25,9 @@
 
 ## How to use
 
-1. Install all dependencies or you can ignore optional dependencies if you want
+Here is the revised version of the sentences with improved grammar:
+
+1. Install all dependencies, or you can ignore the optional dependencies if you prefer:
 ```
 npm install
 
@@ -33,19 +35,19 @@ npm install
 
 npm install --no-optional
 ```
-2. Rename **.env.example** become **.env** then fill all available values
+2. Rename **.env.example** to **.env** and populate it with all the necessary values:
 ```
 .env.example > .env
 ```
-3. Rename **config.json.example** become **config.json** then fill all available values too
+3. Similarly, rename **config.json.example** to **config.json** and provide the required values:
 ```
-config.json.example > config.json 
+Rename config.json.example to config.json and complete all the available values.
 ```
-4. After that run **npm run deploy** to registering your slash command to REST API
+4. After completing the above steps, execute **npm run deploy** to register your slash command with the REST API:
 ```
 npm run deploy
 ```
-5. Last one run **npm start** to run your client
+5. Lastly, run **npm start** to launch your client:
 ```
 npm start
 ```
@@ -68,5 +70,3 @@ Click [here](https://github.com/Muunatic/RyU/security/policy) for more info.
 This file is part of the RyU project.
 
 The RyU project can not be distributed without the express permission of Muunatic.
-
-Click [here](https://github.com/Muunatic/RyU/blob/v5/LICENSE) for more info.
