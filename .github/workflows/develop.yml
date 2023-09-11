@@ -19,7 +19,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: install dependencies
-      run: npm install npm@latest -g
+      run: npm install npm@8.19.3 -g
     - name: install dependencies
       run: npm ci
     - name: run lint
