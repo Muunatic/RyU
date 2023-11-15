@@ -34,7 +34,7 @@ module.exports = {
         });
         if (!data) return interaction.reply('**Data tidak ditemukan**');
         if (!data.pp.rank || !data.accuracy === null) return interaction.reply('**Data tidak ditemukan**');
-        const osuembed = new MessageEmbed()
+        const msgEmbed = new MessageEmbed()
 
         .setColor('#CE0F3D')
         .setTitle(`OSU ${data.name} Profile`)
@@ -51,6 +51,6 @@ module.exports = {
         .setFooter({text: `https://osu.ppy.sh/users/${data.id}`, iconURL:`https://s.ppy.sh/a/${data.id}`})
         .setTimestamp();
 
-        interaction.reply({embeds: [osuembed]});
+        interaction.reply({embeds: [msgEmbed]});
     }
 };

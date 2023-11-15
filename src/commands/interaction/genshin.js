@@ -17,10 +17,9 @@ module.exports = {
     async execute(interaction) {
         if (interaction.options.get('weapon')) {
             const data = genshindb.weapons(interaction.options.get('weapon').value);
-            let datastringtify = JSON.stringify(data);
-            let dataparse = JSON.parse(datastringtify);
-            let current = dataparse;
-            let moracosts = current.costs.ascend1[0].count + current.costs.ascend2[0].count + current.costs.ascend3[0].count + current.costs.ascend4[0].count + current.costs.ascend5[0].count + current.costs.ascend6[0].count;
+            let dataStringtify = JSON.stringify(data);
+            let dataParse = JSON.parse(dataStringtify);
+            let current = dataParse;
             const embed = new MessageEmbed()
 
             .setColor('#89e0dc')
@@ -33,17 +32,16 @@ module.exports = {
                 { name: 'Substat', value: `${current.substat}`, inline: true },
                 { name: 'Refine', value: `${current.effect}`, inline: true },
                 { name: 'Material', value: `${current.costs.ascend6[0].name + ', ' + current.costs.ascend6[1].name + ', ' + current.costs.ascend6[2].name}`, inline: true },
-                { name: 'Costs', value: `${moracosts}`, inline: true }
+                { name: 'Costs', value: `${current.costs.ascend1[0].count + current.costs.ascend2[0].count + current.costs.ascend3[0].count + current.costs.ascend4[0].count + current.costs.ascend5[0].count + current.costs.ascend6[0].count}`, inline: true }
             )
             .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
             .setTimestamp();
             interaction.reply({embeds: [embed]});
         } else if (interaction.options.get('characters')) {
             const data = genshindb.characters(interaction.options.get('characters').value);
-            let datastringtify = JSON.stringify(data);
-            let dataparse = JSON.parse(datastringtify);
-            let current = dataparse;
-            let moracosts = current.costs.ascend1[0].count + current.costs.ascend2[0].count + current.costs.ascend3[0].count + current.costs.ascend4[0].count + current.costs.ascend5[0].count + current.costs.ascend6[0].count;
+            let dataStringtify = JSON.stringify(data);
+            let dataParse = JSON.parse(dataStringtify);
+            let current = dataParse;
             const embed = new MessageEmbed()
 
             .setColor('#89e0dc')
@@ -58,7 +56,7 @@ module.exports = {
                 { name: 'Region', value: `${current.region}`, inline: true },
                 { name: 'Birthday', value: `${current.birthday}`, inline: true },
                 { name: 'Material', value: `${current.costs.ascend6[0].name + ', ' + current.costs.ascend6[1].name + ', ' + current.costs.ascend6[2].name + ', ' + current.costs.ascend6[3].name + ', ' + current.costs.ascend6[4].name}`, inline: true },
-                { name: 'Costs', value: `${moracosts}`, inline: true }
+                { name: 'Costs', value: `${current.costs.ascend1[0].count + current.costs.ascend2[0].count + current.costs.ascend3[0].count + current.costs.ascend4[0].count + current.costs.ascend5[0].count + current.costs.ascend6[0].count}`, inline: true }
             )
             .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
             .setTimestamp();

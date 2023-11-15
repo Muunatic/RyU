@@ -33,7 +33,7 @@ const client = new Client({
 
 });
 
-const packagejson = require('./package.json');
+const packageJson = require('./package.json');
 
 const { GiveawaysManager } = require('discord-giveaways');
 const manager = new GiveawaysManager(client, {
@@ -53,5 +53,5 @@ client.giveawaysManager = manager;
 module.exports = {
     client: client,
     manager: manager,
-    packagejson: packagejson
+    packageJson: packageJson
 };

@@ -6,8 +6,8 @@ module.exports = {
     execute(message, args) {
         if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         if (!args.join(' ')) return message.channel.send(`${process.env.PREFIX}reroll <msgid>`);
-        const messageID = args[0];
-        manager.reroll(messageID).then(() => {
+        const msgId = args[0];
+        manager.reroll(msgId).then(() => {
             message.channel.send('Rerolled');
         }).catch(() => {
             message.channel.send('ID tidak ditemukan');

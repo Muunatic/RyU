@@ -18,11 +18,11 @@ client.on('messageCreate', async (message) => {
         message.reply(process.env.DEFAULT_ERROR);
     }
 
-    const afkjson = require('../data/afk.json');
+    const afkJson = require('../data/afk.json');
 
-    if (afkjson.afkvalue.indexOf(message.author.id) !== -1) {
-        afkjson.afkvalue.splice(afkjson.afkvalue.indexOf(message.author.id), 1);
-        fs.writeFileSync('./src/data/afk.json', JSON.stringify(afkjson));
+    if (afkJson.afkvalue.indexOf(message.author.id) !== -1) {
+        afkJson.afkvalue.splice(afkJson.afkvalue.indexOf(message.author.id), 1);
+        fs.writeFileSync('./src/data/afk.json', JSON.stringify(afkJson));
         message.member.setNickname(message.author.username);
         message.channel.send(`**\`${message.author.username}\` telah kembali dari AFK!**`);
     }
@@ -30,7 +30,7 @@ client.on('messageCreate', async (message) => {
     let mentioned = message.mentions.members?.first();
 
     if (mentioned) {
-        if (afkjson.afkvalue.indexOf(mentioned.id) !== -1) {
+        if (afkJson.afkvalue.indexOf(mentioned.id) !== -1) {
             return message.channel.send(`**\`${mentioned.user.username}\` sedang AFK!**`);
         } else {
             return;

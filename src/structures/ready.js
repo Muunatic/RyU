@@ -1,11 +1,11 @@
-const { client, packagejson } = require('../../client');
+const { client, packageJson } = require('../../client');
 
 client.on('ready', () => {
 
     console.log(client.user.username + '#' + client.user.discriminator + ': ' + '\x1b[32m' + 'Hello, World!' + '\x1b[0m');
 
-    const presencelist = [
-        `Version ${packagejson.version} | /help`,
+    const presenceList = [
+        `Version ${packageJson.version} | /help`,
         `${process.env.DISCORDLINK} | /help`,
         `${client.guilds.cache.size} server | /help`
     ];
@@ -13,10 +13,10 @@ client.on('ready', () => {
     let i = 0;
     setInterval(() => {
         const index = Math.floor(i);
-        client.user.setActivity({ name: presencelist[index], type: 'COMPETING', url: 'https://www.twitch.tv/discord' });
+        client.user.setActivity({ name: presenceList[index], type: 'COMPETING', url: 'https://www.twitch.tv/discord' });
         i = i + 1;
-        console.log(presencelist[index]);
-        if (i === presencelist.length) i = i - presencelist.length;
+        console.log(presenceList[index]);
+        if (i === presenceList.length) i = i - presenceList.length;
     }, 5000);
 
 });

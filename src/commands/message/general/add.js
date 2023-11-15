@@ -8,9 +8,9 @@ module.exports = {
         if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         if (!args[0]) return message.channel.send(`${process.env.PREFIX}giveaway **<mentionschannel>** <time> <winner> <args>`);
         if (!args.join(' ')) return message.channel.send(`**${process.env.PREFIX}giveaway <mentionschannel> <time> <winner> <args>**`);
-        const channelsend = message.mentions.channels.first();
+        const channelSend = message.mentions.channels.first();
         const prize = args.slice(3).join(' ');
-        manager.start(channelsend, {
+        manager.start(channelSend, {
             duration: ms(args[1]),
             winnerCount: parseInt(args[2]),
             prize: prize,

@@ -14,8 +14,8 @@ module.exports = {
             indonesiaTime -= 2000;
         });
 
-        const jammenitdetikindonesia = indonesiaTime.slice(11, -6);
-        const tanggalindonesia = indonesiaTime.slice(0, -15);
+        const idTime = indonesiaTime.slice(11, -6);
+        const idDate = indonesiaTime.slice(0, -15);
 
         cpuStat.usagePercent((err, percent) => {
             if (err) {
@@ -30,7 +30,7 @@ module.exports = {
             let minutes = Math.floor(totalSeconds / 60);
             let seconds = Math.floor(totalSeconds % 60);
 
-            let statsembed = new MessageEmbed()
+            let msgEmbed = new MessageEmbed()
 
             .setColor('#89e0dc')
             .setTitle('Client Stats')
@@ -44,9 +44,9 @@ module.exports = {
                 { name: 'Platform', value: `${os.platform()}`, inline: true },
                 { name: 'Engine', value: `${process.version}`, inline: true }
             )
-            .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username} • ${jammenitdetikindonesia} ${tanggalindonesia}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})});
+            .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username} • ${idTime} ${idDate}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})});
 
-            interaction.reply({embeds: [statsembed]});
+            interaction.reply({embeds: [msgEmbed]});
         });
     }
 };

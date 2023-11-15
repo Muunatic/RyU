@@ -12,27 +12,27 @@ module.exports = {
         .setRequired(true)
     ),
     async execute(interaction, client) {
-        const animevalue = interaction.options.get('anime').value;
-        const animescraper = await malScraper.getInfoFromName(animevalue);
-        if (!animescraper) return interaction.reply(process.env.DEFAULT_ERROR);
+        const animeValue = interaction.options.get('anime').value;
+        const animeScraper = await malScraper.getInfoFromName(animeValue);
+        if (!animeScraper) return interaction.reply(process.env.DEFAULT_ERROR);
 
-        const animeembed = new MessageEmbed()
+        const msgEmbed = new MessageEmbed()
 
         .setColor('#CE0F3D')
-        .setAuthor({name: animescraper.title, iconURL: client.user.displayAvatarURL(), url: animescraper.url})
-        .setImage(animescraper.picture)
-        .setDescription(animescraper.synopsis)
+        .setAuthor({name: animeScraper.title, iconURL: client.user.displayAvatarURL(), url: animeScraper.url})
+        .setImage(animeScraper.picture)
+        .setDescription(animeScraper.synopsis)
         .addFields(
-            { name: 'Type', value: `${animescraper.type}`, inline: true },
-            { name: 'Episode', value: `${animescraper.episodes}`, inline: true },
-            { name: 'Duration', value: `${animescraper.duration}`, inline: true },
-            { name: 'Genres', value: `${animescraper.genres.join(', ')}`, inline: true },
-            { name: 'Status', value: `${animescraper.status}`, inline: true },
-            { name: 'Score', value: `${animescraper.score}`, inline: true }
+            { name: 'Type', value: `${animeScraper.type}`, inline: true },
+            { name: 'Episode', value: `${animeScraper.episodes}`, inline: true },
+            { name: 'Duration', value: `${animeScraper.duration}`, inline: true },
+            { name: 'Genres', value: `${animeScraper.genres.join(', ')}`, inline: true },
+            { name: 'Status', value: `${animeScraper.status}`, inline: true },
+            { name: 'Score', value: `${animeScraper.score}`, inline: true }
         )
-        .setFooter({text: animescraper.url, iconURL: 'https://pbs.twimg.com/profile_images/1190380284295950339/Py6XnxvH_400x400.jpg'})
+        .setFooter({text: animeScraper.url, iconURL: 'https://pbs.twimg.com/profile_images/1190380284295950339/Py6XnxvH_400x400.jpg'})
         .setTimestamp();
 
-        interaction.reply({embeds: [animeembed]});
+        interaction.reply({embeds: [msgEmbed]});
     }
 };

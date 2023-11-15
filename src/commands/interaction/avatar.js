@@ -10,16 +10,16 @@ module.exports = {
         .setDescription('Mention user')
     ),
     async execute(interaction) {
-        const uservalue = interaction.options.getUser('user') || interaction.user;
-        const usernamevalue = interaction.options.getUser('user') || interaction.member.user;
-        const avatarembed = new MessageEmbed()
+        const userValue = interaction.options.getUser('user') || interaction.user;
+        const usernameValue = interaction.options.getUser('user') || interaction.member.user;
+        const msgEmbed = new MessageEmbed()
 
         .setColor('#89e0dc')
         .setTitle('Avatar')
-        .setDescription(`Avatarnya ${usernamevalue.username}`)
-        .setImage(`${uservalue.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
+        .setDescription(`Avatarnya ${usernameValue.username}`)
+        .setImage(`${userValue.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
         .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})});
 
-        interaction.reply({embeds: [avatarembed]});
+        interaction.reply({embeds: [msgEmbed]});
     }
 };

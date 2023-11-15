@@ -1,7 +1,7 @@
 const { client } = require('../../client');
 const { MessageEmbed, MessageCollector } = require('discord.js');
 
-const reportcooldown = new Set();
+const reportCooldown = new Set();
 
 client.on('messageCreate', async (msg) => {
 
@@ -9,8 +9,8 @@ client.on('messageCreate', async (msg) => {
     const command = args.shift().toLowerCase();
 
     if (msg.channel.type === 'DM') {
-        let dmchannel = client.channels.cache.get(process.env.CHANNELLOGPRIVATE);
-        let dmembed = new MessageEmbed()
+        let dmChannel = client.channels.cache.get(process.env.CHANNELLOGPRIVATE);
+        let msgEmbed = new MessageEmbed()
 
         .setTitle('DM Channel')
         .setColor('#89e0dc')
@@ -18,20 +18,20 @@ client.on('messageCreate', async (msg) => {
         .setDescription(msg.content)
         .setTimestamp();
 
-        dmchannel.send({embeds: [dmembed]});
+        dmChannel.send({embeds: [msgEmbed]});
     }
 
     if (command === 'report') {
-        const reportargs = args.join(' ');
+        const reportArgs = args.join(' ');
         if (msg.guild) return msg.react('❎') && msg.channel.send('**Declined**');
         if (!args[0]) return msg.channel.send('**Berikan args**');
-        if (reportcooldown.has(msg.author.id)) {
+        if (reportCooldown.has(msg.author.id)) {
             return msg.channel.send('**Kamu telah mengirimkan laporan hari ini, silahkan kirim laporan lain besok.**') && msg.react('❎');
         } else {
             const embedpreview = new MessageEmbed()
             .setColor('#ff0000')
             .setTitle('Report preview')
-            .setDescription(`Nama : **${msg.author.username}**\nReport ID : **${msg.id}**\n\nBug : **${reportargs}**`)
+            .setDescription(`Nama : **${msg.author.username}**\nReport ID : **${msg.id}**\n\nBug : **${reportArgs}**`)
             .setFooter({text: `Direquest oleh ${msg.author.username}`, iconURL: msg.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
             .setTimestamp();
             msg.channel.send({embeds: [embedpreview]});
@@ -40,24 +40,24 @@ client.on('messageCreate', async (msg) => {
             collector.on('collect', (msg) => {
                 const msgct = msg.content.toLowerCase();
                 if (msgct === 'yes') {
-                    reportcooldown.add(msg.author.id);
+                    reportCooldown.add(msg.author.id);
                     setTimeout(() => {
-                        reportcooldown.delete(msg.author.id);
+                        reportCooldown.delete(msg.author.id);
                     }, 86400000);
                     const channeltarget = client.channels.cache.get(process.env.CHANNELLOGPRIVATE);
-                    channeltarget.send(reportargs);
+                    channeltarget.send(reportArgs);
                     msg.react('✅');
 
-                    const channellog = client.channels.cache.get(process.env.CHANNELLOGID);
-                    const channellogembed = new MessageEmbed()
+                    const channelLog = client.channels.cache.get(process.env.CHANNELLOGID);
+                    const channelLogEmbed = new MessageEmbed()
 
                     .setColor('#ff0000')
                     .setTitle('Report preview')
-                    .setDescription(`Nama : **${msg.author.username}**\nReport ID : **${msg.id}**\n\nBug : **${reportargs}**`)
+                    .setDescription(`Nama : **${msg.author.username}**\nReport ID : **${msg.id}**\n\nBug : **${reportArgs}**`)
                     .setFooter({text: msg.author.username, iconURL: msg.author.avatarURL({format : 'png', dynamic : true, size : 1024})})
                     .setTimestamp();
 
-                    channellog.send({embeds: [channellogembed]});
+                    channelLog.send({embeds: [channelLogEmbed]});
                     msg.channel.send(`**Reported**\n\`\`\`Report ID : ${msg.id}\`\`\``);
                     collector.stop();
                 } else if (msgct === 'no') {

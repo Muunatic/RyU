@@ -6,7 +6,7 @@ module.exports = {
     .setName('serverinfo')
     .setDescription('Server info'),
     async execute(interaction) {
-        const serverembed = new MessageEmbed()
+        const msgEmbed = new MessageEmbed()
 
         .setColor('#89e0dc')
         .setTitle('Info Server')
@@ -15,6 +15,6 @@ module.exports = {
         .setFooter({text: `Info server ${interaction.guild.name}`, iconURL: interaction.guild.iconURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp();
 
-        interaction.reply({embeds: [serverembed]});
+        interaction.reply({embeds: [msgEmbed]});
     }
 };

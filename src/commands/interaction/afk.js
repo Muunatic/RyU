@@ -6,9 +6,9 @@ module.exports = {
     .setName('afk')
     .setDescription('Set AFK'),
     async execute(interaction) {
-        const afkjson = require('../../../data/afk.json');
-        afkjson.afkvalue.push(interaction.user.id);
-        fs.writeFileSync('./src/data/afk.json', JSON.stringify(afkjson));
+        const afkJson = require('../../../data/afk.json');
+        afkJson.afkvalue.push(interaction.user.id);
+        fs.writeFileSync('./src/data/afk.json', JSON.stringify(afkJson));
         interaction.reply(`**\`${interaction.user.username}\` telah AFK!**`);
         interaction.member.setNickname(`[AFK] ${interaction.user.username}`);
     }

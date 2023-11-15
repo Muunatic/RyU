@@ -7,7 +7,7 @@ module.exports = {
     .setName('help')
     .setDescription('Help command'),
     async execute(interaction, client) {
-        const embed = new MessageEmbed()
+        const msgEmbed = new MessageEmbed()
 
         .setColor('#89e0dc')
         .setTitle('Help commands')
@@ -41,8 +41,8 @@ module.exports = {
             .setStyle('SECONDARY')
         );
 
-        const btnfilter = i => i.user.id === interaction.user.id;
-        const collector = interaction.channel.createMessageComponentCollector({ filter: btnfilter, time: 60000 });
+        const btnFilter = i => i.user.id === interaction.user.id;
+        const collector = interaction.channel.createMessageComponentCollector({ filter: btnFilter, time: 60000 });
 
         collector.on('collect', async i => {
 
@@ -60,7 +60,7 @@ module.exports = {
                 button.components[1].setDisabled(true);
                 button.components[2].setDisabled(true);
                 interaction.editReply({components: [button]});
-                const userinfoembed = new MessageEmbed()
+                const userInfoEmbed = new MessageEmbed()
 
                 .setColor('#89e0dc')
                 .setTitle(`${interaction.user.username} Info`)
@@ -69,7 +69,7 @@ module.exports = {
                 .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
                 .setTimestamp();
 
-                await i.reply({embeds: [userinfoembed]});
+                await i.reply({embeds: [userInfoEmbed]});
                 collector.stop();
             }
 
@@ -78,7 +78,7 @@ module.exports = {
                 button.components[1].setDisabled(true);
                 button.components[2].setDisabled(true);
                 interaction.editReply({components: [button]});
-                const avatarembed = new MessageEmbed()
+                const avatarEmbed = new MessageEmbed()
 
                 .setColor('#89e0dc')
                 .setTitle('Avatar')
@@ -86,7 +86,7 @@ module.exports = {
                 .setImage(`${interaction.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
                 .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})});
 
-                await i.reply({embeds: [avatarembed]});
+                await i.reply({embeds: [avatarEmbed]});
                 collector.stop();
             }
 
@@ -94,7 +94,7 @@ module.exports = {
 
         });
 
-        interaction.reply({embeds: [embed], components: [button]});
+        interaction.reply({embeds: [msgEmbed], components: [button]});
         setTimeout(() => {
             button.components[0].setDisabled(true);
             button.components[1].setDisabled(true);

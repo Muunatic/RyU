@@ -6,7 +6,7 @@ module.exports = {
     .setName('userinfo')
     .setDescription('User info'),
     async execute(interaction) {
-        const userinfoembed = new MessageEmbed()
+        const msgEmbed = new MessageEmbed()
 
         .setColor('#89e0dc')
         .setTitle(`${interaction.user.username} Info`)
@@ -15,6 +15,6 @@ module.exports = {
         .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
         .setTimestamp();
 
-        interaction.reply({embeds: [userinfoembed]});
+        interaction.reply({embeds: [msgEmbed]});
     }
 };
