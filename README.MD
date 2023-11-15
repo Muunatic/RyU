@@ -25,8 +25,6 @@
 
 ## How to use
 
-Here is the revised version of the sentences with improved grammar:
-
 1. Install all dependencies, or you can ignore the optional dependencies if you prefer:
 ```
 npm install
