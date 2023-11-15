@@ -21,4 +21,4 @@
 |5.0.1|:x:|
 |5.0.0|:x:|
 
-Please report security issues to [Muunatic](mailto:contact@muunatic.me)
+Please report security issues to [Muunatic](mailto:muunatic@typeslint.com)
