@@ -37,9 +37,9 @@ npm install --no-optional
 ```
 .env.example > .env
 ```
-3. Rename **config.json.example** become **config.json** then fill all available values too
+3. Rename **config.example.example** become **config.json** then fill all available values too
 ```
-config.json.example > config.json 
+config.example.json > config.json 
 ```
 4. After that run **npm run deploy** to registering your slash command to REST API
 ```
