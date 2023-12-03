@@ -28,7 +28,7 @@
     "node-osu": "^2.2.1"
   },
   "devDependencies": {
-    "eslint": "^8.44.0"
+    "eslint": "^8.55.0"
   },
   "engines": {
     "node": ">=16.19.0",
