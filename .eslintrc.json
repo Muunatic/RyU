@@ -13,7 +13,8 @@
         "comma-style": ["warn", "last"],
         "eol-last": ["warn", "always"],
         "indent": ["warn", 4, {
-            "MemberExpression": 0
+            "MemberExpression": 0,
+            "SwitchCase": 1
         }],
         "no-multiple-empty-lines": ["warn", {
             "max": 1,
