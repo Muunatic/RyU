@@ -1,4 +1,4 @@
-const { Client, Intents } = require('discord.js');
+const { Client, Intents, Message, CommandInteraction } = require('discord.js');
 
 require('dotenv').config();
 
@@ -50,8 +50,13 @@ const manager = new GiveawaysManager(client, {
 
 client.giveawaysManager = manager;
 
+const messageInstance = Message.prototype;
+const interactionInstance = CommandInteraction.prototype;
+
 module.exports = {
     client: client,
+    message: messageInstance,
+    interaction: interactionInstance,
     manager: manager,
     packageJson: packageJson
 };
