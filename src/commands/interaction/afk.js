@@ -5,6 +5,9 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('afk')
     .setDescription('Set AFK'),
+    /**
+     * @param {import("../../../client").interaction} interaction
+     */
     async execute(interaction) {
         const afkJson = require('../../../data/afk.json');
         afkJson.afkvalue.push(interaction.user.id);

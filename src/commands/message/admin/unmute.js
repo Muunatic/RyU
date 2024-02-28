@@ -3,6 +3,9 @@ const { MessageEmbed, Permissions } = require('discord.js');
 
 module.exports = {
     name: 'unmute',
+    /**
+     * @param {import("../../../../client").message} message
+     */
     execute(message) {
         if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         if (!message.mentions.users.first()) return message.channel.send('**Mention user untuk melakukan unmute**');

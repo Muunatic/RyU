@@ -2,6 +2,10 @@ const { Permissions } = require('discord.js');
 
 module.exports = {
     name: 'ban',
+    /**
+     * @param {import("../../../../client").message} message
+     * @param {Array<string>} args
+     */
     execute(message, args) {
         if (!message.member.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         const user = message.mentions.users.first();
@@ -10,8 +14,7 @@ module.exports = {
             if (member) {
                 member.ban({
                     days: 0
-                })
-                .then(() => {
+                }).then(() => {
                     if (args[1]) return message.channel.send(`**${user.tag} Telah diban permanen dikarenakan ${args.slice(1).join(' ')}**`);
                     if (!args[1]) return message.channel.send(`**${user.tag} Telah diban permanen**`);
                 });

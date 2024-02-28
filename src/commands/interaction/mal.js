@@ -11,6 +11,10 @@ module.exports = {
         .setDescription('Anime name')
         .setRequired(true)
     ),
+    /**
+     * @param {import("../../../client").interaction} interaction
+     * @param {import("../../../client").client} client
+     */
     async execute(interaction, client) {
         const animeValue = interaction.options.get('anime').value;
         const animeScraper = await malScraper.getInfoFromName(animeValue);

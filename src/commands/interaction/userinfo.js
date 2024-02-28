@@ -5,6 +5,10 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('userinfo')
     .setDescription('User info'),
+    /**
+     * @param {import("../../../client").interaction} interaction
+     * @param {import("../../../client").client} client
+     */
     async execute(interaction) {
         const msgEmbed = new MessageEmbed()
 

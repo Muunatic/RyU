@@ -2,6 +2,10 @@ const { MessageCollector, Permissions } = require('discord.js');
 
 module.exports = {
     name: 'nickname',
+    /**
+     * @param {import("../../../../client").message} message
+     * @param {Array<string>} args
+     */
     execute(message, args) {
         if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_NICKNAMES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         if (!message.mentions.users.first()) return message.channel.send(`Mention user untuk menggunakan command\n\n ${process.env.PREFIX}nickname <user> <nickname>`);

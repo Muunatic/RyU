@@ -22,6 +22,9 @@ module.exports = {
             {name: 'osumania', value: 3}
         )
     ),
+    /**
+     * @param {import("../../../client").interaction} interaction
+     */
     async execute(interaction) {
         const args1 = interaction.options.get('username').value;
         const args2 = interaction.options.get('mode').value;

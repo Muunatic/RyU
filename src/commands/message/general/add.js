@@ -4,6 +4,10 @@ const { manager } = require('../../../../client');
 
 module.exports = {
     name: 'add',
+    /**
+     * @param {import("../../../../client").message} message
+     * @param {Array<string>} args
+     */
     execute(message, args) {
         if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         if (!args[0]) return message.channel.send(`${process.env.PREFIX}giveaway **<mentionschannel>** <time> <winner> <args>`);
@@ -26,8 +30,6 @@ module.exports = {
                 endedAt: 'Ended at',
                 drawing: `{timestamp}`
             }
-        }).then((gData) => {
-            console.log(gData);
         });
     }
 };

@@ -3,6 +3,10 @@ const { MessageEmbed, Permissions } = require('discord.js');
 
 module.exports = {
     name: 'warn',
+    /**
+     * @param {import("../../../../client").message} message
+     * @param {Array<string>} args
+     */
     execute(message, args) {
         if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         const mentionUser = message.mentions.users.first();

@@ -14,6 +14,9 @@ module.exports = {
         weapon.setName('weapon')
         .setDescription('Weapon')
     ),
+    /**
+     * @param {import("../../../client").interaction} interaction
+     */
     async execute(interaction) {
         if (interaction.options.get('weapon')) {
             const data = genshindb.weapons(interaction.options.get('weapon').value);

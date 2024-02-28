@@ -4,6 +4,9 @@ const { MessageEmbed, MessageCollector } = require('discord.js');
 
 module.exports = {
     name: 'register',
+    /**
+     * @param {import("../../../../client").message} message
+     */
     execute(message) {
         let channelLog = client.channels.cache.get(process.env.CHANNELLOGID);
         if (!message.member.roles.cache.get(process.env.UNREGISTER_ID)) return message.channel.send('**Kamu sudah teregistrasi**')

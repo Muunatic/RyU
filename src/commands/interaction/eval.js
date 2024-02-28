@@ -10,6 +10,9 @@ module.exports = {
         .setDescription('Eval value')
         .setRequired(true)
     ),
+    /**
+     * @param {import("../../../client").interaction} interaction
+     */
     async execute(interaction) {
         const args = interaction.options.get('value').value;
         if (interaction.user.id !== process.env.OWNERID) return interaction.reply(process.env.DEFAULT_ERROR);

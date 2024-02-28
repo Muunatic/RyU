@@ -9,6 +9,9 @@ module.exports = {
         option.setName('user')
         .setDescription('Mention user')
     ),
+    /**
+     * @param {import("../../../client").interaction} interaction
+     */
     async execute(interaction) {
         const userValue = interaction.options.getUser('user') || interaction.user;
         const usernameValue = interaction.options.getUser('user') || interaction.member.user;

@@ -8,6 +8,10 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('stats')
     .setDescription('Client stats'),
+    /**
+     * @param {import("../../../client").interaction} interaction
+     * @param {import("../../../client").client} client
+     */
     async execute(interaction, client) {
         let indonesiaTime = moment().tz('Asia/Jakarta').format();
         setInterval(() => {

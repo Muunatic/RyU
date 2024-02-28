@@ -6,6 +6,9 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('help')
     .setDescription('Help command'),
+    /**
+     * @param {import("../../../client").interaction} interaction
+     */
     async execute(interaction, client) {
         const msgEmbed = new MessageEmbed()
 

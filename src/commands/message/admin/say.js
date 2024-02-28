@@ -3,6 +3,10 @@ const { Permissions } = require('discord.js');
 
 module.exports = {
     name: 'say',
+    /**
+     * @param {import("../../../../client").message} message
+     * @param {Array<string>} args
+     */
     execute(message, args) {
         if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return message.channel.send('Kamu tidak memiliki izin untuk menggunakan command ini');
         const channel = client.channels.cache.get(args[0]);

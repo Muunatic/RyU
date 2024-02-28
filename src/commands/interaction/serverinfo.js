@@ -5,6 +5,9 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('serverinfo')
     .setDescription('Server info'),
+    /**
+     * @param {import("../../../client").interaction} interaction
+     */
     async execute(interaction) {
         const msgEmbed = new MessageEmbed()
 
