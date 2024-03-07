@@ -8,6 +8,7 @@ module.exports = {
     .setDescription('Help command'),
     /**
      * @param {import("../../../client").interaction} interaction
+     * @param {import("../../../client").client} client
      */
     async execute(interaction, client) {
         const msgEmbed = new MessageEmbed()
