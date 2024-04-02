@@ -1,7 +1,7 @@
 ***
 
 <p align="center">
-<img src="https://cdn.discordapp.com/attachments/852785773827981342/912856282246045778/test.jpg" width="256" height="256">
+<img src="https://typeslint.com/ryu/imgRyU.jpg" width="256" height="256">
 <p align="center">
 
 <img src="https://img.shields.io/github/repo-size/Muunatic/RyU?style=flat-square">
