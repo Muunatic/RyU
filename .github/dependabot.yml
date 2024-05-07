@@ -4,7 +4,7 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-      time: "05:00"
+      time: "07:00"
       timezone: "Asia/Jakarta"
     open-pull-requests-limit: 20
     target-branch: "develop"
@@ -23,4 +23,6 @@ updates:
     - dependency-name: "discord-api-types"
       update-types: ["version-update:semver-major"]
     - dependency-name: "discord-giveaways"
+      update-types: ["version-update:semver-major"]
+    - dependency-name: "eslint"
       update-types: ["version-update:semver-major"]
