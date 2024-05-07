@@ -28,7 +28,7 @@ module.exports = {
                 noWinner: 'Tidak Valid',
                 winners: 'winner(s) ',
                 endedAt: 'Ended at',
-                drawing: `{timestamp}`
+                drawing: '{timestamp}'
             }
         });
     }

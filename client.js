@@ -23,12 +23,12 @@ const client = new Client({
     ],
 
     partials: [
-        "CHANNEL",
-        "GUILD_MEMBER",
-        "GUILD_SCHEDULED_EVENT",
-        "MESSAGE",
-        "REACTION",
-        "USER"
+        'CHANNEL',
+        'GUILD_MEMBER',
+        'GUILD_SCHEDULED_EVENT',
+        'MESSAGE',
+        'REACTION',
+        'USER'
     ]
 
 });

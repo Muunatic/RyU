@@ -41,7 +41,7 @@ module.exports = {
             .setThumbnail(`${interaction.client.user.avatarURL({format : 'png', dynamic : true, size : 4096})}`)
             .setDescription(`Client ini telah aktif selama **${days} hari, ${hours} jam, ${minutes} menit, dan ${seconds} detik**`)
             .addFields(
-                { name: 'CPU', value: `${os.cpus().map((i) => `${i.model}`)[0]}`, inline: true },
+                { name: 'CPU', value: `${os.cpus().map(i => `${i.model}`)[0]}`, inline: true },
                 { name: 'CPU Usage', value: `${percent.toFixed(2)}%`, inline: true },
                 { name: 'Memory', value: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${(os.totalmem() / 1024 / 1024).toFixed(2)}MB`, inline: true },
                 { name: 'Architecture', value: `${os.arch()}-based processor`, inline: true },

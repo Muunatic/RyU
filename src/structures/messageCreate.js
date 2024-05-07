@@ -1,7 +1,7 @@
 const fs = require ('fs');
 const { client } = require('../../client');
 
-client.on('messageCreate', async (message) => {
+client.on('messageCreate', async message => {
 
     const args = message.content.slice(process.env.PREFIX.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();

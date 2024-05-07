@@ -12,7 +12,7 @@ module.exports = {
         const memberName = message.mentions.members.first();
         message.channel.send('**Please confirm your choice**\n\`\`\`[Yes] or [No]\`\`\`');
         const collector = new MessageCollector(message.channel, m => m.author.id === message.author.id, { time: 10000 });
-        collector.on('collect', (message) => {
+        collector.on('collect', message => {
             const msgCt = message.content.toLowerCase();
             if (msgCt === 'yes') {
                 memberName.setNickname(args.slice(1).join(' '));

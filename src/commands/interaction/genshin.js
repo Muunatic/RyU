@@ -20,8 +20,8 @@ module.exports = {
      * @param {import("../../../client").client} client
      */
     async execute(interaction) {
-        if (interaction.options.get("weapon")) {
-            const data = genshindb.weapons(interaction.options.get("weapon").value);
+        if (interaction.options.get('weapon')) {
+            const data = genshindb.weapons(interaction.options.get('weapon').value);
             const datastringtify = JSON.stringify(data);
             const dataparse = JSON.parse(datastringtify);
             const current = dataparse;
@@ -44,8 +44,8 @@ module.exports = {
             .setFooter({text: `Direquest oleh ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.user.avatarURL({format : 'png', dynamic : true, size : 1024})})
             .setTimestamp();
             interaction.reply({embeds: [embed]});
-        } else if (interaction.options.get("characters")) {
-            const data = genshindb.characters(interaction.options.get("characters").value);
+        } else if (interaction.options.get('characters')) {
+            const data = genshindb.characters(interaction.options.get('characters').value);
             const datastringtify = JSON.stringify(data);
             const dataparse = JSON.parse(datastringtify);
             const current = dataparse;
