@@ -22,9 +22,7 @@ module.exports = {
     async execute(interaction) {
         if (interaction.options.get('weapon')) {
             const data = genshindb.weapons(interaction.options.get('weapon').value);
-            const datastringtify = JSON.stringify(data);
-            const dataparse = JSON.parse(datastringtify);
-            const current = dataparse;
+            const current = data;
             const moracosts = current.costs.ascend1[0].count + current.costs.ascend2[0].count + current.costs.ascend3[0].count + current.costs.ascend4[0].count + current.costs.ascend5[0].count + current.costs.ascend6[0].count;
 
             const embed = new MessageEmbed()
