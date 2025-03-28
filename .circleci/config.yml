@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   lint:
     docker:
-      - image: cimg/node:16.19.0
+      - image: cimg/node:16.20.2
     steps:
       - checkout
       - run: npm ci
