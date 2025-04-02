@@ -9,12 +9,17 @@
         "ecmaVersion": 12
     },
     "rules": {
+        "arrow-parens": ["warn", "as-needed"],
         "comma-dangle": ["warn", "never"],
         "comma-style": ["warn", "last"],
         "eol-last": ["warn", "always"],
         "indent": ["warn", 4, {
             "MemberExpression": 0,
             "SwitchCase": 1
+        }],
+        "keyword-spacing": ["warn", {
+            "after": true,
+            "before": true
         }],
         "no-multiple-empty-lines": ["warn", {
             "max": 1,
@@ -23,6 +28,7 @@
         "no-trailing-spaces": 1,
         "no-unused-vars": 1,
         "no-useless-escape": 0,
+        "quotes": ["warn", "single"],
         "semi": 1,
         "semi-style": ["warn", "last"]
     }
